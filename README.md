@@ -147,7 +147,7 @@ uv run python -m boc_agent.cli --input data/synthetic/synthetic_boc_gl_dataset.x
 ```
 
 ### 4. Run the Evaluation Harness
-Execute unit and accuracy tests:
+Execute unit and accuracy tests (38 tests total):
 ```bash
 uv run pytest
 ```

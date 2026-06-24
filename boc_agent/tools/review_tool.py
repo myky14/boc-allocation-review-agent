@@ -1,62 +1,34 @@
-from boc_agent.schemas.transaction import Transaction
-from typing import Tuple
+from boc_agent.schemas.transaction import TransactionRecord
+from boc_agent.schemas.review_result import ReviewResult
+from typing import List, Dict, Any
 
 def make_review_decision(
-    tx: Transaction,
-    payee_type: str,
-    cost_category: str,
-    eligibility_status: str,
-    suggested_allocation: str,
-    amount_percentage: float
-) -> Tuple[float, str, str, str]:
-    """Evaluates the audit state and determines confidence, review status, reasoning, and reference rule.
+    tx: TransactionRecord,
+    classification_metadata: Dict[str, Any],
+    security_warnings: List[str],
+    allocation_result: ReviewResult
+) -> ReviewResult:
+    """Combines classification metadata, security guardrail warning flags, and eligibility/allocation outcomes
+    into the final ReviewResult object.
     
-    Returns:
-        Tuple[float, str, str, str]: (confidence_score, review_status, reasoning, reference_rule)
+    If security warnings are found:
+      - The review_status must be overridden to 'Needs Human Review'.
+      - The prompt-injection flags from the guardrail check should be appended to the rationale field.
+      - The confidence_score is reduced/set to 0.0.
     """
-    confidence = 1.0
-    reasons = []
-    rule = "RULE_STANDARD_MAPPING"
+    # Start with a copy of the deterministic allocation result
+    final_result = allocation_result.model_copy()
     
-    # 1. Check for missing required fields (raises human review requirement, reduces confidence)
-    missing_fields = []
-    if not tx.application_province:
-        missing_fields.append("application_province")
-    if not tx.location:
-        missing_fields.append("location")
-    if not tx.ep:
-        missing_fields.append("ep")
-    if not tx.vendor_name:
-        missing_fields.append("vendor_name")
-    if not tx.tax_id:
-        missing_fields.append("tax_id")
-    if not tx.address:
-        missing_fields.append("address")
+    # If there are security warnings, override review status and confidence, and append to rationale
+    if security_warnings:
+        final_result.review_status = "Needs Human Review"
+        final_result.confidence_score = 0.0
         
-    if missing_fields:
-        confidence -= 0.15 * len(missing_fields)
-        reasons.append(f"Missing required fields: {', '.join(missing_fields)}")
-        rule = "RULE_MISSING_FIELDS_WARNING"
-        
-    # 2. Check special category flags
-    if "VICE STUDIO CANADA" in (tx.vendor_name or "").upper():
-        reasons.append("VICE Studio Canada labor audit match applied.")
-        rule = "RULE_VICE_CANADA_SPECIAL"
-        
-    if "multi-share" in (tx.description or "").lower():
-        reasons.append("Multi-share labor contract detected.")
-        rule = "RULE_MULTI_SHARE_FEE_SPLIT"
-        
-    # Cap confidence
-    confidence = max(0.1, min(1.0, confidence))
-    
-    # Review status decision
-    if confidence < 0.85 or "missing" in "".join(reasons).lower():
-        review_status = "Needs Human Review"
-    else:
-        review_status = "Approved"
-        
-    if not reasons:
-        reasons.append("Normal transaction mapped successfully.")
-        
-    return confidence, review_status, " | ".join(reasons), rule
+        warning_str = " | ".join(security_warnings)
+        if final_result.rationale:
+            final_result.rationale = f"{final_result.rationale} | {warning_str}"
+        else:
+            final_result.rationale = warning_str
+            
+    return final_result
+

@@ -1,19 +1,20 @@
-from boc_agent.schemas.transaction import Transaction
+from boc_agent.schemas.transaction import TransactionRecord
+from boc_agent.schemas.review_result import ReviewResult
+from typing import Dict, Any, Optional
 
-def evaluate_eligibility(tx: Transaction, payee_type: str, cost_category: str) -> str:
-    """Suggests the eligibility status for the transaction based on workbook details."""
-    # Placeholder eligibility evaluation
-    desc = (tx.description or "").lower()
-    address = (tx.address or "").lower()
+def evaluate_eligibility(tx: TransactionRecord, deterministic_result: Optional[ReviewResult] = None) -> Dict[str, Any]:
+    """Exposes structured eligibility information from the deterministic review result.
     
-    # If explicitly out of Canada, it's ineligible for provincial/federal regional credits 
-    # (though it maps to "Out of Canada costs" allocation bucket)
-    if "out of canada" in desc or "us spend" in desc or "usa" in address:
-        return "Ineligible"
+    Ensures it does not contradict the rule engine output.
+    """
+    if deterministic_result is None:
+        from boc_agent.tools.allocation_tool import review_transaction
+        deterministic_result = review_transaction(tx)
         
-    # Check if required province matches application province
-    if tx.application_province == "Ontario" and "ontario" not in address and "on" not in address:
-        # Might be Federal or ineligible for Ontario
-        pass
-        
-    return "Eligible"
+    return {
+        "eligibility_status": deterministic_result.eligibility_status,
+        "is_eligible": deterministic_result.eligibility_status == "Eligible",
+        "is_ineligible": deterministic_result.eligibility_status == "Ineligible",
+        "needs_review": deterministic_result.eligibility_status == "Needs Review",
+        "confidence_score": deterministic_result.confidence_score
+    }

@@ -51,11 +51,12 @@ The current repository layout:
   - `io/`: workbook loaders (`workbook_loader.py`) and exporters (`workbook_exporter.py`).
   - `schemas/`: Pydantic transaction (`transaction.py`) and review result (`review_result.py`) schemas.
   - `rules/`: target allocation constants (`allocation_rules.py`).
-  - `tools/`: deterministic rules engine (`allocation_tool.py`), classification wrappers (`classification_tool.py`), and review wrappers (`review_tool.py`).
-  - `agents/`: ADK orchestrator stub (`orchestrator.py`).
+  - `tools/`: deterministic rules engine (`allocation_tool.py`), classification wrappers (`classification_tool.py`), eligibility wrappers (`eligibility_tool.py`), allocation wrappers (`allocation_wrapper_tool.py`), review wrappers (`review_tool.py`), and security scanner (`security_guardrail_tool.py`).
+  - `agents/`: ADK orchestrator (`orchestrator.py`).
   - cli.py: CLI utility executing the agent pipeline.
 * `tests/`: Verification scripts:
   - test_allocation_rules.py (30 pass validations).
+  - test_orchestrator.py (7 orchestration scenario validations).
   - test_scaffold.py (scaffold imports testing).
   - test_workbook_loader.py (schema validation testing).
 
@@ -221,7 +222,7 @@ The agent allocates costs into one of **20 distinct columns**:
 * Rule engine implemented in `allocation_tool.py` executing all deterministic Canadian production accounting logic.
 * CLI entrypoint implemented to execute batch audits over the Excel sheet and write reviewed results.
 * Audits and remediations (Pass 1 and Pass 2) successfully executed to handle Location 920 priority, Quebec minimal buckets, false labor detection, and payroll processors.
-* **pytest status**: 30 tests collect and pass successfully.
+* **pytest status**: 38 tests collect and pass successfully (30 rules tests + 8 orchestrator tests).
 
 ---
 
@@ -231,7 +232,7 @@ The agent allocates costs into one of **20 distinct columns**:
 # Synchronize environment
 uv sync
 
-# Run all test suites (30 tests)
+# Run all test suites (38 tests)
 uv run pytest
 
 # Execute rule engine over the synthetic ledger and export reviewed output
@@ -256,20 +257,20 @@ The processed sheet `outputs/reviewed_boc_gl_dataset.xlsx` has the following val
 
 ---
 
-## 12. Next Phase
+## 12. Completed Phase 4: ADK / Agent Orchestration
 
-The next step is **Phase 4: ADK / Agent Orchestration**.
+Phase 4 implemented a structured, ADK-style agent orchestration pipeline over the deterministic rule engine.
 
-### Development Guidelines for Phase 4:
-* **Do not modify the core rule engine logic** unless tests prove a bug.
-* **Wrap, do not replace**: The ADK agent and tools must wrap the tested deterministic rules engine.
-* **Orchestration**: The ADK Orchestrator should coordinate specialized wrapper tools:
-  - Classification wrapper tool
-  - Eligibility wrapper tool
-  - Allocation wrapper tool
-  - Review wrapper tool
-  - Security guardrail wrapper tool
-* The goal of Phase 4 is to demonstrate ADK agent construction, state management, and orchestration around the accounting workflow without overriding the validated conservative accounting logic.
+### Key Components Implemented:
+1. **OrchestrationState**: A dataclass tracking transaction context, security warnings, classification metadata, and step-by-step execution traces.
+2. **Orchestrator Agent** (`boc_agent/agents/orchestrator.py`): Manages the sequential review execution flow:
+   - **Step 1: Security Guardrail Check** (`boc_agent/tools/security_guardrail_tool.py`) detects prompt-injection keyword overrides.
+   - **Step 2: Transaction Classification** (`boc_agent/tools/classification_tool.py`) extracts payee and location metadata.
+   - **Step 3: Eligibility Assessment** (`boc_agent/tools/eligibility_tool.py`) evaluates regional eligibility.
+   - **Step 4: Allocation Suggestion** (`boc_agent/tools/allocation_wrapper_tool.py`) delegates to the deterministic rule engine.
+   - **Step 5: Final Review Packaging** (`boc_agent/tools/review_tool.py`) combines outputs, overriding review status and rationale if security warning overrides are flagged.
+3. **CLI Integration**: CLI call routes transactions through the Orchestrator seamlessly (backward compatible).
+4. **Validation Test Suite**: 8 orchestration scenario tests in `tests/test_orchestrator.py` validating return types, mappings, priorities, security overrides, and batch processing.
 
 ---
 
@@ -281,4 +282,4 @@ Any future assistant or Antigravity session must treat Canadian production accou
 * In Quebec context, if a row fails checks, map to the dedicated `Quebec needs review` bucket.
 * In case of doubt, pause and ask the user for clarification. Do not overclaim eligibility.
 
-Last updated after Phase 3 final business logic remediation. Ready for Phase 4 only after user approval.
+Last updated after Phase 4 ADK / Agent Orchestration completion. Ready for future integration phases.

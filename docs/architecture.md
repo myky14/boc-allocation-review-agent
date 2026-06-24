@@ -91,28 +91,26 @@ The Orchestrator maintains the transaction state variables:
 - Reads the synthetic Excel/CSV GL workbook row-by-row and normalizes varying header names to matching state keys.
 - **Location & Country**: Location represents the production cost location code (900 = application province, 910 = Canada outside application province, 920 = outside Canada / Out of Canada cost). Country is payee/vendor address country. Location 920 always means out-of-Canada cost regardless of vendor Country.
 
-### Security / Input Guardrail
-- Middleware that runs basic regex sanitization to strip credit card/SIN-like strings and validates transaction descriptions to block simple instruction-override strings.
+### Security / Input Guardrail (`boc_agent/tools/security_guardrail_tool.py`)
+- middleware scanner that checks the description and additional description fields for potential prompt-injection keyword overrides (such as "ignore previous rules", "mark everything eligible").
 
-### Orchestrator Agent
-- A local-first Python logic runner that manages state context and executes tools in sequence.
+### Orchestrator Agent (`boc_agent/agents/orchestrator.py`)
+- A local-first Python orchestration layer that manages the state context (`OrchestrationState`) and executes the tools in a structured, sequential workflow pipeline.
 
-### Classification Tool / Specialist
-- An LLM-assisted specialist that maps raw transaction fields (e.g., payee name, description) to clean payee structures and cost categories.
+### Classification Tool / Specialist (`boc_agent/tools/classification_tool.py`)
+- Extracts structured payee and location metadata: application province context, location class, cost family, and evidence flags (such as whether employee, loan-out, or tax ID is populated).
 
-### Eligibility Tool / Specialist
-- A hybrid rule-based and LLM specialist that evaluates location parameters (Application Province, address columns, Location code) against synthetic tax credit guidelines.
+### Eligibility Tool / Specialist (`boc_agent/tools/eligibility_tool.py`)
+- Evaluates regional eligibility status based on deterministic result data without contradicting the underlying rules engine.
 
-### Allocation Tool / Specialist
-- Formulates the suggested allocation column and qualifying percentage. It applies dedicated mapping matrices, including:
-  * Splitting multi-share labor and assigning fringe splits.
-  * Directing `VICE STUDIO CANADA` labor expenses to `ONT labor paid to VICE Canada` (Ontario context) or `Fed labor paid to VICE Canada` (federal/non-Ontario context) rather than generic labor buckets.
+### Allocation Tool / Specialist (`boc_agent/tools/allocation_wrapper_tool.py`)
+- Delegates directly to the deterministic rule engine (`allocation_tool.py`) to formulate the suggested allocation column, qualifying percentage, and reference rule.
 
-### Review Decision Tool / Specialist
-- Evaluates output integrity. If required workbook fields are missing (e.g. missing Location, Ep code, Address, or Tax ID), or if confidence falls below **85%**, it sets `Review Status = Needs Human Review`.
+### Review Decision Tool / Specialist (`boc_agent/tools/review_tool.py`)
+- Packages the classification, security, and allocation rule outputs. If prompt-injection warnings are found by the guardrail, it overrides the review status to "Needs Human Review", reduces the confidence score to 0.0, and appends the warning details to the rationale.
 
-### Export Tool
-- Compiles the final collection of processed rows and writes a new CSV or Excel sheet with the review fields appended.
+### Export Tool (`boc_agent/io/workbook_exporter.py`)
+- Compiles the final collection of processed rows and writes a new Excel sheet with the review fields appended.
 
 ---
 
