@@ -25,15 +25,14 @@ A local-first, ADK-compatible AI Agent co-pilot designed to assist production ac
 
 Canadian film and television productions rely heavily on tax credits to cover portions of their budgets. Suggesting the proper tax credit allocations requires reviewing general ledger exports against complex mapping guidelines.
 
-The **BOC Allocation Review Agent** processes a synthetic, pre-cleaned/enriched GL workbook (containing approximately 190+ fictional transactions) and adds agent-generated review fields to the output workbook:
-1. **Suggested Allocation Column**: Mapping transactions to one of 20 distinct allocation categories (Ontario, Federal, and minimal Quebec support).
-2. **Amount Percentage**: The portion of the transaction amount that should be allocated or claimed in the suggested bucket (represented on a 0.0 to 100.0 scale, e.g., 100.0 for standard salary, 65.0 for certain multi-share labor).
-3. **Eligibility Status**: Suggested eligibility status based on synthetic mapping rules and available workbook fields.
-4. **Confidence Score**: Quantitative metric reflecting the classification reliability.
-5. **Review Status**: Marked as `Needs Human Review` if confidence is below threshold, required fields are missing, or special review flags are triggered; otherwise marked as `Approved` for the MVP ledger.
-6. **Reasoning**: A clear explanation of the agent's suggested treatment based on available fields.
-7. **Reference Rule**: Citations matching synthetic policy documents and rules.
-8. **Secondary Allocation Note**: Detailed splits or remaining treatment notes (e.g., for multi-share/fringe splits).
+### 💼 Business Value Proposition
+By automating the preliminary auditing and sorting of General Ledger entries, the **BOC Allocation Review Agent**:
+- **Reduces Compliance Risk**: Lowers ineligible claim leakage through a conservative, audited rules engine.
+- **Saves Accounting Hours**: Pre-populates obvious claims (such as in-province salary or local supplies) and groups them by creates bodies (Ontario or Quebec SODEC), allowing accountants to focus exclusively on items requiring manual intervention.
+- **Optimizes Claims**: Automatically flags fallback treatment opportunities (such as Federal fallback for inter-provincial payees) to ensure no eligible expenses are missed.
+
+### ⚙️ Rule-Engine-First Design
+The project uses a local-first, **rules-first** architecture. A deterministic Canadian production accounting rules engine remains the final source of truth. The AI/ADK agent orchestration wraps around this engine to provide input security scanning, metadata extraction, structural tracing, and packaging without overriding or modifying the validated accounting rules.
 
 For a detailed review, see [docs/problem_statement.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/problem_statement.md).
 
@@ -151,6 +150,20 @@ Execute unit and accuracy tests (38 tests total):
 ```bash
 uv run pytest
 ```
+
+### 5. Run the Evaluation Summary
+Calculate workbook statistics (total rows, status distribution, and highlights):
+```bash
+uv run python scripts/evaluate_outputs.py outputs/reviewed_boc_gl_dataset.xlsx
+```
+
+---
+
+## 🛑 Known MVP Limitations
+* **No Live Verification**: Does not query live databases (CRA, CAVCO, Ontario Creates, corporate/residency registries).
+* **Minimal Quebec Context**: Includes minimal MVP SODEC Quebec buckets only. Advanced regional or special SODEC credits are out of scope.
+* **Hardcoded Multi-share Rules**: Multi-share creative labor uses standard fixed 65%/35% split caps.
+* **No Form 6 Compile**: Suggests workbook allocation columns; does not compile official CAVCO Form 6 PDF applications.
 
 ---
 

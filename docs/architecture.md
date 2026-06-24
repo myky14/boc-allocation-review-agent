@@ -121,3 +121,12 @@ Because this project is a local-first MVP workbook utility, a full-scale web das
 - **Flagging**: The agent evaluates each row. If any required variables are missing or conflicting (e.g. employee address does not match work location province), the transaction is marked `Review Status = Needs Human Review`.
 - **Review Workflow**: The accountant opens the exported CSV/Excel file in Excel, filters by `Needs Human Review`, reviews the agent's pre-populated suggestions and `Reasoning`, and manually overwrites the cells where necessary.
 - **ADK RequestInput (Future Extension)**: In future versions, this flow can be converted to an interactive CLI prompt or a Vertex AI session pause using `yield RequestInput()` to statefully interrupt execution row-by-row.
+
+---
+
+## 6. Evaluation and Demo Framework (Phase 5)
+
+To prepare for capstone presentation and ensure quality control, Phase 5 introduces:
+- **Evaluation Plan** ([docs/evaluation_plan.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/evaluation_plan.md)): Outlines ground-truth strategies, baseline accuracy metrics, test commands, and manual audit guides.
+- **Evaluation Summary Script** ([scripts/evaluate_outputs.py](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/scripts/evaluate_outputs.py)): Reads the audited output workbook and generates a distribution breakdown of review statuses, eligibility outcomes, and suggested allocation columns.
+- **Demo Cases Guide** ([docs/demo_cases.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/demo_cases.md)): Details 10 representative scenarios (e.g. multi-share caps, inter-provincial fallbacks, payroll processors, prompt-injection guardrails) found in the dataset to walk through during presentations.

@@ -257,12 +257,12 @@ The processed sheet `outputs/reviewed_boc_gl_dataset.xlsx` has the following val
 
 ---
 
-## 12. Completed Phase 4: ADK / Agent Orchestration
+## 12. Completed Phase 4 & Phase 5: Agent Orchestration & Presentation Readiness
 
-Phase 4 implemented a structured, ADK-style agent orchestration pipeline over the deterministic rule engine.
+Phases 4 and 5 implemented a structured, ADK-style agent orchestration pipeline over the deterministic rule engine and polished the project for capstone presentation.
 
 ### Key Components Implemented:
-1. **OrchestrationState**: A dataclass tracking transaction context, security warnings, classification metadata, and step-by-step execution traces.
+1. **Orchestration State**: A dataclass tracking transaction context, security warnings, classification metadata, and step-by-step execution traces.
 2. **Orchestrator Agent** (`boc_agent/agents/orchestrator.py`): Manages the sequential review execution flow:
    - **Step 1: Security Guardrail Check** (`boc_agent/tools/security_guardrail_tool.py`) detects prompt-injection keyword overrides.
    - **Step 2: Transaction Classification** (`boc_agent/tools/classification_tool.py`) extracts payee and location metadata.
@@ -271,10 +271,21 @@ Phase 4 implemented a structured, ADK-style agent orchestration pipeline over th
    - **Step 5: Final Review Packaging** (`boc_agent/tools/review_tool.py`) combines outputs, overriding review status and rationale if security warning overrides are flagged.
 3. **CLI Integration**: CLI call routes transactions through the Orchestrator seamlessly (backward compatible).
 4. **Validation Test Suite**: 8 orchestration scenario tests in `tests/test_orchestrator.py` validating return types, mappings, priorities, security overrides, and batch processing.
+5. **Evaluation Script** (`scripts/evaluate_outputs.py`): Calculates and prints workbook stats, status counts, allocation distribution, and highlights.
+6. **Demo Guide** (`docs/demo_cases.md`): Documents 10 representative scenarios for capstone presentation.
 
 ---
 
-## 13. Important Review Instruction
+## 13. Next Recommended Phase
+
+Now that Phase 5 is completed, the project is submission-ready. Future recommended integration or expansion phases include:
+1. **Stateful Human-in-the-Loop Interruption**: Incorporate Vertex AI session service and `RequestInput` stateful interrupts to allow accountants to resolve "Needs Human Review" warnings directly from the CLI or dashboard.
+2. **Expansion to Other Provinces**: Add specialist modules for British Columbia Creates (FIBC) guidelines.
+3. **Form 6 Template Export**: Map audited allocation columns directly to the CAVCO Schedule of Production Costs structure.
+
+---
+
+## 14. Important Review Instruction
 
 Any future assistant or Antigravity session must treat Canadian production accounting logic carefully.
 * If a transaction is ambiguous or lacks supporting documentation, **Do NOT guess**.
@@ -282,4 +293,4 @@ Any future assistant or Antigravity session must treat Canadian production accou
 * In Quebec context, if a row fails checks, map to the dedicated `Quebec needs review` bucket.
 * In case of doubt, pause and ask the user for clarification. Do not overclaim eligibility.
 
-Last updated after Phase 4 ADK / Agent Orchestration completion. Ready for future integration phases.
+Last updated after Phase 5 Presentation Readiness completion. Project is fully submission-ready.
