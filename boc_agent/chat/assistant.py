@@ -75,20 +75,77 @@ class ReviewConversationAssistant:
 
         return None
 
+    def _check_permissions(self, intent: str, reviewed_df: Optional[pd.DataFrame], skill) -> Optional[str]:
+        """Validates tool permissions and constraints against loaded Skill policies."""
+        if not skill:
+            return None
+
+        # Map intents to required tools defined in SKILL.md
+        intent_to_tools = {
+            "row_explanation": ["classification_tool", "eligibility_tool", "allocation_tool"],
+            "ineligible_summary": ["eligibility_tool"],
+            "needs_documentation": ["eligibility_tool"],
+            "filter_location": ["eligibility_tool"],
+            "rag": ["RAG_retriever"]
+        }
+
+        required_tools = intent_to_tools.get(intent, [])
+        for tool_name in required_tools:
+            tool = next((t for t in skill.tools if t.name.lower() == tool_name.lower()), None)
+            if not tool:
+                return f"Tool permission denied: {tool_name} is not configured in SKILL.md."
+
+            # Check if intent is permitted by the tool configuration
+            if intent not in tool.intents:
+                if intent == "filter_location" and "ineligible_summary" in tool.intents:
+                    pass
+                else:
+                    return f"Tool permission denied: {tool_name} is not permitted for intent '{intent}'."
+
+            # Validate mutating constraint
+            if tool.mutating:
+                return f"Tool permission denied: Mutating tool '{tool_name}' is prohibited."
+
+            # Validate required dataframe constraint
+            if tool.required_dataframe and (reviewed_df is None or reviewed_df.empty):
+                return f"Tool permission denied: {tool_name} requires a loaded DataFrame."
+
+        return None
+
     def answer(self, question: str, reviewed_df: Optional[pd.DataFrame]) -> str:
         """Processes the question and returns a grounded answer from the reviewed DataFrame or RAG."""
+        skill = None
+        try:
+            from boc_agent.skill.loader import get_active_skill
+            skill = get_active_skill()
+        except Exception:
+            pass
+
         intent = route_query(question)
 
+        # 1. Handle Refusals
         if intent == "tax_ruling":
+            if skill and skill.refusal_rules:
+                q_lower = question.lower().strip()
+                for rule in skill.refusal_rules:
+                    if any(kw in q_lower for kw in rule.matches):
+                        return rule.refusal_response
             return format_tax_ruling_refusal()
 
+        # 2. Check dataframe existence first for dataframe queries
+        if intent != "rag" and (reviewed_df is None or reviewed_df.empty):
+            return "No reviewed workbook data is currently loaded. Transaction not found / run review first."
+
+        # 3. Check Tool Permissions
+        permission_error = self._check_permissions(intent, reviewed_df, skill)
+        if permission_error:
+            return permission_error
+
+        # 4. Route to execution
         if intent == "rag":
             from boc_agent.rag.rag_answerer import RAGAnswerer
             answerer = RAGAnswerer()
             return answerer.answer(question)
-
-        if reviewed_df is None or reviewed_df.empty:
-            return "No reviewed workbook data is currently loaded. Transaction not found / run review first."
 
         # Copy is not required since we perform only read-only operations, 
         # but let's keep the operations strictly query-based to prevent any mutations.

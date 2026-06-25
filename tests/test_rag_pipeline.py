@@ -118,6 +118,9 @@ def test_rag_answer_formatting():
     
     # Assert that file:/// is not in the output
     assert "file:///" not in res
+    assert "f:/studyspace" not in res.lower()
+    assert "c:\\" not in res.lower()
+    assert "f:\\" not in res.lower()
     
     # Assert that relative markdown links are present for source files
     import re

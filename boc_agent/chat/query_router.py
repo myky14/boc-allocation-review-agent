@@ -1,6 +1,37 @@
 import re
 
 def route_query(question: str) -> str:
+    """Classifies a natural language question into an intent string using Skill configuration."""
+    q_lower = question.lower().strip()
+    
+    skill = None
+    try:
+        from boc_agent.skill.loader import get_active_skill
+        skill = get_active_skill()
+    except Exception:
+        pass
+
+    # 1. Skill-aware Refusal Policies check
+    if skill:
+        for rule in skill.refusal_rules:
+            if any(kw in q_lower for kw in rule.matches):
+                return "tax_ruling"
+
+    # Get raw route intent
+    intent = _route_query_raw(question)
+
+    # 2. Validate against skill capabilities
+    if skill:
+        if intent == "rag" and "documentation_rag" not in skill.capabilities:
+            return "unknown"
+        elif intent in ["row_explanation", "filter_location", "needs_documentation", "ineligible_summary"] and "dataframe_lookup" not in skill.capabilities:
+            return "unknown"
+        elif intent in ["summary", "review_queue_summary"] and "aggregate_stats" not in skill.capabilities:
+            return "unknown"
+
+    return intent
+
+def _route_query_raw(question: str) -> str:
     """Classifies a natural language question into an intent string.
     
     Supported intents:

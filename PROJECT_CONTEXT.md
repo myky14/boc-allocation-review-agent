@@ -54,7 +54,7 @@ The current repository layout:
   - `tools/`: deterministic rules engine (`allocation_tool.py`), classification wrappers (`classification_tool.py`), eligibility wrappers (`eligibility_tool.py`), allocation wrappers (`allocation_wrapper_tool.py`), review wrappers (`review_tool.py`), and security scanner (`security_guardrail_tool.py`).
   - `agents/`: ADK orchestrator (`orchestrator.py`).
   - cli.py: CLI utility executing the agent pipeline.
-* `tests/`: Verification scripts (78 tests total):
+* `tests/`: Verification scripts (87 tests total):
   - test_allocation_rules.py (23 rule validations).
   - test_orchestrator.py (8 orchestration scenario validations).
   - test_chat_assistant.py (12 conversational assistant validations).
@@ -63,6 +63,7 @@ The current repository layout:
   - test_workbook_loader.py (12 schema validation validations).
   - test_dashboard_helpers.py (2 metrics calculations validations).
   - test_scaffold.py (2 import validations).
+  - test_skill_runtime.py (9 skill runtime validations).
 
 ---
 

@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **78 passed tests**
+* **Expected Final Test Count**: **87 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -29,6 +29,7 @@ uv run pytest
   - `tests/test_workbook_loader.py` (12 loader schema validations)
   - `tests/test_dashboard_helpers.py` (2 dashboard stats validations)
   - `tests/test_scaffold.py` (2 scaffold import validations)
+  - `tests/test_skill_runtime.py` (9 skill runtime validations)
 
 ---
 

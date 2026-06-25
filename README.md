@@ -35,7 +35,7 @@ By automating the preliminary auditing and sorting of General Ledger entries, th
 ### ⚙️ Rule-Engine-First Design
 The project uses a local-first, **rules-first** architecture. A deterministic Canadian production accounting rules engine remains the final source of truth. The AI/ADK agent orchestration wraps around this engine to provide input security scanning, metadata extraction, structural tracing, and packaging without overriding or modifying the validated accounting rules.
 
-For a detailed review, see [docs/problem_statement.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/problem_statement.md).
+For a detailed review, see [docs/problem_statement.md](docs/problem_statement.md).
 
 ---
 
@@ -84,7 +84,7 @@ graph TD
     class EXP,OUT output;
 ```
 
-For full details of each tool and state manager variables, see [docs/architecture.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/architecture.md).
+For full details of each tool and state manager variables, see [docs/architecture.md](docs/architecture.md).
 
 ---
 
@@ -107,7 +107,7 @@ The scope of this project is tailored for a solo, two-week capstone MVP cycle, f
 - Generating final CAVCO Form 6 PDF files (Form 6 generation is out of scope).
 - Full multi-user web dashboards and live cloud deployments.
 
-See [docs/mvp_scope.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/mvp_scope.md) for detailed boundaries.
+See [docs/mvp_scope.md](docs/mvp_scope.md) for detailed boundaries.
 
 ---
 
@@ -122,7 +122,7 @@ The agent is evaluated locally using a manually labeled subset of the synthetic 
 * **Ineligible Leakage Rate**: The rate at which actual ineligible costs are accidentally approved without review.
 * **Special Case Accuracy**: Classification performance on VICE Canada, Partnership vendors, Meal/Catering, and Multi-share percentage allocations.
 
-Read the full evaluation metrics and validation workflow in [docs/evaluation_plan.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/evaluation_plan.md).
+Read the full evaluation metrics and validation workflow in [docs/evaluation_plan.md](docs/evaluation_plan.md).
 
 ---
 
@@ -153,7 +153,7 @@ uv run streamlit run app.py
 ```
 
 ### 5. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (78 tests total):
+Execute all unit, integration, and UI helper tests (87 tests total):
 ```bash
 uv run pytest
 ```
