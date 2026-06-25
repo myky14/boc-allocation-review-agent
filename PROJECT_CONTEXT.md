@@ -10,7 +10,7 @@
   - It is **NOT** a legal or tax authority and does not provide authoritative tax-credit determinations.
   - It does **NOT** compile or generate the official CAVCO Form 6.
   - It does **NOT** connect to live external databases (e.g. CRA, CAVCO, Ontario Creates, SODEC, ERP, payroll, residency, citizenship, or corporate registries).
-* **Architecture Style**: Local-first, rule-engine-first MVP. AI/ADK orchestration wraps around the core deterministic rule engine. The deterministic rules are the final source of truth.
+* **Architecture Style**: Local-first, rule-engine-first MVP. ADK-inspired orchestration, chat, RAG, HITL, and planned runtime layers wrap around the core deterministic rule engine. The deterministic rules are the final source of truth.
 
 ---
 
@@ -43,6 +43,9 @@ The current repository layout:
   - architecture.md
   - mvp_scope.md
   - evaluation_plan.md
+  - runtime_architecture.md (Phase 9.0)
+  - adk_mapping.md (Phase 9.0)
+  - decision_log.md (Phase 9.0)
 * `data/synthetic/`: Input datasets:
   - synthetic_boc_gl_dataset.xlsx (201 synthetic general ledger transactions).
 * `outputs/`: Processed outputs:
@@ -53,6 +56,9 @@ The current repository layout:
   - `rules/`: target allocation constants (`allocation_rules.py`).
   - `tools/`: deterministic rules engine (`allocation_tool.py`), classification wrappers (`classification_tool.py`), eligibility wrappers (`eligibility_tool.py`), allocation wrappers (`allocation_wrapper_tool.py`), review wrappers (`review_tool.py`), and security scanner (`security_guardrail_tool.py`).
   - `agents/`: ADK orchestrator (`orchestrator.py`).
+  - `chat/`: Deterministic conversational assistant and query router.
+  - `rag/`: Local TF-IDF documentation retrieval and template answerer.
+  - `skill/`: `SKILL.md` parser, validator, and loader.
   - cli.py: CLI utility executing the agent pipeline.
 * `tests/`: Verification scripts (87 tests total):
   - test_allocation_rules.py (23 rule validations).
@@ -156,7 +162,7 @@ The agent allocates costs into one of **20 distinct columns**:
 
 ## 7. Final Corrected Business Rules
 
-* **Rule Engine First**: Deterministic rules are the ultimate source of truth. LLM/ADK wrappers must wrap around the rules and must not override validated conservative accounting logic.
+* **Rule Engine First**: Deterministic rules are the ultimate source of truth. Assistant, RAG, SKILL, ADK-inspired, and future runtime wrappers must wrap around the rules and must not override validated conservative accounting logic.
 * **Out of Canada**:
   - If `Location = 920` (outside Canada), the suggested allocation is strictly:
     - `Out of Canada costs` (for Ontario creates/Federal contexts)
@@ -251,11 +257,25 @@ The agent allocates costs into one of **20 distinct columns**:
 * Added comprehensive query routing, row-explanation prioritizations, non-mutation assertions, and legal disclaimer refusal tests.
 
 ### Phase 8.2: Local Documentation RAG
-* Implemented a local-first, zero-dependency TF-IDF documentation RAG layer under `boc_agent/rag/`.
+* Implemented a local-first, lightweight TF-IDF documentation RAG layer under `boc_agent/rag/`.
 * Created a document loader and a heading-aware chunker that preserve markdown heading hierarchies.
-* Created a pure Python/NumPy TF-IDF vectorizer and in-memory Cosine Similarity index store (`RetrievalIndex`), ensuring no installation overhead or heavy model downloads.
+* Created a pure Python TF-IDF vectorizer and in-memory Cosine Similarity index store (`RetrievalIndex`), ensuring no heavy model downloads.
 * Implemented template-based grounded responses with cited excerpts, source file links, and legal/tax warnings, explicitly avoiding generative synthesis.
 * Extensively verified intent routing so that row-specific queries bypass RAG and documentation queries route to RAG correctly.
+
+### Phase 8.3: ADK-Inspired SKILL.md Runtime Contract
+* Added root `SKILL.md` as a machine-readable runtime contract for capabilities, non-capabilities, tool permissions, refusal policies, and grounding policies.
+* Implemented `boc_agent/skill/` with loader, parser, validator, and Pydantic models.
+* Added `BOC_SKILL_FILE_PATH` support for isolated temporary skill files in tests.
+* Verified invalid tools, mutating tools, malformed skill files, refusal behavior, and grounding policies.
+
+### Phase 9.0: ADK-Inspired Runtime Architecture Design
+* Added design-only runtime architecture documentation:
+  - `docs/runtime_architecture.md`
+  - `docs/adk_mapping.md`
+  - `docs/decision_log.md`
+* Clearly separates current implemented local components from planned Phase 9.1 runtime implementation and future Google ADK/cloud migration.
+* No runtime code, deterministic rules, dependencies, or tests are changed by Phase 9.0.
 
 ---
 
@@ -293,7 +313,7 @@ The General Ledger processing produces the following exact metrics over the 201 
 ## 12. Critical Guardrails
 
 * **Deterministic Rule Engine as Source of Truth**: The core accounting engine in `allocation_tool.py` is the final arbiter of allocations and eligibility.
-* **Non-interference of AI Layers**: Any future chat, RAG, or summary assistants can explain, filter, route, and summarize the data for the accountant, but they must NOT silently override the allocation column, amount percentage, or eligibility status computed by the rule engine.
+* **Non-interference of AI Layers**: Current chat/RAG helpers and any future runtime or summary assistants can explain, filter, route, and summarize the data for the accountant, but they must NOT silently override the allocation column, amount percentage, or eligibility status computed by the rule engine.
 * **Separate Human Audit Trail**: Human review decisions and override selections must be kept in separate columns (`human_review_decision`, `human_reviewer`, `human_override_allocation`, etc.) rather than overwriting the agent's deterministic outputs directly, maintaining a clean audit trail.
 
 ---
@@ -301,8 +321,8 @@ The General Ledger processing produces the following exact metrics over the 201 
 ## 13. Next Recommended Phases
 
 Future development phases after capstone presentation:
-* **Phase 8.3: ADK SKILL.md**: Formalize ADK capabilities and skills instructions.
-* **Phase 9: Cloud Deployment**: Deploy Streamlit dashboard and orchestrator agent to Google Cloud Platform (Google Cloud Run/App Engine) after RAG layers are fully stabilized.
+* **Phase 9.1: Local Runtime Implementation**: Implement the planned `boc_agent/runtime/` package (`agent.py`, `planner.py`, `executor.py`, `tool_registry.py`, `context.py`, `response.py`) while keeping the deterministic rule engine untouched.
+* **Future Google ADK / Cloud Migration**: Consider native Google ADK, Vertex AI, Agent Engine, or Cloud Run deployment after the local runtime is stable and fully tested.
 
 ---
 
@@ -312,4 +332,6 @@ Future development phases after capstone presentation:
 * **No Live Database Connections**: Does not connect to live registries (CRA, CAVCO, corporate registries) or payroll ERPs.
 * **Minimal Quebec Support**: Quebec Creates SODEC rules remain a minimal MVP skeleton containing 4 columns.
 * **Explanation-Only Assistant**: The chat layer should strictly explain and query existing reviewed data and must not attempt statutory tax rulings.
+* **No Native ADK or Cloud Deployment Yet**: Phase 9.0 is documentation-only. Native Google ADK runtime, Vertex AI, Agent Engine, and Cloud Run deployment are not implemented.
+* **Phase 9.1 Runtime Is Planned**: The `boc_agent/runtime/` package is a planned next step, not current runtime code.
 * **No Statutory Wording**: Avoid terms implying tax optimization or official rulings; use "review support", "suggested allocation", "deterministic allocation review", "synthetic workbook convention", and "human follow-up".

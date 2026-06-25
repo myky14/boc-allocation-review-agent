@@ -97,3 +97,16 @@ Once a ledger has been ingested and reviewed:
 * **Template Excerpt Grounding (No LLM Hallucinations)**: Answers are formulated strictly by extracting and formatting document snippets. No generative LLM is used, guaranteeing zero hallucinations.
 * **No Network Calls / No Cloud APIs**: Operates entirely offline without external Vertex AI / Gemini key configurations.
 * **No Official Determinations**: The assistant does not make official tax-credit, legal, CRA, CAVCO, Ontario Creates, or SODEC determinations. All official rulings must come from relevant authorities.
+
+---
+
+## 🏗️ 6. SKILL.md Contract & Runtime Architecture Design
+
+The repository includes a root `SKILL.md` runtime contract for capabilities, refusals, grounding policies, and non-mutating tool permissions. Phase 9.0 adds design-only documentation for the planned Phase 9.1 runtime implementation.
+
+For the system's future evolution design, see:
+- [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the planned modular runtime package (`boc_agent/runtime/`).
+- [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to future Google ADK and cloud deployment concepts.
+- [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-007) governing the project design.
+
+Phase 9.1 runtime implementation is planned next. Native Google ADK runtime, Vertex AI, Agent Engine, and Cloud Run deployment are not implemented yet.

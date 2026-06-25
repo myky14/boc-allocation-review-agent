@@ -6,7 +6,7 @@ This document details the local-first MVP architecture, data flow, state managem
 
 ## 1. System Architecture Diagram
 
-The MVP is designed as a local-first, ADK-compatible agent workflow that processes an input General Ledger (GL) workbook and exports a BOC allocation review workbook (not an official filing).
+The MVP is designed as a local-first, ADK-inspired agent workflow that processes an input General Ledger (GL) workbook and exports a BOC allocation review workbook (not an official filing).
 
 ```mermaid
 graph TD
@@ -145,3 +145,14 @@ To support accountants in querying both the processed workbook and system docume
 * **In-Memory Store**: Keeps indexed document chunks in-memory (`RetrievalIndex`) initialized lazily during application startup or test execution.
 * **Template-Grounded Excerpt Synthesizer**: Formats retrieved sources with relative file paths and parent headings into a clean markdown template. Uses no external API, no network calls, and no LLM synthesis to prevent hallucinations.
 * **Streamlit Integration**: Renders inside the existing chat tab and allows users to ask documentation/workflow questions even before loading a reviewed workbook.
+
+---
+
+## 8. Runtime Architecture & ADK Mapping (Phase 9.0 Design)
+
+Phase 9.0 is documentation-only. It describes a planned Phase 9.1 local runtime package and a future Google ADK/cloud migration path; no native ADK runtime or cloud deployment exists yet.
+
+For the next-generation agent runtime architecture and Google ADK conceptual mapping, refer to:
+- [docs/runtime_architecture.md](runtime_architecture.md): Blueprint for the planned modular runtime package (`boc_agent/runtime/`).
+- [docs/adk_mapping.md](adk_mapping.md): Mapping of local-first components to future Google ADK and cloud deployment concepts.
+- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-007) governing the project design.

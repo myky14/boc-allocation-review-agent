@@ -1,6 +1,6 @@
 # BOC Allocation Review Agent (Kaggle Capstone)
 
-A local-first, ADK-compatible AI Agent co-pilot designed to assist production accountants in the Canadian film and television industry. This agent processes a synthetic, pre-cleaned/enriched General Ledger (GL) workbook and suggests Breakdown of Costs (BOC) allocation treatments. The output is a BOC allocation review workbook, not an official filing.
+A local-first, ADK-inspired AI Agent co-pilot designed to assist production accountants in the Canadian film and television industry. This agent processes a synthetic, pre-cleaned/enriched General Ledger (GL) workbook and suggests Breakdown of Costs (BOC) allocation treatments. The output is a BOC allocation review workbook, not an official filing.
 
 > [!IMPORTANT]
 > **Project Scope Boundaries**:
@@ -18,6 +18,7 @@ A local-first, ADK-compatible AI Agent co-pilot designed to assist production ac
 - [Evaluation Plan & Performance Metrics](#-evaluation-plan--performance-metrics)
 - [Local Quickstart & Demo](#-local-quickstart--demo)
 - [Conversational Review Assistant (Phase 8.1)](#-conversational-review-assistant-phase-81)
+- [Runtime Architecture & ADK Mapping (Phase 9.0)](#-runtime-architecture--adk-mapping-phase-90)
 - [Future Improvements](#-future-improvements)
 
 ---
@@ -33,7 +34,7 @@ By automating the preliminary auditing and sorting of General Ledger entries, th
 - **Review Support**: Automatically flags fallback treatment opportunities (such as Federal fallback for inter-provincial payees) to help reviewers identify potentially eligible expenses and rows requiring follow-up.
 
 ### ⚙️ Rule-Engine-First Design
-The project uses a local-first, **rules-first** architecture. A deterministic Canadian production accounting rules engine remains the final source of truth. The AI/ADK agent orchestration wraps around this engine to provide input security scanning, metadata extraction, structural tracing, and packaging without overriding or modifying the validated accounting rules.
+The project uses a local-first, **rules-first** architecture. A deterministic Canadian production accounting rules engine remains the final source of truth. The ADK-inspired orchestration, chat, RAG, HITL, and future runtime layers wrap around this engine without overriding or modifying the validated accounting rules.
 
 For a detailed review, see [docs/problem_statement.md](docs/problem_statement.md).
 
@@ -49,7 +50,7 @@ The **BOC Allocation Review Agent** acts as an automated validation assistant. B
 
 ## 🏗️ Architecture & Data Flow
 
-The system is implemented as a local-first, ADK-compatible agent workflow that reads a synthetic GL ledger and exports a reviewed workbook containing suggested allocations.
+The system is implemented as a local-first, ADK-inspired agent workflow that reads a synthetic GL ledger and exports a reviewed workbook containing suggested allocations.
 
 ```mermaid
 graph TD
@@ -134,37 +135,31 @@ Ensure you have `uv` installed, then synchronize the environment:
 uv sync
 ```
 
-### 2. Configure Environment
-Create a `.env` file in the root directory:
-```env
-GEMINI_API_KEY=your_gemini_api_key
-```
-
-### 3. Run the Local Processing
+### 2. Run the Local Processing
 Run the agent over the synthetic ledger workbook:
 ```bash
 uv run python -m boc_agent.cli --input data/synthetic/synthetic_boc_gl_dataset.xlsx --output outputs/reviewed_boc_gl_dataset.xlsx
 ```
 
-### 4. Run the Streamlit Dashboard
+### 3. Run the Streamlit Dashboard
 Launch the interactive audit dashboard for capstone review:
 ```bash
 uv run streamlit run app.py
 ```
 
-### 5. Run the Evaluation Harness
+### 4. Run the Evaluation Harness
 Execute all unit, integration, and UI helper tests (87 tests total):
 ```bash
 uv run pytest
 ```
 
-### 6. Run the Evaluation Summary
+### 5. Run the Evaluation Summary
 Calculate workbook statistics (total rows, status distribution, and highlights):
 ```bash
 uv run python scripts/evaluate_outputs.py outputs/reviewed_boc_gl_dataset.xlsx
 ```
 
-### 7. Run the HITL Queue Builder
+### 6. Run the HITL Queue Builder
 Extract transactions requiring manual review into a separate queue spreadsheet:
 ```bash
 uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx outputs/human_review_queue.xlsx
@@ -186,16 +181,29 @@ An interactive, local-first conversational review co-pilot is integrated directl
 
 ---
 
+## 🏗️ Runtime Architecture & ADK Mapping (Phase 9.0)
+
+Phase 9.0 is a **design-only** documentation phase. It describes a planned runtime architecture for Phase 9.1 and a future Google ADK/cloud migration path; it does not implement a native ADK runtime or deploy to Google Cloud.
+
+For the long-term system design and Google ADK conceptual mapping, refer to:
+- [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the planned modular runtime package (`boc_agent/runtime/`).
+- [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to future Google ADK and cloud deployment concepts.
+- [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-007) for the project.
+
+---
+
 ## 🛑 Known MVP Limitations
 * **No Live Verification**: Does not query live databases (CRA, CAVCO, Ontario Creates, corporate/residency registries).
 * **Minimal Quebec Context**: Includes minimal MVP SODEC Quebec buckets only. Advanced regional or special SODEC credits are out of scope.
 * **Hardcoded Multi-share Rules**: Multi-share creative labor uses fixed 65%/35% split caps based on internal synthetic workbook conventions and MVP assumptions, not universal statutory treatment.
 * **No Form 6 Compile**: Suggests workbook allocation columns; does not compile official CAVCO Form 6 PDF applications.
+* **No Cloud Deployment Yet**: Runs locally through CLI, tests, and Streamlit. Native Google ADK, Vertex AI, Agent Engine, and Cloud Run deployment are future work.
+* **Phase 9.1 Runtime Pending**: Phase 9.0 documents the planned runtime design; the `boc_agent/runtime/` implementation is not complete yet.
 
 ---
 
 ## 🔮 Future Improvements
 
-1. **ADK Stateful Interrupts**: Integrate `RequestInput` and Vertex AI Session Service for real-time interactive human approval.
-2. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and Quebec (SODEC).
-3. **Form 6 Mapping**: Export reviewed ledger categories into templates matching CAVCO's Schedule of Production Costs layout.
+1. **Phase 9.1 Local Runtime Implementation**: Build the planned `boc_agent/runtime/` package while preserving the existing assistant interface.
+2. **Future ADK/Cloud Migration**: Explore native Google ADK, Vertex AI, Agent Engine, or Cloud Run only after the local runtime is stable.
+3. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.

@@ -19,6 +19,7 @@ The validation strategy is designed to ensure the agent remains **rule-engine-fi
 | UI Dashboard Metrics           | UI helper tests        | `test_dashboard_helpers.py`|
 | Conversational assistant       | Assistant Q&A tests    | `test_chat_assistant.py`   |
 | Local documentation RAG        | TF-IDF index tests     | `test_rag_pipeline.py`     |
+| SKILL runtime contract         | Skill loader tests     | `test_skill_runtime.py`    |
 
 ### Core Evaluation Aspects:
 * **Schema Validation**: Row-by-row validation of the 24 required GL columns (Account regex matching, Src PL/CB, Ep codes, and Locations).
@@ -101,3 +102,12 @@ To execute the HITL Queue Builder:
 uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx outputs/human_review_queue.xlsx
 ```
 * **Result**: Exports transactions requiring manual review into a separate queue spreadsheet.
+
+---
+
+## 5. Runtime Architecture Design (Phase 9.0)
+
+Phase 9.0 is a design-only documentation phase for an ADK-inspired local runtime. The planned Phase 9.1 runtime would be structured under `boc_agent/runtime/`. No native Google ADK runtime, Vertex AI deployment, Agent Engine deployment, or Cloud Run service exists yet. For detailed design specifications, see:
+- [docs/runtime_architecture.md](runtime_architecture.md): Blueprint for target runtime modules.
+- [docs/adk_mapping.md](adk_mapping.md): Mapping to Google ADK framework.
+- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-007).
