@@ -153,7 +153,7 @@ uv run streamlit run app.py
 ```
 
 ### 5. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (65 tests total):
+Execute all unit, integration, and UI helper tests (78 tests total):
 ```bash
 uv run pytest
 ```
@@ -172,13 +172,15 @@ uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx
 
 ---
 
-## 💬 Conversational Review Assistant (Phase 8.1)
+## 💬 Conversational Review Assistant & Local RAG (Phase 8.1 & 8.2)
 
 An interactive, local-first conversational review co-pilot is integrated directly into the Streamlit dashboard as a dedicated tab.
 
-* **Deterministic Q&A**: Employs keyword-based query routing grounded strictly within the reviewed workbook data.
-* **No RAG / No LLMs**: Does not use Retrieval-Augmented Generation or any external LLM/API/network calls. It is completely local, lightweight, and fast.
-* **Read-Only / No Mutation**: Ensures that querying the transactions never mutates the underlying general ledger records or suggestions.
+* **Deterministic Q&A**: Employs keyword-based query routing grounded strictly within the reviewed workbook data for transaction queries (Phase 8.1).
+* **Local Documentation RAG**: Answers general policy, setup, and workflow questions (e.g. *“What is Location 920?”*, *“Explain the HITL process”*) using a local TF-IDF retrieval index built on repository documents (Phase 8.2).
+* **No LLMs / No API Calls**: Synthesizes responses by formatting matching document chunks directly into templates. It makes no external LLM API calls, no network requests, and has no cloud dependencies.
+* **In-Memory Store**: Uses an in-memory index loaded lazily during application startup or tests.
+* **Read-Only / No Mutation**: Ensures that querying never mutates the underlying general ledger records, suggestions, or human decisions.
 * **Header Compatibility**: Supports queries using original Excel workbook headers (`Trans Ref`, `Vendor Name`) as well as internal `snake_case` attributes.
 * **No Official Rulings**: Built with disclaimer safety guardrails to refuse requests requesting official tax, CRA, CAVCO, SODEC, or legal determinations, redirecting accountants to qualified specialists.
 

@@ -320,7 +320,7 @@ if st.session_state.reviewed_df is not None:
         )
         
         # Reset chat history button
-        if st.button("🗑️ Clear Chat History"):
+        if st.button("🗑️ Clear Chat History", key="clear_chat_with_df"):
             st.session_state.chat_history = []
             st.rerun()
             
@@ -332,7 +332,7 @@ if st.session_state.reviewed_df is not None:
                 st.markdown(msg["content"])
                 
         # Chat input
-        prompt = st.chat_input("Ask a question about the reviewed ledger...")
+        prompt = st.chat_input("Ask a question about the reviewed ledger...", key="chat_input_with_df")
         if prompt:
             # Display user message
             with st.chat_message("user"):
@@ -348,3 +348,38 @@ if st.session_state.reviewed_df is not None:
                 st.markdown(response)
             st.session_state.chat_history.append({"role": "assistant", "content": response})
             st.rerun()
+else:
+    # 8. Standalone Chat Assistant when no workbook is loaded
+    st.markdown("---")
+    st.subheader("💬 Conversational Review Assistant")
+    st.info("No reviewed workbook data is currently loaded. You can still ask workflow, documentation, and policy questions below.")
+    
+    # Reset chat history button
+    if st.button("🗑️ Clear Chat History", key="clear_chat_no_df"):
+        st.session_state.chat_history = []
+        st.rerun()
+        
+    st.markdown("---")
+    
+    # Display existing messages
+    for msg in st.session_state.chat_history:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+            
+    # Chat input
+    prompt = st.chat_input("Ask a question about workflow, documentation, or policy...", key="chat_input_no_df")
+    if prompt:
+        # Display user message
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        st.session_state.chat_history.append({"role": "user", "content": prompt})
+        
+        # Answer query
+        assistant = ReviewConversationAssistant()
+        response = assistant.answer(prompt, None)
+        
+        # Display assistant message
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        st.session_state.chat_history.append({"role": "assistant", "content": response})
+        st.rerun()

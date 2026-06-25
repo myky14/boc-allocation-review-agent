@@ -54,10 +54,11 @@ The current repository layout:
   - `tools/`: deterministic rules engine (`allocation_tool.py`), classification wrappers (`classification_tool.py`), eligibility wrappers (`eligibility_tool.py`), allocation wrappers (`allocation_wrapper_tool.py`), review wrappers (`review_tool.py`), and security scanner (`security_guardrail_tool.py`).
   - `agents/`: ADK orchestrator (`orchestrator.py`).
   - cli.py: CLI utility executing the agent pipeline.
-* `tests/`: Verification scripts (65 tests total):
+* `tests/`: Verification scripts (78 tests total):
   - test_allocation_rules.py (23 rule validations).
   - test_orchestrator.py (8 orchestration scenario validations).
   - test_chat_assistant.py (12 conversational assistant validations).
+  - test_rag_pipeline.py (13 documentation retrieval/RAG validations).
   - test_human_review.py (6 human review and decision validations).
   - test_workbook_loader.py (12 schema validation validations).
   - test_dashboard_helpers.py (2 metrics calculations validations).
@@ -248,6 +249,13 @@ The agent allocates costs into one of **20 distinct columns**:
 * Integrated a clean interactive chat tab directly in the Streamlit Dashboard (`app.py`).
 * Added comprehensive query routing, row-explanation prioritizations, non-mutation assertions, and legal disclaimer refusal tests.
 
+### Phase 8.2: Local Documentation RAG
+* Implemented a local-first, zero-dependency TF-IDF documentation RAG layer under `boc_agent/rag/`.
+* Created a document loader and a heading-aware chunker that preserve markdown heading hierarchies.
+* Created a pure Python/NumPy TF-IDF vectorizer and in-memory Cosine Similarity index store (`RetrievalIndex`), ensuring no installation overhead or heavy model downloads.
+* Implemented template-based grounded responses with cited excerpts, source file links, and legal/tax warnings, explicitly avoiding generative synthesis.
+* Extensively verified intent routing so that row-specific queries bypass RAG and documentation queries route to RAG correctly.
+
 ---
 
 ## 10. Key Commands
@@ -292,8 +300,7 @@ The General Ledger processing produces the following exact metrics over the 201 
 ## 13. Next Recommended Phases
 
 Future development phases after capstone presentation:
-* **Phase 8.2: RAG Integration**: Full Retrieval-Augmented Generation for querying regulatory guides (e.g. CAVCO/Creates guidelines).
-* **Phase 8.3: ADK SKILL.md**: Formalize ADK capabilities.
+* **Phase 8.3: ADK SKILL.md**: Formalize ADK capabilities and skills instructions.
 * **Phase 9: Cloud Deployment**: Deploy Streamlit dashboard and orchestrator agent to Google Cloud Platform (Google Cloud Run/App Engine) after RAG layers are fully stabilized.
 
 ---

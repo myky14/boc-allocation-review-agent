@@ -19,11 +19,12 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **65 passed tests**
+* **Expected Final Test Count**: **78 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
   - `tests/test_chat_assistant.py` (12 conversational assistant validations)
+  - `tests/test_rag_pipeline.py` (13 documentation retrieval/RAG validations)
   - `tests/test_human_review.py` (6 human override/HITL validations)
   - `tests/test_workbook_loader.py` (12 loader schema validations)
   - `tests/test_dashboard_helpers.py` (2 dashboard stats validations)
@@ -65,22 +66,33 @@ uv run streamlit run app.py
 
 ## 💬 4. Conversational Assistant Demo Prompts
 
-Once the Streamlit Dashboard is running and a ledger has been ingested and reviewed:
-1. Navigate to the **"💬 Conversational Assistant"** tab.
-2. Enter these sample prompts to verify the assistant's behavior:
-   - **Metrics Summary**: `"summary"` or `"overview of stats"` (returns total, approved, and ineligible counts).
-   - **Row Detail Lookup (Trans Ref)**: `"explain transaction 508841"` (displays formatting of contractor individual payee details).
-   - **Row Detail Lookup (Vendor Name)**: `"tell me about Greenslate Pay"` (resolves and formats payroll vendor).
-   - **Row Detail Lookup (Our Reference)**: `"explain transaction 88888"` (works with schema aliases).
-   - **Location Filter Breakdown**: `"Show me all Location 920 rows"` (filters and presents ineligible out of Canada spend).
-   - **Needs Documentation Summary**: `"Which rows need more documents?"` (shows rows flagged for missing evidence).
-   - **Official Refusal Guardrail**: `"is this officially eligible?"` or `"optimize my tax credit"` (displays official determination disclaimer warning).
-   - **Missing Row Fallback**: `"explain row 999"` (returns safe `"Transaction not found / run review first"` message).
+The Conversational Assistant tab is available both before and after ingesting a workbook.
+
+### A. RAG Documentation Queries (Works even BEFORE uploading a workbook)
+Enter these prompts in the chat box to fetch grounded markdown excerpts from the repository documentation:
+* **Workflow Inquiry**: `"Explain the Human-in-the-Loop workflow."` (retrieves HITL procedures)
+* **Architecture Detail**: `"Where is prompt injection handled?"` or `"Explain the architecture."` (retrieves security and block diagrams)
+* **Definitions**: `"What is Location 920?"` (retrieves location code context)
+* **Limitations**: `"What are the project limitations?"` (retrieves out-of-scope/limitations lists)
+* **Difference Check**: `"What is the difference between the chat assistant and RAG?"` (compares dataframe lookup vs document search)
+
+### B. DataFrame Queries (Requires reviewed workbook loaded first)
+Once a ledger has been ingested and reviewed:
+* **Metrics Summary**: `"summary"` or `"overview of stats"` (returns total, approved, and ineligible counts).
+* **Row Detail Lookup (Trans Ref)**: `"explain transaction 508841"` (displays formatting of contractor individual payee details).
+* **Row Detail Lookup (Vendor Name)**: `"tell me about Greenslate Pay"` (resolves and formats payroll vendor).
+* **Row Detail Lookup (Our Reference)**: `"explain transaction 88888"` (works with schema aliases).
+* **Location Filter Breakdown**: `"Show me all Location 920 rows"` (filters and presents ineligible out of Canada spend).
+* **Needs Documentation Summary**: `"Which rows need more documents?"` (shows rows flagged for missing evidence).
+* **Official Refusal Guardrail**: `"is this officially eligible?"` or `"optimize my tax credit"` (displays official determination disclaimer warning).
+* **Missing Row Fallback**: `"explain row 999"` (returns safe `"Transaction not found / run review first"` message).
 
 ---
 
 ## 🛑 5. Core Guardrails & Limitations
 
-* **Deterministic & Grounded**: The assistant operates completely locally and read-only. It does NOT mutate reviewed dataframe rows.
-* **No RAG / No LLMs**: This is Phase 8.1 (deterministic local-first Q&A). There are no external Vertex AI/Gemini API calls, network calls, or regulatory database connections.
+* **Deterministic & Grounded**: The assistant operates completely locally and read-only. It does NOT mutate reviewed dataframe rows or override human reviewer decisions.
+* **Pure Local TF-IDF (No Heavy Vector DBs / No PyTorch)**: Built on a lightweight Python TF-IDF embedding vectorizer and Cosine Similarity retriever. There are no dependencies on sentence-transformers, PyTorch, FAISS, ChromaDB, LangChain, or LlamaIndex.
+* **Template Excerpt Grounding (No LLM Hallucinations)**: Answers are formulated strictly by extracting and formatting document snippets. No generative LLM is used, guaranteeing zero hallucinations.
+* **No Network Calls / No Cloud APIs**: Operates entirely offline without external Vertex AI / Gemini key configurations.
 * **No Official Determinations**: The assistant does not make official tax-credit, legal, CRA, CAVCO, Ontario Creates, or SODEC determinations. All official rulings must come from relevant authorities.

@@ -134,12 +134,14 @@ To prepare for capstone presentation and ensure quality control, Phase 5 introdu
 
 ---
 
-## 7. Conversational Review Assistant (Phase 8.1)
+## 7. Conversational Review Assistant & Local RAG (Phase 8.1 & 8.2)
 
-To support accountants in querying the processed workbook, Phase 8.1 introduces a lightweight conversational assistant:
-* **Local-first Deterministic Q&A**: Built entirely without LLM or RAG dependencies. Queries are routed to specific intents using a keyword/regex-based Query Router (`boc_agent/chat/query_router.py`) and matched against the loaded DataFrame.
-* **Schema Alias Compatibility**: Supports queries referencing both original Excel workbook headers (e.g. `Trans Ref`, `Vendor Name`) and internal Pydantic snake_case fields (e.g. `trans_ref`, `vendor_name`).
-* **Multi-Criteria Row Matching**: Resolves row detail lookups by searching for Trans Ref matches first, falling back to Our Reference matches, vendor name substrings, and finally row/index values.
-* **Groundedness & Error Safety**: Returns a safe, explicit `"Transaction not found / run review first"` message if the requested transaction ID or data is missing, preventing hallucinated or invented details.
-* **Official Determination Disclaimer**: Implements a legal guardrail that refuses requests for official tax rulings or compliance guarantees (e.g. SODEC/CAVCO determinations), reminding the user that it is a review support tool only.
-* **Streamlit Integration**: Integrates directly as a new tab ("💬 Conversational Assistant") within the main Streamlit dashboard (`app.py`).
+To support accountants in querying both the processed workbook and system documentation, the conversational assistant includes:
+* **Local-first Deterministic Q&A (Phase 8.1)**: Routes transaction-specific queries to DataFrame lookup, search, and aggregation methods.
+* **Schema Alias Compatibility**: Supports queries referencing both original workbook headers (e.g. `Trans Ref`) and internal `snake_case` attributes.
+* **Local Documentation RAG (Phase 8.2)**: Routes generic workflow, architecture, and policy questions to a local vector space retrieval index.
+* **Lightweight TF-IDF Vectorizer**: Tokenizes alphanumeric terms, filters English stopwords, computes TF-IDF weight vectors, and calculates similarity via Cosine Similarity in pure Python.
+* **Header-Aware Document Chunker**: Segments repository markdown documents (`README.md`, `PROJECT_CONTEXT.md`, `docs/*.md`, `walkthrough.md`) into overlapping chunks (size ~500 chars, overlap ~100 chars) while prepending parent markdown headers.
+* **In-Memory Store**: Keeps indexed document chunks in-memory (`RetrievalIndex`) initialized lazily during application startup or test execution.
+* **Template-Grounded Excerpt Synthesizer**: Formats retrieved sources with relative file paths and parent headings into a clean markdown template. Uses no external API, no network calls, and no LLM synthesis to prevent hallucinations.
+* **Streamlit Integration**: Renders inside the existing chat tab and allows users to ask documentation/workflow questions even before loading a reviewed workbook.

@@ -113,5 +113,17 @@ This document outlines 10 representative scenarios from the Canadian production 
   - *Output*: Locates the corresponding row by prioritizing Trans Ref, Our Reference, and Vendor Name, and presents a formatted breakdown of its details. If not found, returns a safe "not found / run review first" message.
   - *Query*: "Summarize the review queue"
   - *Output*: Provides a summary of the pending human review queue count, sample rows, and common themes.
-* **Key Rationale Point**: The assistant operates completely read-only, never mutates the underlying DataFrame, and never makes official statutory claims. RAG/external regulations lookup remains a separate future enhancement (Phase 8.2).
+* **Key Rationale Point**: The assistant operates completely read-only, never mutates the underlying DataFrame, and never makes official statutory claims. Local documentation RAG is implemented in Phase 8.2, while external live regulation querying remains a separate future enhancement.
+
+---
+
+### Case 13: Local Documentation RAG (Phase 8.2)
+* **Description**: User queries documentation (workflow, architecture, limitations, definitions) without loading a dataframe.
+* **Why It Matters**: Demonstrates that RAG/documentation lookup operates successfully even in the absence of a reviewed General Ledger workbook, and that intent classification keeps row queries isolated from RAG documentation hits.
+* **Expected Inputs / Outputs**:
+  - *Query*: "What is Location 920?" or "Explain the Human-in-the-Loop workflow."
+  - *Output*: Displays matching cited excerpts from local files (`docs/architecture.md`, `README.md`, etc.) with clickable relative path links, headers, and the official tax disclaimer.
+  - *Query*: "explain transaction 123" (with no reviewed dataframe loaded)
+  - *Output*: Bypasses RAG because it is classified as a row query, and returns the fallback `"No reviewed workbook data is currently loaded. Transaction not found / run review first."`
+* **Key Rationale Point**: RAG answers are purely templated excerpts grounded in repository files, ensuring zero hallucinations and zero dependency footprint.
 

@@ -18,6 +18,7 @@ The validation strategy is designed to ensure the agent remains **rule-engine-fi
 | Human review queue & overrides | HITL workflow tests    | `test_human_review.py`     |
 | UI Dashboard Metrics           | UI helper tests        | `test_dashboard_helpers.py`|
 | Conversational assistant       | Assistant Q&A tests    | `test_chat_assistant.py`   |
+| Local documentation RAG        | TF-IDF index tests     | `test_rag_pipeline.py`     |
 
 ### Core Evaluation Aspects:
 * **Schema Validation**: Row-by-row validation of the 24 required GL columns (Account regex matching, Src PL/CB, Ep codes, and Locations).
@@ -75,7 +76,7 @@ To execute the test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Pass Count**: **65 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests).
+* **Expected Pass Count**: **78 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests).
 
 To execute the GL review CLI:
 ```bash

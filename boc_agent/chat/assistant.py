@@ -11,8 +11,10 @@ from boc_agent.chat.response_templates import (
 class ReviewConversationAssistant:
     """Conversational assistant for explaining and querying the reviewed GL workbook.
     
-    This is a local-first, deterministic Q&A helper and contains no LLMs,
-    no RAG, and no mutating database operations.
+    This is a local-first, deterministic Q&A helper. Phase 8.1 implements
+    dataframe Q&A for workbook transaction inquiries, and Phase 8.2 adds
+    local deterministic documentation RAG for general policy and setup queries.
+    It contains no LLMs and no mutating database operations.
     """
 
     def _get_column_name(self, df: pd.DataFrame, possible_names: List[str]) -> Optional[str]:
@@ -73,17 +75,23 @@ class ReviewConversationAssistant:
 
         return None
 
-    def answer(self, question: str, reviewed_df: pd.DataFrame) -> str:
-        """Processes the question and returns a grounded answer from the reviewed DataFrame."""
+    def answer(self, question: str, reviewed_df: Optional[pd.DataFrame]) -> str:
+        """Processes the question and returns a grounded answer from the reviewed DataFrame or RAG."""
+        intent = route_query(question)
+
+        if intent == "tax_ruling":
+            return format_tax_ruling_refusal()
+
+        if intent == "rag":
+            from boc_agent.rag.rag_answerer import RAGAnswerer
+            answerer = RAGAnswerer()
+            return answerer.answer(question)
+
         if reviewed_df is None or reviewed_df.empty:
             return "No reviewed workbook data is currently loaded. Transaction not found / run review first."
 
         # Copy is not required since we perform only read-only operations, 
         # but let's keep the operations strictly query-based to prevent any mutations.
-        intent = route_query(question)
-
-        if intent == "tax_ruling":
-            return format_tax_ruling_refusal()
 
         # Get relevant column names (handling original workbook and snake_case headers)
         status_col = self._get_column_name(reviewed_df, ["review_status", "Review Status"])
