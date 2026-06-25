@@ -60,7 +60,7 @@ The current repository layout:
   - `rag/`: Local TF-IDF documentation retrieval and template answerer.
   - `skill/`: `SKILL.md` parser, validator, and loader.
   - cli.py: CLI utility executing the agent pipeline.
-* `tests/`: Verification scripts (87 tests total):
+* `tests/`: Verification scripts (106 tests total):
   - test_allocation_rules.py (23 rule validations).
   - test_orchestrator.py (8 orchestration scenario validations).
   - test_chat_assistant.py (12 conversational assistant validations).
@@ -70,6 +70,7 @@ The current repository layout:
   - test_dashboard_helpers.py (2 metrics calculations validations).
   - test_scaffold.py (2 import validations).
   - test_skill_runtime.py (9 skill runtime validations).
+  - test_runtime_agent.py (19 runtime validations).
 
 ---
 
@@ -274,7 +275,7 @@ The agent allocates costs into one of **20 distinct columns**:
   - `docs/runtime_architecture.md`
   - `docs/adk_mapping.md`
   - `docs/decision_log.md`
-* Clearly separates current implemented local components from planned Phase 9.1 runtime implementation and future Google ADK/cloud migration.
+* Clearly separates current implemented local components, the completed Phase 9.1 runtime implementation, and future Google ADK/cloud migration.
 * No runtime code, deterministic rules, dependencies, or tests are changed by Phase 9.0.
 
 ---
@@ -321,8 +322,8 @@ The General Ledger processing produces the following exact metrics over the 201 
 ## 13. Next Recommended Phases
 
 Future development phases after capstone presentation:
-* **Phase 9.1: Local Runtime Implementation**: Implement the planned `boc_agent/runtime/` package (`agent.py`, `planner.py`, `executor.py`, `tool_registry.py`, `context.py`, `response.py`) while keeping the deterministic rule engine untouched.
-* **Future Google ADK / Cloud Migration**: Consider native Google ADK, Vertex AI, Agent Engine, or Cloud Run deployment after the local runtime is stable and fully tested.
+* **Phase 9.2: Runtime Trace & Observability**: Incorporate runtime trace logging and debugging diagnostics for the dashboard interface.
+* **Phase 10: Google Cloud / ADK Deployment**: Transition the local agent context to native Google Cloud Run services and Vertex AI Agent Engine.
 
 ---
 
@@ -332,6 +333,6 @@ Future development phases after capstone presentation:
 * **No Live Database Connections**: Does not connect to live registries (CRA, CAVCO, corporate registries) or payroll ERPs.
 * **Minimal Quebec Support**: Quebec Creates SODEC rules remain a minimal MVP skeleton containing 4 columns.
 * **Explanation-Only Assistant**: The chat layer should strictly explain and query existing reviewed data and must not attempt statutory tax rulings.
-* **No Native ADK or Cloud Deployment Yet**: Phase 9.0 is documentation-only. Native Google ADK runtime, Vertex AI, Agent Engine, and Cloud Run deployment are not implemented.
-* **Phase 9.1 Runtime Is Planned**: The `boc_agent/runtime/` package is a planned next step, not current runtime code.
+* **No Native ADK or Cloud Deployment Yet**: Native Google ADK runtime, Vertex AI, Agent Engine, and Cloud Run deployment are not implemented.
+* **Phase 9.1 Runtime Is Implemented**: The ADK-inspired local runtime (`boc_agent/runtime/` containing `agent.py`, `planner.py`, `executor.py`, `tool_registry.py`, `context.py`, `response.py`) has been fully implemented and tested.
 * **No Statutory Wording**: Avoid terms implying tax optimization or official rulings; use "review support", "suggested allocation", "deterministic allocation review", "synthetic workbook convention", and "human follow-up".

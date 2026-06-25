@@ -148,7 +148,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (87 tests total):
+Execute all unit, integration, and UI helper tests (106 tests total):
 ```bash
 uv run pytest
 ```
@@ -181,13 +181,16 @@ An interactive, local-first conversational review co-pilot is integrated directl
 
 ---
 
-## 🏗️ Runtime Architecture & ADK Mapping (Phase 9.0)
+## 🏗️ Runtime Architecture & ADK Mapping (Phase 9.0 & 9.1)
 
-Phase 9.0 is a **design-only** documentation phase. It describes a planned runtime architecture for Phase 9.1 and a future Google ADK/cloud migration path; it does not implement a native ADK runtime or deploy to Google Cloud.
+Phase 9.0 designed the architecture, and Phase 9.1 implemented the **ADK-inspired local runtime** under `boc_agent/runtime/`. 
 
-For the long-term system design and Google ADK conceptual mapping, refer to:
-- [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the planned modular runtime package (`boc_agent/runtime/`).
-- [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to future Google ADK and cloud deployment concepts.
+* **Local ADK-Inspired Runtime**: Modularized execution utilizing `BOCReviewAgent`, `RuntimeContext`, `Planner`, `ToolRegistry`, `Executor`, and `ResponseBuilder` (Phase 9.1).
+* **Not Native Google ADK/Cloud Deployment Yet**: The system remains entirely local-first. Native Google ADK, Google Cloud Run, Vertex AI, Agent Engine, and Gemini API integrations are **not** implemented in this phase.
+
+For details, see:
+- [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime package.
+- [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to Google ADK and cloud concepts.
 - [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-007) for the project.
 
 ---
@@ -198,12 +201,11 @@ For the long-term system design and Google ADK conceptual mapping, refer to:
 * **Hardcoded Multi-share Rules**: Multi-share creative labor uses fixed 65%/35% split caps based on internal synthetic workbook conventions and MVP assumptions, not universal statutory treatment.
 * **No Form 6 Compile**: Suggests workbook allocation columns; does not compile official CAVCO Form 6 PDF applications.
 * **No Cloud Deployment Yet**: Runs locally through CLI, tests, and Streamlit. Native Google ADK, Vertex AI, Agent Engine, and Cloud Run deployment are future work.
-* **Phase 9.1 Runtime Pending**: Phase 9.0 documents the planned runtime design; the `boc_agent/runtime/` implementation is not complete yet.
 
 ---
 
 ## 🔮 Future Improvements
 
-1. **Phase 9.1 Local Runtime Implementation**: Build the planned `boc_agent/runtime/` package while preserving the existing assistant interface.
-2. **Future ADK/Cloud Migration**: Explore native Google ADK, Vertex AI, Agent Engine, or Cloud Run only after the local runtime is stable.
+1. **Phase 9.2 Runtime Trace & Observability**: Incorporating runtime trace logging and debugging diagnostics for the dashboard interface.
+2. **Phase 10 Google Cloud / ADK Deployment**: Transitioning the local agent context to native Google Cloud Run services and Vertex AI Agent Engine.
 3. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.

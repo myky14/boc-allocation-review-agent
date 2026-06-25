@@ -148,11 +148,15 @@ To support accountants in querying both the processed workbook and system docume
 
 ---
 
-## 8. Runtime Architecture & ADK Mapping (Phase 9.0 Design)
+## 8. Runtime Architecture & ADK Mapping (Phase 9.0 & 9.1)
 
-Phase 9.0 is documentation-only. It describes a planned Phase 9.1 local runtime package and a future Google ADK/cloud migration path; no native ADK runtime or cloud deployment exists yet.
+Phase 9.0 designed the architecture, and Phase 9.1 implemented the **ADK-inspired local runtime** under `boc_agent/runtime/` (`agent.py`, `planner.py`, `executor.py`, `tool_registry.py`, `context.py`, `response.py`). 
 
-For the next-generation agent runtime architecture and Google ADK conceptual mapping, refer to:
-- [docs/runtime_architecture.md](runtime_architecture.md): Blueprint for the planned modular runtime package (`boc_agent/runtime/`).
-- [docs/adk_mapping.md](adk_mapping.md): Mapping of local-first components to future Google ADK and cloud deployment concepts.
-- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-007) governing the project design.
+* **Local Runtime**: Implements decoupling of planning, registration, and tool execution.
+* **No Cloud / Native ADK Yet**: This implementation is completely local-first and does not deploy to Google Cloud Run or use native ADK SDK dependencies.
+* **Roadmap**: Next recommended steps are Phase 9.2 (Runtime Trace & Observability) followed by Phase 10 (Google Cloud / ADK deployment).
+
+For detailed specifications, see:
+- [docs/runtime_architecture.md](runtime_architecture.md): Blueprint for target runtime modules.
+- [docs/adk_mapping.md](adk_mapping.md): Mapping to Google ADK framework.
+- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-007).

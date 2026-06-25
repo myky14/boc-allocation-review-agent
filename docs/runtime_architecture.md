@@ -1,16 +1,14 @@
 # ADK-Inspired Runtime Architecture
 
-This document describes the design for the next major evolution of the **BOC Allocation Review Agent**, moving from the current assistant-centered design to a modular, Google Agent Development Kit (ADK) inspired runtime architecture.
-
-> **Phase 9.0 status**: This is a design-only document. The `boc_agent/runtime/` package described here is planned for Phase 9.1 and is not implemented in the current repository.
+This document describes the implemented **ADK-inspired local runtime architecture** for the **BOC Allocation Review Agent**, showing how the system has evolved from a single assistant-centered class to a modular, Google Agent Development Kit (ADK) inspired runtime.
 
 ---
 
 ## 1. Purpose
 
-The current architecture routes natural language queries directly through a conversational assistant class which acts as router, database filter, RAG retriever, and formatter in a single block.
+Previously, natural language queries were routed directly through a single assistant class which served as the router, database filter, RAG retriever, and output formatter.
 
-### Current Flow
+### Previous Flow (Phase 8.1 / 8.2)
 ```
 User
   ↓
@@ -21,13 +19,12 @@ query_router
 DataFrame logic / RAG / refusal / response formatting
 ```
 
-To align with modern AI Agent practices and prepare the application for future migration to Google ADK concepts, this document designs a dedicated local runtime layer.
+To align with modern AI Agent practices and prepare the application for seamless future migration to the Google Agent Development Kit (ADK), we have implemented a dedicated local runtime layer.
 
 ### Target Flow
 ```
 User
   ↓
-BOCReviewAgent
   ↓
 Planner
   ↓
@@ -49,7 +46,7 @@ This evolution:
 
 ## 2. Target Runtime Components
 
-The planned Phase 9.1 runtime package would be structured under `boc_agent/runtime/`:
+The local runtime package is structured under `boc_agent/runtime/`:
 
 ```text
 boc_agent/runtime/
@@ -149,10 +146,10 @@ Every tool registered in `ToolRegistry` implements a standard metadata structure
 - `mutating`: Boolean flag indicating if the tool modifies workbook states (strictly `False` for review MVP).
 - `requires_dataframe`: Boolean indicating if a loaded ledger DataFrame must be present.
 - `requires_grounding`: Boolean indicating if document grounding policies apply to outputs.
-- `source_of_truth`: Mapped reference to the underlying deterministic specialist logic (e.g. `allocation_tool.py`).
+- `handler`: Mapped reference to the underlying specialist logic.
 - `failure_behavior`: Error response pattern if execution fails (e.g. raise vs fallback string).
 
-### Planned Tools To Register:
+### Active Tools Registered:
 1. **Row Lookup Specialist**: Wraps vendor/Trans Ref search filters.
 2. **Workbook Statistics Specialist**: Wraps overall counts and status distributions.
 3. **Queue Summary Specialist**: Filters rows matching needs-review states.
@@ -162,10 +159,10 @@ Every tool registered in `ToolRegistry` implements a standard metadata structure
 
 ## 6. Safety and Permission Flow
 
-- **Contract Governance**: The `SKILL.md` file remains the configuration authority for what the planned runtime is permitted to execute. If a capability or tool intent is omitted in `SKILL.md`, it should be blocked at runtime.
+- **Contract Governance**: The `SKILL.md` file remains the configuration authority for what the agent is permitted to execute. If a capability or tool intent is omitted in `SKILL.md`, it is immediately blocked at runtime.
 - **Rule Core Isolation**: The deterministic accounting rules (`allocation_tool.py`) are strictly read-only and isolated. The agent cannot modify rules or alter the logic engine's allocation suggestions.
 - **Mutation Prevention**: Any tool declaring `mutating: true` fails validation at loader startup. The agent cannot alter data records; all human reviews and adjustments are captured in separate, designated columns (`human_` columns) outside the agent's control.
-- **Grounding Restraints**: RAG retrieval is read-only. Responses are grounded strictly inside indexed repo files with relative links. Absolute paths and file protocols are programmatically scrubbed before output.
+- **Grounding Restraints**: RAG retrieval is read-only. Responses are grounded strictly inside indexed repo files with relative links. Absolute paths (`file:///`) are programmatically scrubbed before output.
 
 ---
 
@@ -194,14 +191,15 @@ To ensure seamless integration in Phase 9.1:
 
 ---
 
-## 9. Future Phase 9.1 Implementation Roadmap
+## 9. Phase 9.1 Implementation Status
 
-1. **Package Scaffolding**: Create `boc_agent/runtime/` with `__init__.py`.
-2. **Context & Models Definition**: Implement `context.py` and dataclass models.
-3. **Planner Hook-up**: Implement `planner.py` wrapping the query router.
-4. **Registry Setup**: Build `tool_registry.py` and register the dataframe/RAG specialists.
-5. **Executor Enforcement**: Implement `executor.py` to enforce `SKILL.md` tool parameters.
-6. **Output Builder**: Implement `response.py` with relative path sanitization.
-7. **Assistant Refactoring**: Refactor `assistant.py` to wrap `BOCReviewAgent`.
-8. **Runtime Test Suite**: Add unit tests for registry, context, and executor permissions.
-9. **Final Verification**: Run full regression testing against processed GL rows.
+The ADK-inspired local runtime architecture has been fully implemented in Phase 9.1:
+1. **Package Scaffolding**: Created `boc_agent/runtime/` with `__init__.py`.
+2. **Context & Models Definition**: Implemented `context.py` containing the `RuntimeContext` class.
+3. **Planner Hook-up**: Implemented `planner.py` wrapping the keyword router.
+4. **Registry Setup**: Built `tool_registry.py` and registered the dataframe/RAG specialists.
+5. **Executor Enforcement**: Implemented `executor.py` to enforce `SKILL.md` tool permissions and block mutating operations.
+6. **Output Builder**: Implemented `response.py` with relative path sanitization.
+7. **Assistant Refactoring**: Refactored `assistant.py` to wrap `BOCReviewAgent`.
+8. **Runtime Test Suite**: Added a comprehensive unit test suite in `tests/test_runtime_agent.py` (15 new tests).
+9. **Verification**: Ran all tests (102 passing) and verified backward compatibility.

@@ -11,13 +11,13 @@ This document outlines how the architectural design of the **BOC Allocation Revi
 
 | Google ADK Concept | Project Equivalent | Current Status | Future Phase | Description |
 | --- | --- | --- | --- | --- |
-| **Agent** | Planned `BOCReviewAgent` | Phase 9.1 | Runtime Implementation | Encapsulates planning, registry, and execution pipeline layers. |
-| **Tool** | `classification_tool`, `eligibility_tool`, `review_tool`, `RAG_retriever` | Existing | Registry Integration | Individual Python modules wrapping specialized lookup and rule functions. |
-| **Skill / Instruction Contract** | `SKILL.md` | Existing | Runtime Enforcement | Configuration document defining permitted capabilities and tool intents. |
-| **Session State** | Streamlit Session State / `RuntimeContext` | Partial | RuntimeContext Implementation | In-memory container storing dialogue history and transaction records. |
-| **Retrieval Tool** | Local TF-IDF RAG | Existing | Vertex AI Search Migration | Document search index built from local Markdown files. |
-| **Human-in-the-Loop** | `boc_agent/hitl` | Existing | Runtime Tool Registration | Separate queue builder and override logging columns. |
-| **Deployment** | Local Streamlit / CLI | Existing | Cloud Run / Vertex AI Agent Engine | Execution environment (currently local-first, offline). |
+| **Agent** | `BOCReviewAgent` | Implemented | Local Runtime | Encapsulates planning, registry, and execution pipeline layers. |
+| **Tool** | `classification_tool`, `eligibility_tool`, `review_tool`, `RAG_retriever` | Implemented | Registry Integration | Individual Python modules wrapping specialized lookup and rule functions. |
+| **Skill / Instruction Contract** | `SKILL.md` | Implemented | Runtime Enforcement | Configuration document defining permitted capabilities and tool intents. |
+| **Session State** | Streamlit Session State / `RuntimeContext` | Implemented | RuntimeContext | In-memory container storing dialogue history and transaction records. |
+| **Retrieval Tool** | Local TF-IDF RAG | Implemented | Vertex AI Search Migration | Document search index built from local Markdown files. |
+| **Human-in-the-Loop** | `boc_agent/hitl` | Implemented | Runtime Tool Registration | Separate queue builder and override logging columns. |
+| **Deployment** | Local Streamlit / CLI | Implemented | Cloud Run / Vertex AI Agent Engine | Execution environment (currently local-first, offline). |
 
 ---
 
