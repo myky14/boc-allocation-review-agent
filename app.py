@@ -11,6 +11,7 @@ from boc_agent.hitl.review_exporter import export_human_review_log
 from boc_agent.ui_helpers import calculate_summary_metrics
 from boc_agent.rules.allocation_rules import ALLOCATION_COLUMNS
 from boc_agent.io.workbook_exporter import rename_and_reorder_df
+from boc_agent.chat.assistant import ReviewConversationAssistant
 
 # 1. Page Configuration
 st.set_page_config(
@@ -44,6 +45,8 @@ if "human_decisions_list" not in st.session_state:
     st.session_state.human_decisions_list = []
 if "original_columns" not in st.session_state:
     st.session_state.original_columns = []
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
 # Helper: Convert DataFrame to Excel bytes for download
 def to_excel_bytes(df: pd.DataFrame) -> bytes:
@@ -141,10 +144,11 @@ if st.session_state.reviewed_df is not None:
     m_col8.metric("Quebec Needs Review", metrics["quebec_needs_review"])
     
     # 7. Navigation Tabs
-    tab_ledger, tab_queue, tab_actions = st.tabs([
+    tab_ledger, tab_queue, tab_actions, tab_chat = st.tabs([
         "📋 Full Reviewed Ledger", 
         "🔍 Human Review Queue", 
-        "✍️ HITL Review Actions"
+        "✍️ HITL Review Actions",
+        "💬 Conversational Assistant"
     ])
     
     # --- Tab 1: Full Reviewed Ledger ---
@@ -306,3 +310,41 @@ if st.session_state.reviewed_df is not None:
                     file_name="human_decisions_log.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 )
+
+    # --- Tab 4: Conversational Assistant ---
+    with tab_chat:
+        st.markdown("### 💬 Conversational Review Assistant")
+        st.markdown(
+            "Ask natural language questions about the reviewed ledger, human review queue, ineligible costs, or specific transactions. "
+            "This assistant operates deterministically using the reviewed workbook data and is completely read-only."
+        )
+        
+        # Reset chat history button
+        if st.button("🗑️ Clear Chat History"):
+            st.session_state.chat_history = []
+            st.rerun()
+            
+        st.markdown("---")
+        
+        # Display existing messages
+        for msg in st.session_state.chat_history:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+                
+        # Chat input
+        prompt = st.chat_input("Ask a question about the reviewed ledger...")
+        if prompt:
+            # Display user message
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            st.session_state.chat_history.append({"role": "user", "content": prompt})
+            
+            # Answer query
+            assistant = ReviewConversationAssistant()
+            response = assistant.answer(prompt, df)
+            
+            # Display assistant message
+            with st.chat_message("assistant"):
+                st.markdown(response)
+            st.session_state.chat_history.append({"role": "assistant", "content": response})
+            st.rerun()

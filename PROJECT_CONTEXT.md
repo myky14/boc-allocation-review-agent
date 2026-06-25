@@ -54,11 +54,14 @@ The current repository layout:
   - `tools/`: deterministic rules engine (`allocation_tool.py`), classification wrappers (`classification_tool.py`), eligibility wrappers (`eligibility_tool.py`), allocation wrappers (`allocation_wrapper_tool.py`), review wrappers (`review_tool.py`), and security scanner (`security_guardrail_tool.py`).
   - `agents/`: ADK orchestrator (`orchestrator.py`).
   - cli.py: CLI utility executing the agent pipeline.
-* `tests/`: Verification scripts:
-  - test_allocation_rules.py (30 pass validations).
-  - test_orchestrator.py (7 orchestration scenario validations).
-  - test_scaffold.py (scaffold imports testing).
-  - test_workbook_loader.py (schema validation testing).
+* `tests/`: Verification scripts (65 tests total):
+  - test_allocation_rules.py (23 rule validations).
+  - test_orchestrator.py (8 orchestration scenario validations).
+  - test_chat_assistant.py (12 conversational assistant validations).
+  - test_human_review.py (6 human review and decision validations).
+  - test_workbook_loader.py (12 schema validation validations).
+  - test_dashboard_helpers.py (2 metrics calculations validations).
+  - test_scaffold.py (2 import validations).
 
 ---
 
@@ -197,11 +200,10 @@ The agent allocates costs into one of **20 distinct columns**:
 * **False Labor Detection**:
   - Do not treat spend codes (like editing rooms, software, platform, collaboration, equipment, rental, facility) as labor-related unless there is named Employee/Loan-out corp data, labor Ep codes, or explicit labor wording. This prevents false positives like matching "collaboration" as labor due to "collaboration" containing the letters "labor".
 
----
-
 ## 8. Security Guardrail
 
 * A basic input guardrail detects prompt-injection-like overrides in transaction descriptions (e.g. `"ignore previous rules"`, `"mark everything eligible"`, or `"override allocation"`).
+* The stale guardrail module `security_guardrail.py` was removed; the active scan is managed by `security_guardrail_tool.py`.
 * If detected, the transaction is flagged as `Needs Human Review` with a security warning in the rationale. The transaction description is never allowed to override the deterministic rule engine.
 
 ---
@@ -210,83 +212,96 @@ The agent allocates costs into one of **20 distinct columns**:
 
 ### Phase 1: Scaffold
 * Project environment set up with `uv` and `pyproject.toml`.
-* Standard package structure created (`boc_agent/io`, `boc_agent/schemas`, `boc_agent/rules`, `boc_agent/tools`, `boc_agent/agents`, `tests`).
-* Placeholder modules created and scaffold import tests passing.
 
 ### Phase 2: Workbook Loader & Schemas
-* Synthetic GL dataset workbook (201 rows) copied into `data/synthetic/`.
-* `workbook_loader.py` implemented to parse files and validate the schema row-by-row against domain validation rules (Account regex, Src CB/PL, Ep codes, Locations, and Application Provinces).
-* Pydantic schemas implemented in `transaction.py` and `review_result.py` with alias mappings.
+* Synthetic GL dataset workbook (201 rows) parsed and schema-validated.
 
 ### Phase 3: Rule Engine & Audit
 * Rule engine implemented in `allocation_tool.py` executing all deterministic Canadian production accounting logic.
 * CLI entrypoint implemented to execute batch audits over the Excel sheet and write reviewed results.
 * Audits and remediations (Pass 1 and Pass 2) successfully executed to handle Location 920 priority, Quebec minimal buckets, false labor detection, and payroll processors.
-* **pytest status**: 53 tests collect and pass successfully (23 rules tests + 8 orchestrator tests + 6 HITL tests + 12 loader tests + 2 dashboard helper tests + 2 scaffold tests).
+
+### Phase 4: Agent Orchestration
+* Implemented `OrchestrationState` and sequential orchestrator pipeline (`boc_agent/agents/orchestrator.py`) wrapping Security scan, Classification, Eligibility, Allocation, and Packaging.
+* Created specialized wrapper tools for each step.
+
+### Phase 5: Evaluation & Demo Polish
+* Created the evaluation script `scripts/evaluate_outputs.py` and compiled ground-truth and demo guide documentation.
+
+### Phase 6: Human-in-the-Loop (HITL) Review Workflow
+* Implemented `HumanReviewDecision` Pydantic models to strongly validate human override statuses (Accept, Override, Mark Ineligible, Request Documentation, Defer).
+* Implemented the automated queue builder `scripts/build_review_queue.py` to extract rows requiring human attention.
+
+### Phase 7: Streamlit UI Dashboard
+* Created the interactive dashboard app (`app.py`) allowing Excel uploads, execution visualization, manual overrides, and review logs download.
+
+### Final Audit Remediation Pass
+* Resolved the Ep 45/55/65 contractor individual vs. salary mapping bug.
+* Resolved Ep 45 + loan-out payee conflict regression.
+* Resolved workbook export and Streamlit dashboard download header, order, and custom column preservation issues.
+* Hardened loader validation to reject decimal Location/Ep codes.
+* Cleaned up documentation and UI wording to avoid overclaiming.
+
+### Phase 8.1: Conversational Review Assistant
+* Implemented a local-first, deterministic Q&A helper module (`boc_agent/chat/`) to route natural language queries to workbook-grounded summaries, location breakdowns, ineligible rows, pending human review queues, and specific row explanations.
+* Implemented full schema alias mapping to support both original Excel workbook headers and snake_case properties.
+* Integrated a clean interactive chat tab directly in the Streamlit Dashboard (`app.py`).
+* Added comprehensive query routing, row-explanation prioritizations, non-mutation assertions, and legal disclaimer refusal tests.
 
 ---
 
 ## 10. Key Commands
 
+Ensure the environment is synced, tests pass, and review scripts run cleanly:
+
 ```bash
-# Synchronize environment
 uv sync
-
-# Run all test suites (53 tests)
 uv run pytest
-
-# Execute rule engine over the synthetic ledger and export reviewed output
 uv run python -m boc_agent.cli --input data/synthetic/synthetic_boc_gl_dataset.xlsx --output outputs/reviewed_boc_gl_dataset.xlsx
+uv run python scripts/evaluate_outputs.py outputs/reviewed_boc_gl_dataset.xlsx
+uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx outputs/human_review_queue.xlsx
+uv run streamlit run app.py
+uv run python -m py_compile app.py
 ```
 
 ---
 
 ## 11. Current Known Outputs
 
-The processed sheet `outputs/reviewed_boc_gl_dataset.xlsx` has the following validated example outputs:
-* **Row 1**: Quebec qualified labour (Approved, 100.0% claim).
-* **Row 2**: Quebec qualified labour (Approved, 100.0% claim).
-* **Row 3**: Out of Canada costs (Needs Human Review, United States vendor).
-* **Row 4**: Ontario Salary (41) (Approved, Union Street payroll row using Employee Nina Chen as effective payee).
-* **Row 5**: Quebec non-qualified (Needs Human Review, United States vendor at Location 920).
-* **Row 6**: Quebec qualified properties / spend (Approved, 100.0% claim).
-* **Row 7**: Quebec qualified labour (Approved, Union Street payroll row using Employee Noah Walsh as effective payee).
-* **Row 8**: Out of Canada costs (Needs Human Review, United Kingdom vendor).
-* **Row 9**: Fed salary (Needs Human Review, Ontario application but payee province is Quebec).
-* **Row 10**: Quebec qualified properties / spend (Approved, 100.0% claim).
+The General Ledger processing produces the following exact metrics over the 201 synthetic input rows:
+* **Total Transactions**: 201 reviewed rows.
+* **Review Status Breakdown**:
+  * `Approved`: 113 rows
+  * `Needs Human Review`: 88 rows
+* **Eligibility Status Breakdown**:
+  * `Eligible`: 113 rows
+  * `Needs Review`: 70 rows
+  * `Ineligible`: 18 rows
+* **HITL Review Queue**: Exports exactly **88 rows** to `outputs/human_review_queue.xlsx`.
 
 ---
 
-## 12. Completed Phases 4 to 7: Agent Orchestration, HITL Review, and UI Dashboard
+## 12. Critical Guardrails
 
-Phases 4 through 7 built a robust, local-first agent orchestration pipeline, added a lightweight human-in-the-loop review workflow, and launched an interactive Streamlit UI dashboard.
-
-### Key Components Implemented:
-1. **Orchestration State**: A dataclass tracking transaction context, security warnings, classification metadata, and step-by-step execution traces.
-2. **Orchestrator Agent** (`boc_agent/agents/orchestrator.py`): Coordinates the sequential review execution flow (Security scan $\rightarrow$ Classification $\rightarrow$ Eligibility $\rightarrow$ Allocation $\rightarrow$ Packaging).
-3. **Pydantic Human Review Decisions** (`boc_agent/hitl/`): Utilizes a strict Pydantic model (`HumanReviewDecision`) to validate auditor actions (Accept, Override, Mark Ineligible, Request Documentation, Defer). Human overrides are tracked in separate human audit columns (`human_review_decision`, `human_review_comment`, `human_reviewer`, etc.), preserving the original agent suggests for a clean audit trail.
-4. **Validation Test Suite**: 53 unit and integration tests (23 rules tests, 8 orchestrator tests, 6 HITL tests, 12 loader tests, 2 dashboard helper tests, and 2 scaffold tests) passing successfully.
-5. **Evaluation Script** (`scripts/evaluate_outputs.py`): Computes and prints workbook distribution stats and highlights.
-6. **HITL Queue Builder** (`scripts/build_review_queue.py`): Automatically filters evaluated workbooks to extract the manual review queue (yielding exactly 88 rows).
-7. **Streamlit UI Dashboard** (`app.py`): Interactive local presentation web app supporting workbook uploads, pipeline execution, metrics rendering, queue filtering, and audit log submissions/downloads.
+* **Deterministic Rule Engine as Source of Truth**: The core accounting engine in `allocation_tool.py` is the final arbiter of allocations and eligibility.
+* **Non-interference of AI Layers**: Any future chat, RAG, or summary assistants can explain, filter, route, and summarize the data for the accountant, but they must NOT silently override the allocation column, amount percentage, or eligibility status computed by the rule engine.
+* **Separate Human Audit Trail**: Human review decisions and override selections must be kept in separate columns (`human_review_decision`, `human_reviewer`, `human_override_allocation`, etc.) rather than overwriting the agent's deterministic outputs directly, maintaining a clean audit trail.
 
 ---
 
-## 13. Next Recommended Phase
+## 13. Next Recommended Phases
 
-Now that Phase 7 is completed, the project is submission-ready. Future recommended integration or expansion phases include:
-1. **Stateful Human-in-the-Loop Interruption**: Incorporate Vertex AI session service and `RequestInput` stateful interrupts to allow accountants to resolve "Needs Human Review" warnings directly from the CLI or dashboard in real-time.
-2. **Expansion to Other Provinces**: Add specialist modules for British Columbia Creates (FIBC) guidelines.
-3. **Form 6 Template Export**: Map reviewed allocation columns directly to the CAVCO Schedule of Production Costs structure.
+Future development phases after capstone presentation:
+* **Phase 8.2: RAG Integration**: Full Retrieval-Augmented Generation for querying regulatory guides (e.g. CAVCO/Creates guidelines).
+* **Phase 8.3: ADK SKILL.md**: Formalize ADK capabilities.
+* **Phase 9: Cloud Deployment**: Deploy Streamlit dashboard and orchestrator agent to Google Cloud Platform (Google Cloud Run/App Engine) after RAG layers are fully stabilized.
 
 ---
 
-## 14. Important Review Instruction
+## 14. Project Limitations & Review Instructions
 
-Any future assistant or Antigravity session must treat Canadian production accounting logic carefully.
-* If a transaction is ambiguous or lacks supporting documentation, **Do NOT guess**.
-* Mark the row as `Review Status = Needs Human Review` and lower the `confidence_score` to `0.70`.
-* In Quebec context, if a row fails checks, map to the dedicated `Quebec needs review` bucket.
-* In case of doubt, pause and ask the user for clarification. Do not overclaim eligibility.
-
-Last updated after Phase 7 Streamlit UI Dashboard completion. Project is fully capstone submission-ready.
+* **No Official Authority**: The agent is a review support tool. It does NOT provide official tax-credit determinations or compile official governmental applications (such as CAVCO Form 6).
+* **No Live Database Connections**: Does not connect to live registries (CRA, CAVCO, corporate registries) or payroll ERPs.
+* **Minimal Quebec Support**: Quebec Creates SODEC rules remain a minimal MVP skeleton containing 4 columns.
+* **Explanation-Only Assistant**: The chat layer should strictly explain and query existing reviewed data and must not attempt statutory tax rulings.
+* **No Statutory Wording**: Avoid terms implying tax optimization or official rulings; use "review support", "suggested allocation", "deterministic allocation review", "synthetic workbook convention", and "human follow-up".

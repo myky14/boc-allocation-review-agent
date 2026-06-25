@@ -17,6 +17,7 @@ A local-first, ADK-compatible AI Agent co-pilot designed to assist production ac
 - [MVP Scope Definition](#-mvp-scope-definition)
 - [Evaluation Plan & Performance Metrics](#-evaluation-plan--performance-metrics)
 - [Local Quickstart & Demo](#-local-quickstart--demo)
+- [Conversational Review Assistant (Phase 8.1)](#-conversational-review-assistant-phase-81)
 - [Future Improvements](#-future-improvements)
 
 ---
@@ -152,7 +153,7 @@ uv run streamlit run app.py
 ```
 
 ### 5. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (53 tests total):
+Execute all unit, integration, and UI helper tests (65 tests total):
 ```bash
 uv run pytest
 ```
@@ -168,6 +169,18 @@ Extract transactions requiring manual review into a separate queue spreadsheet:
 ```bash
 uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx outputs/human_review_queue.xlsx
 ```
+
+---
+
+## 💬 Conversational Review Assistant (Phase 8.1)
+
+An interactive, local-first conversational review co-pilot is integrated directly into the Streamlit dashboard as a dedicated tab.
+
+* **Deterministic Q&A**: Employs keyword-based query routing grounded strictly within the reviewed workbook data.
+* **No RAG / No LLMs**: Does not use Retrieval-Augmented Generation or any external LLM/API/network calls. It is completely local, lightweight, and fast.
+* **Read-Only / No Mutation**: Ensures that querying the transactions never mutates the underlying general ledger records or suggestions.
+* **Header Compatibility**: Supports queries using original Excel workbook headers (`Trans Ref`, `Vendor Name`) as well as internal `snake_case` attributes.
+* **No Official Rulings**: Built with disclaimer safety guardrails to refuse requests requesting official tax, CRA, CAVCO, SODEC, or legal determinations, redirecting accountants to qualified specialists.
 
 ---
 

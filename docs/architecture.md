@@ -131,3 +131,15 @@ To prepare for capstone presentation and ensure quality control, Phase 5 introdu
 - **Evaluation Plan** ([docs/evaluation_plan.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/evaluation_plan.md)): Outlines ground-truth strategies, baseline accuracy metrics, test commands, and manual audit guides.
 - **Evaluation Summary Script** ([scripts/evaluate_outputs.py](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/scripts/evaluate_outputs.py)): Reads the reviewed output workbook and generates a distribution breakdown of review statuses, eligibility outcomes, and suggested allocation columns.
 - **Demo Cases Guide** ([docs/demo_cases.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/demo_cases.md)): Details 10 representative scenarios (e.g. multi-share caps, inter-provincial fallbacks, payroll processors, prompt-injection guardrails) found in the dataset to walk through during presentations.
+
+---
+
+## 7. Conversational Review Assistant (Phase 8.1)
+
+To support accountants in querying the processed workbook, Phase 8.1 introduces a lightweight conversational assistant:
+* **Local-first Deterministic Q&A**: Built entirely without LLM or RAG dependencies. Queries are routed to specific intents using a keyword/regex-based Query Router (`boc_agent/chat/query_router.py`) and matched against the loaded DataFrame.
+* **Schema Alias Compatibility**: Supports queries referencing both original Excel workbook headers (e.g. `Trans Ref`, `Vendor Name`) and internal Pydantic snake_case fields (e.g. `trans_ref`, `vendor_name`).
+* **Multi-Criteria Row Matching**: Resolves row detail lookups by searching for Trans Ref matches first, falling back to Our Reference matches, vendor name substrings, and finally row/index values.
+* **Groundedness & Error Safety**: Returns a safe, explicit `"Transaction not found / run review first"` message if the requested transaction ID or data is missing, preventing hallucinated or invented details.
+* **Official Determination Disclaimer**: Implements a legal guardrail that refuses requests for official tax rulings or compliance guarantees (e.g. SODEC/CAVCO determinations), reminding the user that it is a review support tool only.
+* **Streamlit Integration**: Integrates directly as a new tab ("💬 Conversational Assistant") within the main Streamlit dashboard (`app.py`).

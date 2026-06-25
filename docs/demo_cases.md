@@ -101,3 +101,17 @@ This document outlines 10 representative scenarios from the Canadian production 
 * **Expected Review Status**: Original agent review status (e.g. `Needs Human Review`) remains in `review_status`, while `human_review_decision` is marked `Override Allocation`.
 * **Key Rationale Point**: Original agent audit trail is preserved intact. Human decisions and overrides are stored separately in the new `human_` columns.
 
+---
+
+### Case 12: Conversational Assistant Scenario
+* **Description**: An accountant queries the reviewed workbook through the Streamlit Chat interface.
+* **Why It Matters**: Demonstrates how a local-first, deterministic Q&A assistant can parse workbook schema aliases (both original headers and snake_case) and explain specific rows, summarize the queue, or reject official tax/legal ruling requests with a disclaimer.
+* **Expected Inputs / Outputs**:
+  - *Query*: "is this officially eligible?" or "optimize my tax credit"
+  - *Output*: Displays the "Official Determination Disclaimer" warning that it does not provide official tax/legal rulings.
+  - *Query*: "explain transaction 508841" or "tell me about Greenslate Pay"
+  - *Output*: Locates the corresponding row by prioritizing Trans Ref, Our Reference, and Vendor Name, and presents a formatted breakdown of its details. If not found, returns a safe "not found / run review first" message.
+  - *Query*: "Summarize the review queue"
+  - *Output*: Provides a summary of the pending human review queue count, sample rows, and common themes.
+* **Key Rationale Point**: The assistant operates completely read-only, never mutates the underlying DataFrame, and never makes official statutory claims. RAG/external regulations lookup remains a separate future enhancement (Phase 8.2).
+
