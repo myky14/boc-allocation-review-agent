@@ -27,9 +27,9 @@ Canadian film and television productions rely heavily on tax credits to cover po
 
 ### 💼 Business Value Proposition
 By automating the preliminary auditing and sorting of General Ledger entries, the **BOC Allocation Review Agent**:
-- **Reduces Compliance Risk**: Lowers ineligible claim leakage through a conservative, audited rules engine.
+- **Reduces Compliance Risk**: Lowers ineligible claim leakage through a conservative, deterministic rules engine.
 - **Saves Accounting Hours**: Pre-populates obvious claims (such as in-province salary or local supplies) and groups them by creates bodies (Ontario or Quebec SODEC), allowing accountants to focus exclusively on items requiring manual intervention.
-- **Optimizes Claims**: Automatically flags fallback treatment opportunities (such as Federal fallback for inter-provincial payees) to ensure no eligible expenses are missed.
+- **Review Support**: Automatically flags fallback treatment opportunities (such as Federal fallback for inter-provincial payees) to help reviewers identify potentially eligible expenses and rows requiring follow-up.
 
 ### ⚙️ Rule-Engine-First Design
 The project uses a local-first, **rules-first** architecture. A deterministic Canadian production accounting rules engine remains the final source of truth. The AI/ADK agent orchestration wraps around this engine to provide input security scanning, metadata extraction, structural tracing, and packaging without overriding or modifying the validated accounting rules.
@@ -145,16 +145,28 @@ Run the agent over the synthetic ledger workbook:
 uv run python -m boc_agent.cli --input data/synthetic/synthetic_boc_gl_dataset.xlsx --output outputs/reviewed_boc_gl_dataset.xlsx
 ```
 
-### 4. Run the Evaluation Harness
-Execute unit and accuracy tests (38 tests total):
+### 4. Run the Streamlit Dashboard
+Launch the interactive audit dashboard for capstone review:
+```bash
+uv run streamlit run app.py
+```
+
+### 5. Run the Evaluation Harness
+Execute all unit, integration, and UI helper tests (53 tests total):
 ```bash
 uv run pytest
 ```
 
-### 5. Run the Evaluation Summary
+### 6. Run the Evaluation Summary
 Calculate workbook statistics (total rows, status distribution, and highlights):
 ```bash
 uv run python scripts/evaluate_outputs.py outputs/reviewed_boc_gl_dataset.xlsx
+```
+
+### 7. Run the HITL Queue Builder
+Extract transactions requiring manual review into a separate queue spreadsheet:
+```bash
+uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx outputs/human_review_queue.xlsx
 ```
 
 ---
@@ -162,7 +174,7 @@ uv run python scripts/evaluate_outputs.py outputs/reviewed_boc_gl_dataset.xlsx
 ## 🛑 Known MVP Limitations
 * **No Live Verification**: Does not query live databases (CRA, CAVCO, Ontario Creates, corporate/residency registries).
 * **Minimal Quebec Context**: Includes minimal MVP SODEC Quebec buckets only. Advanced regional or special SODEC credits are out of scope.
-* **Hardcoded Multi-share Rules**: Multi-share creative labor uses standard fixed 65%/35% split caps.
+* **Hardcoded Multi-share Rules**: Multi-share creative labor uses fixed 65%/35% split caps based on internal synthetic workbook conventions and MVP assumptions, not universal statutory treatment.
 * **No Form 6 Compile**: Suggests workbook allocation columns; does not compile official CAVCO Form 6 PDF applications.
 
 ---
@@ -171,4 +183,4 @@ uv run python scripts/evaluate_outputs.py outputs/reviewed_boc_gl_dataset.xlsx
 
 1. **ADK Stateful Interrupts**: Integrate `RequestInput` and Vertex AI Session Service for real-time interactive human approval.
 2. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and Quebec (SODEC).
-3. **Form 6 Mapping**: Export audited ledger categories into templates matching CAVCO's Schedule of Production Costs layout.
+3. **Form 6 Mapping**: Export reviewed ledger categories into templates matching CAVCO's Schedule of Production Costs layout.

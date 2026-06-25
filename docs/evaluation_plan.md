@@ -15,12 +15,16 @@ The validation strategy is designed to ensure the agent remains **rule-engine-fi
 | Orchestration safety           | Orchestrator tests     | `test_orchestrator.py`     |
 | Security guardrails            | Prompt-injection tests | `test_orchestrator.py`     |
 | End-to-end workbook processing | CLI run                | 201 rows processed         |
+| Human review queue & overrides | HITL workflow tests    | `test_human_review.py`     |
+| UI Dashboard Metrics           | UI helper tests        | `test_dashboard_helpers.py`|
 
 ### Core Evaluation Aspects:
 * **Schema Validation**: Row-by-row validation of the 24 required GL columns (Account regex matching, Src PL/CB, Ep codes, and Locations).
 * **Deterministic Rule Correctness**: Verification of the Canadian tax credit rules (Ontario Creates, SODEC Quebec, and Federal fallback mappings).
-* **Orchestration Preservation**: Guaranteeing that the ADK orchestrator sequential tool workflow (Security $\rightarrow$ Classification $\rightarrow$ Eligibility $\rightarrow$ Allocation $\rightarrow$ Review) executes correctly without overriding deterministic rules.
-* **Security Guardrail Behavior**: Scanning transaction descriptions for prompt-injection keyword overrides, ensuring they trigger `"Needs Human Review"`, set confidence to `0.0`, and append warnings to the rationale.
+* **Orchestration Preservation**: Guaranteeing that the ADK orchestrator sequential tool workflow executes correctly without overriding deterministic rules.
+* **Security Guardrail Behavior**: Scanning transaction descriptions for prompt-injection overrides, ensuring they trigger `"Needs Human Review"`, set confidence to `0.0`, and append warnings.
+* **Human-in-the-Loop Audit Trails**: Ensuring that human auditor decisions are recorded in separate audit columns without corrupting the original agent suggestions.
+* **UI Summary calculations**: Verifying that the Streamlit dashboard metrics compute correct aggregated stats from reviewed general ledger outputs.
 
 ---
 
@@ -59,7 +63,7 @@ The following are representative demo rows from the synthetic workbook, demonstr
 
 * **No Live Database Connections**: The agent does not verify vendor registration, citizenship, residency, or corporate registry details against live CRA/CAVCO systems.
 * **Minimal Quebec Support**: Quebec Creates SODEC rules are implemented as a minimal MVP skeleton containing four primary buckets. Advanced SODEC credits (e.g. regional bonuses) are out of scope.
-* **Hardcoded splits**: The multi-share creative labor split is set to a fixed 65.0% cap as per standard workbook conventions.
+* **Hardcoded splits**: The multi-share creative labor split is set to a fixed 65.0% cap based on internal synthetic workbook conventions and MVP assumptions, not universal statutory treatment.
 * **No official filing compile**: The agent does not generate PDF CAVCO Form 6 documents.
 
 ---
@@ -70,7 +74,7 @@ To execute the test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Pass Count**: **38 tests** (30 rules tests, 8 orchestrator tests, and other loader/scaffold tests).
+* **Expected Pass Count**: **53 tests** (23 rules tests, 8 orchestrator tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests).
 
 To execute the GL review CLI:
 ```bash
@@ -83,3 +87,15 @@ To execute the evaluation script:
 uv run python scripts/evaluate_outputs.py outputs/reviewed_boc_gl_dataset.xlsx
 ```
 * **Result**: Prints an allocation breakdown and audit highlights.
+
+To execute the Streamlit Dashboard:
+```bash
+uv run streamlit run app.py
+```
+* **Result**: Launches local web dashboard on port 8501.
+
+To execute the HITL Queue Builder:
+```bash
+uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx outputs/human_review_queue.xlsx
+```
+* **Result**: Exports transactions requiring manual review into a separate queue spreadsheet.

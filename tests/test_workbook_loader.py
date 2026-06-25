@@ -115,3 +115,33 @@ def test_invalid_province_raises_error():
     with pytest.raises(ValueError) as excinfo:
         validate_dataframe_schema(df)
     assert "must be 'Ontario' or 'Quebec'" in str(excinfo.value)
+
+
+def test_decimal_location_raises_error():
+    """Verifies that a decimal Location code (e.g. 900.5) raises a ValueError."""
+    row = _get_valid_dummy_row()
+    row["Location"] = "900.5"
+    df = pd.DataFrame([row])
+    with pytest.raises(ValueError) as excinfo:
+        validate_dataframe_schema(df)
+    assert "fractional decimals are not allowed" in str(excinfo.value)
+
+
+def test_decimal_ep_raises_error():
+    """Verifies that a decimal Ep code (e.g. 41.5) raises a ValueError."""
+    row = _get_valid_dummy_row()
+    row["Ep"] = "41.5"
+    df = pd.DataFrame([row])
+    with pytest.raises(ValueError) as excinfo:
+        validate_dataframe_schema(df)
+    assert "fractional decimals are not allowed" in str(excinfo.value)
+
+
+def test_additional_columns_are_allowed():
+    """Verifies that the schema validation succeeds when extra custom columns are present in the workbook."""
+    row = _get_valid_dummy_row()
+    row["Custom Extra Column"] = "Some Value"
+    df = pd.DataFrame([row])
+    # Should not raise any exception
+    validate_dataframe_schema(df)
+

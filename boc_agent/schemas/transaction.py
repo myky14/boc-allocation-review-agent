@@ -1,13 +1,16 @@
 import pandas as pd
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, PrivateAttr
 from typing import Optional
 
 class TransactionRecord(BaseModel):
     """Pydantic model representing a raw synthetic GL transaction record from the workbook."""
     model_config = ConfigDict(
         populate_by_name=True,
-        arbitrary_types_allowed=True
+        arbitrary_types_allowed=True,
+        extra="allow"
     )
+
+    _original_keys: list[str] = PrivateAttr(default_factory=list)
 
     account: str = Field(..., alias="Account")
     account_name: str = Field(..., alias="Account Name")
@@ -47,7 +50,9 @@ class TransactionRecord(BaseModel):
                     cleaned[k] = str(int(v))
                 else:
                     cleaned[k] = str(v) if k not in ["USD", "Amount"] else v
-        return cls.model_validate(cleaned)
+        instance = cls.model_validate(cleaned)
+        instance._original_keys = list(row_dict.keys())
+        return instance
 
 # Keep Transaction as an alias to TransactionRecord to maintain package consistency
 Transaction = TransactionRecord

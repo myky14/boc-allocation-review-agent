@@ -101,6 +101,10 @@ def classify_payee_type(tx: TransactionRecord) -> str:
     if has_corp:
         return "Loan-out"
         
+    ep_suffix = get_ep_suffix(tx.ep)
+    if ep_suffix in {45, 55, 65}:
+        return "Individual"
+        
     if has_employee:
         return "Employee"
         

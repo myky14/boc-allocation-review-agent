@@ -344,3 +344,75 @@ def test_editing_rooms_no_labor_conflict():
     assert res.suggested_allocation_column == "Ontario Spend (40)"
     assert res.review_status == "Approved"
 
+# Regression Test: Ontario Location 900 + Ep 45 should map to ONT individual (45)
+def test_ontario_individual_ep_45():
+    tx_dict = _get_base_tx_dict()
+    tx_dict["Application Province"] = "Ontario"
+    tx_dict["Province"] = "Ontario"
+    tx_dict["Location"] = "900"
+    tx_dict["Ep"] = "45"
+    tx_dict["Employee"] = "Individual Contractor Name"
+    tx_dict["Tax ID"] = "123-456-789"
+    
+    tx = TransactionRecord.from_row_dict(tx_dict)
+    res = review_transaction(tx)
+    
+    assert res.suggested_allocation_column == "ONT individual (45)"
+    assert res.eligibility_status == "Eligible"
+
+# Regression Test: Federal Fallback Location 910 + Ep 45 should map to Fed individual
+def test_federal_individual_ep_45():
+    tx_dict = _get_base_tx_dict()
+    tx_dict["Application Province"] = "Ontario"
+    tx_dict["Province"] = "British Columbia"
+    tx_dict["Location"] = "910"
+    tx_dict["Ep"] = "45"
+    tx_dict["Employee"] = "Individual Contractor Name"
+    tx_dict["Tax ID"] = "123-456-789"
+    
+    tx = TransactionRecord.from_row_dict(tx_dict)
+    res = review_transaction(tx)
+    
+    assert res.suggested_allocation_column == "Fed individual"
+
+
+# Regression Test: Ep 45 Individual + Loan-out conflict (Ontario)
+def test_ontario_individual_ep_45_loan_out_conflict():
+    tx_dict = _get_base_tx_dict()
+    tx_dict["Application Province"] = "Ontario"
+    tx_dict["Province"] = "Ontario"
+    tx_dict["Location"] = "900"
+    tx_dict["Ep"] = "45"
+    tx_dict["Employee"] = "Individual Contractor Name"
+    tx_dict["Loan out corp"] = "Should Conflict Inc"
+    tx_dict["Tax ID"] = "123-456-789"
+    
+    tx = TransactionRecord.from_row_dict(tx_dict)
+    res = review_transaction(tx)
+    
+    # Must not be Approved, must be Needs Human Review
+    assert res.review_status == "Needs Human Review"
+    assert res.eligibility_status == "Needs Review"
+    assert "payee classified as Loan-out" in res.rationale
+
+
+# Regression Test: Ep 45 Individual + Loan-out conflict (Federal)
+def test_federal_individual_ep_45_loan_out_conflict():
+    tx_dict = _get_base_tx_dict()
+    tx_dict["Application Province"] = "Ontario"
+    tx_dict["Province"] = "British Columbia"
+    tx_dict["Location"] = "910"
+    tx_dict["Ep"] = "45"
+    tx_dict["Employee"] = "Individual Contractor Name"
+    tx_dict["Loan out corp"] = "Should Conflict Inc"
+    tx_dict["Tax ID"] = "123-456-789"
+    
+    tx = TransactionRecord.from_row_dict(tx_dict)
+    res = review_transaction(tx)
+    
+    # Must not be Approved, must be Needs Human Review
+    assert res.review_status == "Needs Human Review"
+    assert res.eligibility_status == "Needs Review"
+    assert "payee classified as Loan-out" in res.rationale
+
+

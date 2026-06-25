@@ -69,7 +69,7 @@ This document outlines 10 representative scenarios from the Canadian production 
 
 ### Case 8: Multi-share Split (65% eligible)
 * **Description**: Contract with Ep code 44 / 54 / 64 (Multi-share).
-* **Why It Matters**: Creative contracts under specific guidelines are capped at 65% labor eligibility.
+* **Why It Matters**: This represents an internal synthetic workbook convention and MVP assumption where creative contracts under multi-share Ep codes are capped at 65% labor eligibility (not a universal statutory treatment).
 * **Expected Allocation Bucket**: `ONT labor multi-share (44)` or `Fed multi-share`
 * **Expected Review Status**: `Approved` (unless other validation flags occur)
 * **Key Rationale Point**: qualifying amount percentage is set to `65.0%` with a secondary note: `"remaining 35% should be reviewed as spend/non-labor treatment..."`.
@@ -91,3 +91,13 @@ This document outlines 10 representative scenarios from the Canadian production 
 * **Expected Allocation Bucket**: `Ontario Salary (41)` (deterministic allocation remains unaffected)
 * **Expected Review Status**: `Needs Human Review`
 * **Key Rationale Point**: Review status is overridden to `Needs Human Review` with confidence score `0.0`, and the warning `"Potential prompt injection detected"` is appended to the rationale.
+
+---
+
+### Case 11: Human-in-the-Loop Override Action
+* **Description**: Accountant overrides an agent suggestion via the Streamlit Dashboard.
+* **Why It Matters**: Demonstrates the capability of human reviewers to override allocation decisions transparently and auditably.
+* **Expected Allocation Bucket**: Original agent allocation (e.g. `Ontario Salary (41)`) remains unchanged in the agent column, while `human_override_allocation` is set to `Ontario Spend (40)`.
+* **Expected Review Status**: Original agent review status (e.g. `Needs Human Review`) remains in `review_status`, while `human_review_decision` is marked `Override Allocation`.
+* **Key Rationale Point**: Original agent audit trail is preserved intact. Human decisions and overrides are stored separately in the new `human_` columns.
+

@@ -41,21 +41,29 @@ def validate_dataframe_schema(df: pd.DataFrame) -> None:
         loc = row.get("Location")
         if pd.notna(loc):
             try:
-                loc_val = int(float(loc))
-                if loc_val not in ALLOWED_LOCATIONS:
-                    raise ValueError(f"Row {idx}: Location '{loc}' must be 900, 910, 920 or blank")
+                loc_float = float(loc)
+                is_int = loc_float.is_integer()
             except (ValueError, TypeError):
                 raise ValueError(f"Row {idx}: Location '{loc}' is not a valid Location code")
+            if not is_int:
+                raise ValueError(f"Row {idx}: Location '{loc}' is not a valid integer Location code (fractional decimals are not allowed)")
+            loc_val = int(loc_float)
+            if loc_val not in ALLOWED_LOCATIONS:
+                raise ValueError(f"Row {idx}: Location '{loc}' must be 900, 910, 920 or blank")
                 
         # Check Ep must be allowed codes or blank
         ep = row.get("Ep")
         if pd.notna(ep):
             try:
-                ep_val = int(float(ep))
-                if ep_val not in ALLOWED_EPS:
-                    raise ValueError(f"Row {idx}: Ep '{ep}' must be one of {sorted(list(ALLOWED_EPS))} or blank")
+                ep_float = float(ep)
+                is_int = ep_float.is_integer()
             except (ValueError, TypeError):
                 raise ValueError(f"Row {idx}: Ep '{ep}' is not a valid Ep code")
+            if not is_int:
+                raise ValueError(f"Row {idx}: Ep '{ep}' is not a valid integer Ep code (fractional decimals are not allowed)")
+            ep_val = int(ep_float)
+            if ep_val not in ALLOWED_EPS:
+                raise ValueError(f"Row {idx}: Ep '{ep}' must be one of {sorted(list(ALLOWED_EPS))} or blank")
                 
         # Check Application Province must be Ontario or Quebec
         prov = row.get("Application Province")

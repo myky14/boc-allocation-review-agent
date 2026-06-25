@@ -114,13 +114,14 @@ The Orchestrator maintains the transaction state variables:
 
 ---
 
-## 5. Human-in-the-Loop (HITL) Representation
+## 5. Human-in-the-Loop (HITL) Representation (Phase 6 & Phase 7)
 
-Because this project is a local-first MVP workbook utility, a full-scale web dashboard is omitted. The Human-in-the-Loop integration is represented directly in the output data structure:
+An interactive, auditable Human-in-the-Loop (HITL) review workflow is implemented to bridge the gap between automated suggestions and the human accountant's final review:
 
-- **Flagging**: The agent evaluates each row. If any required variables are missing or conflicting (e.g. employee address does not match work location province), the transaction is marked `Review Status = Needs Human Review`.
-- **Review Workflow**: The accountant opens the exported CSV/Excel file in Excel, filters by `Needs Human Review`, reviews the agent's pre-populated suggestions and `Reasoning`, and manually overwrites the cells where necessary.
-- **ADK RequestInput (Future Extension)**: In future versions, this flow can be converted to an interactive CLI prompt or a Vertex AI session pause using `yield RequestInput()` to statefully interrupt execution row-by-row.
+* **Interactive Streamlit Dashboard (`app.py`)**: Reviewers can upload general ledger workbooks, execute the agent's review pipeline, inspect summary metrics cards, filter the review queue, submit audit decisions, and download the reviewed ledger or human decision log.
+* **Separation of Audit Trails**: Human decisions do not overwrite the original agent-generated columns. Instead, they are tracked in separate human review columns (`human_review_decision`, `human_review_comment`, `human_reviewer`, `human_reviewed_at`, `human_override_allocation`, `human_override_reason`), ensuring full auditable transparency.
+* **Review Queue Filtering (`boc_agent/hitl/review_queue.py`)**: Isolates transactions for human audit based on specific risk-based criteria (such as validation warnings, security guardrail triggers, eligibility needs review status, or confidence scores below 0.8).
+* **Audit Decision Tracking (`boc_agent/hitl/review_decision.py`)**: Utilizes a strict Pydantic data model (`HumanReviewDecision`) to validate reviewer decisions (Accept Agent Suggestion, Override Allocation, Mark Ineligible, Request More Documentation, Defer).
 
 ---
 
@@ -128,5 +129,5 @@ Because this project is a local-first MVP workbook utility, a full-scale web das
 
 To prepare for capstone presentation and ensure quality control, Phase 5 introduces:
 - **Evaluation Plan** ([docs/evaluation_plan.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/evaluation_plan.md)): Outlines ground-truth strategies, baseline accuracy metrics, test commands, and manual audit guides.
-- **Evaluation Summary Script** ([scripts/evaluate_outputs.py](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/scripts/evaluate_outputs.py)): Reads the audited output workbook and generates a distribution breakdown of review statuses, eligibility outcomes, and suggested allocation columns.
+- **Evaluation Summary Script** ([scripts/evaluate_outputs.py](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/scripts/evaluate_outputs.py)): Reads the reviewed output workbook and generates a distribution breakdown of review statuses, eligibility outcomes, and suggested allocation columns.
 - **Demo Cases Guide** ([docs/demo_cases.md](file:///f:/Studyspace/AI_Agents_5_Day_Google/capstone/docs/demo_cases.md)): Details 10 representative scenarios (e.g. multi-share caps, inter-provincial fallbacks, payroll processors, prompt-injection guardrails) found in the dataset to walk through during presentations.

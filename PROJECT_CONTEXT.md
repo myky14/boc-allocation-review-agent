@@ -222,7 +222,7 @@ The agent allocates costs into one of **20 distinct columns**:
 * Rule engine implemented in `allocation_tool.py` executing all deterministic Canadian production accounting logic.
 * CLI entrypoint implemented to execute batch audits over the Excel sheet and write reviewed results.
 * Audits and remediations (Pass 1 and Pass 2) successfully executed to handle Location 920 priority, Quebec minimal buckets, false labor detection, and payroll processors.
-* **pytest status**: 38 tests collect and pass successfully (30 rules tests + 8 orchestrator tests).
+* **pytest status**: 53 tests collect and pass successfully (23 rules tests + 8 orchestrator tests + 6 HITL tests + 12 loader tests + 2 dashboard helper tests + 2 scaffold tests).
 
 ---
 
@@ -232,7 +232,7 @@ The agent allocates costs into one of **20 distinct columns**:
 # Synchronize environment
 uv sync
 
-# Run all test suites (38 tests)
+# Run all test suites (53 tests)
 uv run pytest
 
 # Execute rule engine over the synthetic ledger and export reviewed output
@@ -257,31 +257,27 @@ The processed sheet `outputs/reviewed_boc_gl_dataset.xlsx` has the following val
 
 ---
 
-## 12. Completed Phase 4 & Phase 5: Agent Orchestration & Presentation Readiness
+## 12. Completed Phases 4 to 7: Agent Orchestration, HITL Review, and UI Dashboard
 
-Phases 4 and 5 implemented a structured, ADK-style agent orchestration pipeline over the deterministic rule engine and polished the project for capstone presentation.
+Phases 4 through 7 built a robust, local-first agent orchestration pipeline, added a lightweight human-in-the-loop review workflow, and launched an interactive Streamlit UI dashboard.
 
 ### Key Components Implemented:
 1. **Orchestration State**: A dataclass tracking transaction context, security warnings, classification metadata, and step-by-step execution traces.
-2. **Orchestrator Agent** (`boc_agent/agents/orchestrator.py`): Manages the sequential review execution flow:
-   - **Step 1: Security Guardrail Check** (`boc_agent/tools/security_guardrail_tool.py`) detects prompt-injection keyword overrides.
-   - **Step 2: Transaction Classification** (`boc_agent/tools/classification_tool.py`) extracts payee and location metadata.
-   - **Step 3: Eligibility Assessment** (`boc_agent/tools/eligibility_tool.py`) evaluates regional eligibility.
-   - **Step 4: Allocation Suggestion** (`boc_agent/tools/allocation_wrapper_tool.py`) delegates to the deterministic rule engine.
-   - **Step 5: Final Review Packaging** (`boc_agent/tools/review_tool.py`) combines outputs, overriding review status and rationale if security warning overrides are flagged.
-3. **CLI Integration**: CLI call routes transactions through the Orchestrator seamlessly (backward compatible).
-4. **Validation Test Suite**: 8 orchestration scenario tests in `tests/test_orchestrator.py` validating return types, mappings, priorities, security overrides, and batch processing.
-5. **Evaluation Script** (`scripts/evaluate_outputs.py`): Calculates and prints workbook stats, status counts, allocation distribution, and highlights.
-6. **Demo Guide** (`docs/demo_cases.md`): Documents 10 representative scenarios for capstone presentation.
+2. **Orchestrator Agent** (`boc_agent/agents/orchestrator.py`): Coordinates the sequential review execution flow (Security scan $\rightarrow$ Classification $\rightarrow$ Eligibility $\rightarrow$ Allocation $\rightarrow$ Packaging).
+3. **Pydantic Human Review Decisions** (`boc_agent/hitl/`): Utilizes a strict Pydantic model (`HumanReviewDecision`) to validate auditor actions (Accept, Override, Mark Ineligible, Request Documentation, Defer). Human overrides are tracked in separate human audit columns (`human_review_decision`, `human_review_comment`, `human_reviewer`, etc.), preserving the original agent suggests for a clean audit trail.
+4. **Validation Test Suite**: 53 unit and integration tests (23 rules tests, 8 orchestrator tests, 6 HITL tests, 12 loader tests, 2 dashboard helper tests, and 2 scaffold tests) passing successfully.
+5. **Evaluation Script** (`scripts/evaluate_outputs.py`): Computes and prints workbook distribution stats and highlights.
+6. **HITL Queue Builder** (`scripts/build_review_queue.py`): Automatically filters evaluated workbooks to extract the manual review queue (yielding exactly 88 rows).
+7. **Streamlit UI Dashboard** (`app.py`): Interactive local presentation web app supporting workbook uploads, pipeline execution, metrics rendering, queue filtering, and audit log submissions/downloads.
 
 ---
 
 ## 13. Next Recommended Phase
 
-Now that Phase 5 is completed, the project is submission-ready. Future recommended integration or expansion phases include:
-1. **Stateful Human-in-the-Loop Interruption**: Incorporate Vertex AI session service and `RequestInput` stateful interrupts to allow accountants to resolve "Needs Human Review" warnings directly from the CLI or dashboard.
+Now that Phase 7 is completed, the project is submission-ready. Future recommended integration or expansion phases include:
+1. **Stateful Human-in-the-Loop Interruption**: Incorporate Vertex AI session service and `RequestInput` stateful interrupts to allow accountants to resolve "Needs Human Review" warnings directly from the CLI or dashboard in real-time.
 2. **Expansion to Other Provinces**: Add specialist modules for British Columbia Creates (FIBC) guidelines.
-3. **Form 6 Template Export**: Map audited allocation columns directly to the CAVCO Schedule of Production Costs structure.
+3. **Form 6 Template Export**: Map reviewed allocation columns directly to the CAVCO Schedule of Production Costs structure.
 
 ---
 
@@ -293,4 +289,4 @@ Any future assistant or Antigravity session must treat Canadian production accou
 * In Quebec context, if a row fails checks, map to the dedicated `Quebec needs review` bucket.
 * In case of doubt, pause and ask the user for clarification. Do not overclaim eligibility.
 
-Last updated after Phase 5 Presentation Readiness completion. Project is fully submission-ready.
+Last updated after Phase 7 Streamlit UI Dashboard completion. Project is fully capstone submission-ready.
