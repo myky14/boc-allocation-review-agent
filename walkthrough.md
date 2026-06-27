@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **106 passed tests**
+* **Expected Final Test Count**: **130 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -30,7 +30,8 @@ uv run pytest
   - `tests/test_dashboard_helpers.py` (2 dashboard stats validations)
   - `tests/test_scaffold.py` (2 scaffold import validations)
   - `tests/test_skill_runtime.py` (9 skill runtime validations)
-  - `tests/test_runtime_agent.py` (19 runtime validations)
+  - `tests/test_runtime_agent.py` (19 runtime agent validations)
+  - `tests/test_runtime_trace.py` (24 runtime trace validations)
 
 ---
 
@@ -101,15 +102,15 @@ Once a ledger has been ingested and reviewed:
 
 ---
 
-## 🏗️ 6. SKILL.md Contract & Runtime Architecture Implementation (Phase 9.1)
+## 🏗️ 6. SKILL.md Contract & Runtime Architecture Implementation (Phases 9.1 & 9.2)
 
-The repository includes a root `SKILL.md` runtime contract for capabilities, refusals, grounding policies, and non-mutating tool permissions. Phase 9.1 implements the **ADK-inspired local runtime** under `boc_agent/runtime/` (`agent.py`, `planner.py`, `executor.py`, `tool_registry.py`, `context.py`, `response.py`).
+The repository includes a root `SKILL.md` runtime contract for capabilities, refusals, grounding policies, and non-mutating tool permissions. Phases 9.1 and 9.2 implement the **ADK-inspired local runtime** and execution trace observability layers under `boc_agent/runtime/`.
 
-* **Status**: Local ADK-inspired runtime is fully implemented and tested.
+* **Status**: Local ADK-inspired runtime and tracing are fully implemented and tested.
 * **No Cloud / Native ADK Yet**: This implementation is completely local-first and does not deploy to Google Cloud Run or use native ADK SDK dependencies.
-* **Roadmap**: Next recommended steps are Phase 9.2 (Runtime Trace & Observability) followed by Phase 10 (Google Cloud / ADK deployment).
+* **Roadmap**: The next recommended step is Phase 10 — Google Cloud / ADK deployment.
 
 For details, see:
 - [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime package.
 - [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to Google ADK and cloud concepts.
-- [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-007) governing the project design.
+- [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-008) governing the project design.

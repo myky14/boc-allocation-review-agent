@@ -76,6 +76,7 @@ boc_agent/runtime/
 
 ### `BOCReviewAgent`
 - Exposes a public `run(question, reviewed_df=None) -> str` method.
+- Saves the generated structured trace to the `last_trace` property.
 - Operates as a thin wrapper on top of the runtime execution pipeline.
 - Implements a compatibility layer to ensure that Streamlit dashboard calls do not break.
 
@@ -201,5 +202,25 @@ The ADK-inspired local runtime architecture has been fully implemented in Phase 
 5. **Executor Enforcement**: Implemented `executor.py` to enforce `SKILL.md` tool permissions and block mutating operations.
 6. **Output Builder**: Implemented `response.py` with relative path sanitization.
 7. **Assistant Refactoring**: Refactored `assistant.py` to wrap `BOCReviewAgent`.
-8. **Runtime Test Suite**: Added a comprehensive unit test suite in `tests/test_runtime_agent.py` (15 new tests).
-9. **Verification**: Ran all tests (102 passing) and verified backward compatibility.
+8. **Runtime Test Suite**: Added a comprehensive unit test suite in `tests/test_runtime_agent.py`.
+9. **Verification**: Ran all tests (130 passing) and verified backward compatibility.
+
+---
+
+## 10. Phase 9.2 Runtime Trace & Observability Status
+
+The runtime trace and observability layer has been fully implemented in Phase 9.2:
+- **Package structure**: Created `boc_agent/runtime/trace/` containing:
+  * `trace_models.py`: Pydantic models for `RuntimeTrace`, `PlannerTrace`, `ToolTrace`, `ReasoningStep`, `ConfidenceSnapshot`, and `ResponseMetadata`.
+  * `trace_builder.py`: Implements `TraceBuilder` to measure monotonicity latencies and log confidence metrics.
+  * `trace_exporter.py`: Outputs traces to `outputs/runtime_trace.json`.
+  * `trace_formatter.py`: Converts trace timelines to markdown layouts.
+- **Trace Properties**:
+  * **Planner Trace**: Logs intents, routing reasons, capabilities, and tool matching.
+  * **Tool Trace**: Measures execution limits, DataFrame status, rows accessed, and blocks mutations.
+  * **Reasoning Graph**: Charts sequential execution step milestones.
+  * **Confidence Timeline**: Records confidence checkpoints (Planner, Tool Selection, Row Match, Formatter).
+- **Agent integration**:
+  * `BOCReviewAgent.run` returns a `str` response and stores the trace in `agent.last_trace`.
+  * `ReviewConversationAssistant.answer` remains backward-compatible (returns string response) and stores the trace in `assistant.last_trace`.
+- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 130).

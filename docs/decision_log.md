@@ -89,3 +89,16 @@ This log records the key architectural decisions made during the design and deve
   - The local Streamlit dashboard and CLI pipelines remain functional.
   - Clear cloud roadmap with predefined interfaces.
 * **Future Revisit Conditions**: Revisit when starting cloud deployment phases (GCP / Vertex AI Agent Engine).
+
+---
+
+## ADR-008 — Deterministic Runtime Tracing and Observability
+
+* **Status**: Accepted
+* **Context**: Evolving the agent toward ADK compliance requires high transparency of how the agent executes queries. Relying on simple logging makes structured timeline queries, latency analysis, and quality evaluation difficult.
+* **Decision**: Implement a local, deterministic structured execution trace layer (`boc_agent/runtime/trace/`) that tracks planning, tool executions, reasoning milestones, confidence history, and metadata.
+* **Consequences**:
+  - Full transparency of routing and safety enforcement.
+  - Performance profiling without external tracing dependencies.
+  - Preparation for Google Cloud Trace/Logging exports in future phases.
+* **Future Revisit Conditions**: Revisit when migrating telemetry to GCP services.

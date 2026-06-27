@@ -61,7 +61,7 @@ graph TD
     %% Ingestion
     GL["Synthetic GL Workbook (CSV/Excel)"] --> PAR["Workbook Parser"]
     PAR --> SEC["Security / Input Guardrail"]
-    
+
     %% Agent Orchestrator & Specialized Tools
     subgraph ADK Agent Workflow
         SEC --> ORCH["Orchestrator Agent"]
@@ -69,7 +69,7 @@ graph TD
         ORCH --> ELG["Eligibility Tool / Specialist"]
         ORCH --> ALC["Allocation Tool / Specialist"]
         ORCH --> REV["Review Decision Tool / Specialist"]
-        
+
         CLS -->|Suggest Payee/Cost Class| ORCH
         ELG -->|Suggest Eligibility Status| ORCH
         ALC -->|Suggest Bucket & Percentage| ORCH
@@ -148,7 +148,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (106 tests total):
+Execute all unit, integration, and UI helper tests (130 tests total):
 ```bash
 uv run pytest
 ```
@@ -181,17 +181,18 @@ An interactive, local-first conversational review co-pilot is integrated directl
 
 ---
 
-## 🏗️ Runtime Architecture & ADK Mapping (Phase 9.0 & 9.1)
+## 🏗️ Runtime Architecture, Trace, & ADK Mapping (Phases 9.0, 9.1, & 9.2)
 
-Phase 9.0 designed the architecture, and Phase 9.1 implemented the **ADK-inspired local runtime** under `boc_agent/runtime/`. 
+The local ADK-inspired runtime and execution trace layers are implemented under `boc_agent/runtime/`:
 
 * **Local ADK-Inspired Runtime**: Modularized execution utilizing `BOCReviewAgent`, `RuntimeContext`, `Planner`, `ToolRegistry`, `Executor`, and `ResponseBuilder` (Phase 9.1).
+* **Deterministic Tracing & Observability**: Execution profiling under `boc_agent/runtime/trace/` tracking planning intents, specialist tool execution metrics, reasoning graph steps, and stage-by-stage confidence timeline snapshots (Phase 9.2).
 * **Not Native Google ADK/Cloud Deployment Yet**: The system remains entirely local-first. Native Google ADK, Google Cloud Run, Vertex AI, Agent Engine, and Gemini API integrations are **not** implemented in this phase.
 
 For details, see:
-- [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime package.
+- [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime and trace packages.
 - [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to Google ADK and cloud concepts.
-- [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-007) for the project.
+- [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-008) for the project.
 
 ---
 
@@ -206,6 +207,5 @@ For details, see:
 
 ## 🔮 Future Improvements
 
-1. **Phase 9.2 Runtime Trace & Observability**: Incorporating runtime trace logging and debugging diagnostics for the dashboard interface.
-2. **Phase 10 Google Cloud / ADK Deployment**: Transitioning the local agent context to native Google Cloud Run services and Vertex AI Agent Engine.
-3. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.
+1. **Phase 10 Google Cloud / ADK Deployment**: Transitioning the local agent context to native Google Cloud Run services and Vertex AI Agent Engine.
+2. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.

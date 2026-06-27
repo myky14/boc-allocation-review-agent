@@ -18,6 +18,7 @@ This document outlines how the architectural design of the **BOC Allocation Revi
 | **Retrieval Tool** | Local TF-IDF RAG | Implemented | Vertex AI Search Migration | Document search index built from local Markdown files. |
 | **Human-in-the-Loop** | `boc_agent/hitl` | Implemented | Runtime Tool Registration | Separate queue builder and override logging columns. |
 | **Deployment** | Local Streamlit / CLI | Implemented | Cloud Run / Vertex AI Agent Engine | Execution environment (currently local-first, offline). |
+| **Execution Trace / Telemetry** | `boc_agent/runtime/trace/` | Implemented | Cloud Trace / Cloud Logging Integration | Monotonic stage latencies, reasoning graphs, and confidence timelines. |
 
 ---
 

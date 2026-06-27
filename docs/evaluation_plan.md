@@ -77,7 +77,7 @@ To execute the test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Pass Count**: **106 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime tests).
+* **Expected Pass Count**: **130 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime agent tests, 24 runtime trace tests).
 
 To execute the GL review CLI:
 ```bash
@@ -105,9 +105,9 @@ uv run python scripts/build_review_queue.py outputs/reviewed_boc_gl_dataset.xlsx
 
 ---
 
-## 5. Runtime Architecture Implementation (Phase 9.1)
+## 5. Runtime Architecture & Trace Implementation (Phases 9.1 & 9.2)
 
-Phase 9.0 documented the ADK-inspired local runtime design, and Phase 9.1 implements that runtime under `boc_agent/runtime/`. No native Google ADK runtime, Vertex AI deployment, Agent Engine deployment, or Cloud Run service exists yet. For details, see:
-- [docs/runtime_architecture.md](runtime_architecture.md): Implemented local runtime modules and execution flow.
+Phases 9.1 and 9.2 implement the ADK-inspired local runtime and observability trace layers under `boc_agent/runtime/`. For details, see:
+- [docs/runtime_architecture.md](runtime_architecture.md): Implemented local runtime modules, trace structures, and execution flow.
 - [docs/adk_mapping.md](adk_mapping.md): Mapping to future Google ADK/cloud concepts.
-- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-007).
+- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-008).

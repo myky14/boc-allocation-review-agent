@@ -6,7 +6,7 @@
 * **Capstone Track**: Kaggle AI Agents Intensive Capstone Project — Agents for Business Track
 * **Repository**: `boc-allocation-review-agent`
 * **Context**: This is a practical production-accounting support tool designed for the Canadian film and television industry. It assists production accountants in reviewing General Ledger (GL) entries for Breakdown of Costs (BOC) and CAVCO/provincial tax credit eligibility.
-* **Scope boundaries**: 
+* **Scope boundaries**:
   - It is **NOT** a legal or tax authority and does not provide authoritative tax-credit determinations.
   - It does **NOT** compile or generate the official CAVCO Form 6.
   - It does **NOT** connect to live external databases (e.g. CRA, CAVCO, Ontario Creates, SODEC, ERP, payroll, residency, citizenship, or corporate registries).
@@ -276,7 +276,16 @@ The agent allocates costs into one of **20 distinct columns**:
   - `docs/adk_mapping.md`
   - `docs/decision_log.md`
 * Clearly separates current implemented local components, the completed Phase 9.1 runtime implementation, and future Google ADK/cloud migration.
-* No runtime code, deterministic rules, dependencies, or tests are changed by Phase 9.0.
+
+### Phase 9.1: ADK-Inspired Runtime Implementation
+* Implemented the decoupled local runtime layer under `boc_agent/runtime/`.
+* Added robust skill permission enforcement and prevented mutating operations.
+* Added a comprehensive runtime test suite under `tests/test_runtime_agent.py`.
+
+### Phase 9.2: Runtime Trace & Observability
+* Implemented a structured execution trace layer under `boc_agent/runtime/trace/` (`trace_models.py`, `trace_builder.py`, `trace_exporter.py`, `trace_formatter.py`).
+* Captures monotonic latency times, intent capabilities, tool usage details, reasoning step sequences, and stage confidence timeline snapshots.
+* Added a comprehensive trace test suite under `tests/test_runtime_trace.py` (totaling 130 tests overall).
 
 ---
 
@@ -322,7 +331,6 @@ The General Ledger processing produces the following exact metrics over the 201 
 ## 13. Next Recommended Phases
 
 Future development phases after capstone presentation:
-* **Phase 9.2: Runtime Trace & Observability**: Incorporate runtime trace logging and debugging diagnostics for the dashboard interface.
 * **Phase 10: Google Cloud / ADK Deployment**: Transition the local agent context to native Google Cloud Run services and Vertex AI Agent Engine.
 
 ---
@@ -334,5 +342,5 @@ Future development phases after capstone presentation:
 * **Minimal Quebec Support**: Quebec Creates SODEC rules remain a minimal MVP skeleton containing 4 columns.
 * **Explanation-Only Assistant**: The chat layer should strictly explain and query existing reviewed data and must not attempt statutory tax rulings.
 * **No Native ADK or Cloud Deployment Yet**: Native Google ADK runtime, Vertex AI, Agent Engine, and Cloud Run deployment are not implemented.
-* **Phase 9.1 Runtime Is Implemented**: The ADK-inspired local runtime (`boc_agent/runtime/` containing `agent.py`, `planner.py`, `executor.py`, `tool_registry.py`, `context.py`, `response.py`) has been fully implemented and tested.
+* **Phases 9.1 & 9.2 Implemented**: Both the local runtime and execution trace observability layers have been fully implemented and tested.
 * **No Statutory Wording**: Avoid terms implying tax optimization or official rulings; use "review support", "suggested allocation", "deterministic allocation review", "synthetic workbook convention", and "human follow-up".

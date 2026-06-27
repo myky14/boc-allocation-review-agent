@@ -133,7 +133,7 @@ def test_agent_runtime_non_mutation():
 # 8. Planner sets expected intents.
 def test_planner_sets_intents():
     planner = Planner()
-    
+
     # Test cases mapping questions to intents
     queries = {
         "summary": "summary",
@@ -143,7 +143,7 @@ def test_planner_sets_intents():
         "Explain the human in the loop workflow": "rag",
         "this is a completely random query that should be unknown": "unknown"
     }
-    
+
     for q, expected_intent in queries.items():
         ctx = RuntimeContext(question=q)
         planner.plan(ctx)
@@ -154,7 +154,7 @@ def test_planner_sets_intents():
 # 9. ToolRegistry resolves expected tools for major intents.
 def test_registry_resolves_tools():
     registry = ToolRegistry()
-    
+
     assert registry.get_tool_for_intent("summary").name == "dataframe_summary"
     assert registry.get_tool_for_intent("row_explanation").name == "row_explanation"
     assert registry.get_tool_for_intent("filter_location").name == "location_filter"
@@ -168,7 +168,7 @@ def test_registry_resolves_tools():
 def test_executor_blocks_df_required_when_missing():
     registry = ToolRegistry()
     executor = Executor(registry)
-    
+
     skill = _get_mock_skill()
     ctx = RuntimeContext(question="summary", intent="summary", reviewed_df=None, skill=skill)
     res = executor.execute(ctx)
@@ -188,7 +188,7 @@ def test_executor_blocks_mutating_tool():
         mutating=True,
         requires_dataframe=False
     ))
-    
+
     executor = Executor(registry)
     skill = _get_mock_skill()
     ctx = RuntimeContext(question="mutate", intent="mutate", skill=skill)
@@ -201,11 +201,11 @@ def test_executor_blocks_mutating_tool():
 def test_executor_skill_permission_denial():
     registry = ToolRegistry()
     executor = Executor(registry)
-    
+
     # Construct a skill that doesn't permit classification_tool
     metadata = SkillMetadata(name="restricted_skill", version="1.0.0", description="test", role="test")
     grounding = GroundingPolicy(strict_grounding=True, omit_protocols=[], required_disclaimer="Disclaimer")
-    
+
     # classification_tool only supports "other_intent" instead of "row_explanation"
     bad_tools = [
         ToolDefinition(name="classification_tool", intents=["other_intent"], mutating=False, required_dataframe=True)
@@ -216,7 +216,7 @@ def test_executor_skill_permission_denial():
         tools=bad_tools,
         grounding_policy=grounding
     )
-    
+
     df = _get_test_df()
     ctx = RuntimeContext(
         question="explain transaction 508841",
@@ -224,7 +224,7 @@ def test_executor_skill_permission_denial():
         reviewed_df=df,
         skill=restricted_skill
     )
-    
+
     res = executor.execute(ctx)
     assert "Tool permission denied" in res
     assert "classification_tool" in res
@@ -242,11 +242,11 @@ def test_assistant_delegates_to_agent():
 def test_compatibility_retains_behavior():
     assistant = ReviewConversationAssistant()
     df = _get_test_df()
-    
+
     # Test Location 920 filter
     res = assistant.answer("Show me all Location 920 rows", df)
     assert "Location 920 Breakdown" in res
-    
+
     # Test ineligible summary
     res = assistant.answer("Show ineligible rows", df)
     assert "Ineligible Costs Summary" in res
@@ -256,7 +256,7 @@ def test_compatibility_retains_behavior():
 def test_trace_list_records_execution_steps():
     agent = BOCReviewAgent()
     df = _get_test_df()
-    
+
     # Create context explicitly to inspect trace
     skill = _get_mock_skill()
     ctx = RuntimeContext(
@@ -264,15 +264,15 @@ def test_trace_list_records_execution_steps():
         reviewed_df=df,
         skill=skill
     )
-    
+
     agent.planner.plan(ctx)
     assert ctx.intent == "row_explanation"
     assert any("Planner" in t for t in ctx.trace)
-    
+
     res = agent.executor.execute(ctx)
     assert "Transaction Details" in res
     assert any("Executor" in t for t in ctx.trace)
-    
+
     # Verify trace contains execution milestones
     trace_str = " ".join(ctx.trace)
     assert "resolved intent" in trace_str.lower()
@@ -285,7 +285,7 @@ def test_missing_skill_path_blocks_execution(monkeypatch, tmp_path):
     monkeypatch.setenv("BOC_SKILL_FILE_PATH", str(tmp_path / "nonexistent_skill.md"))
     from boc_agent.skill.loader import SkillLoader
     SkillLoader()._cached_skill = None
-    
+
     agent = BOCReviewAgent()
     df = _get_test_df()
     res = agent.run("summary", df)
@@ -324,13 +324,12 @@ def test_valid_root_skill_allows_normal_flows(monkeypatch):
     monkeypatch.setenv("BOC_SKILL_FILE_PATH", "SKILL.md")
     from boc_agent.skill.loader import SkillLoader
     SkillLoader()._cached_skill = None
-    
+
     agent = BOCReviewAgent()
     df = _get_test_df()
-    
+
     res_summary = agent.run("summary", df)
     assert "Workbook Summary Metrics" in res_summary
-    
+
     res_explain = agent.run("explain transaction 508841", df)
     assert "Transaction Details: Reference 508841" in res_explain
-

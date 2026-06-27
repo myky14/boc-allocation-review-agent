@@ -2,6 +2,7 @@ import pandas as pd
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 from boc_agent.skill.models import Skill
+from boc_agent.runtime.trace.trace_builder import TraceBuilder
 
 @dataclass
 class RuntimeContext:
@@ -13,6 +14,7 @@ class RuntimeContext:
     metadata: Dict[str, Any] = field(default_factory=dict)
     errors: List[str] = field(default_factory=list)
     trace: List[str] = field(default_factory=list)
+    trace_builder: TraceBuilder = field(default_factory=TraceBuilder)
 
     def add_trace(self, message: str) -> None:
         """Appends a tracing log entry for execution observability."""
