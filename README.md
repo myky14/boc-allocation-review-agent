@@ -1,6 +1,6 @@
 # BOC Allocation Review Agent (Kaggle Capstone)
 
-A local-first, ADK-inspired AI Agent co-pilot designed to assist production accountants in the Canadian film and television industry. This agent processes a synthetic, pre-cleaned/enriched General Ledger (GL) workbook and suggests Breakdown of Costs (BOC) allocation treatments. The output is a BOC allocation review workbook, not an official filing.
+An offline-first AI accounting review agent inspired by Google ADK, combining deterministic business rules, local documentation RAG, Human-in-the-Loop review, runtime tracing, Streamlit UI, and Cloud Run deployment readiness.
 
 > [!IMPORTANT]
 > **Project Scope Boundaries**:
@@ -148,7 +148,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (138 tests total):
+Execute all unit, integration, and UI helper tests (145 tests total):
 ```bash
 uv run pytest
 ```
@@ -198,6 +198,10 @@ For details, see:
 - [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md): Deployment walkthrough for Google Cloud Run.
 - [docs/cost_guardrails.md](docs/cost_guardrails.md): Cost safety and budget setup guidelines.
 - [docs/adk_vertex_migration.md](docs/adk_vertex_migration.md): Optional ADK / Vertex AI migration guide.
+- [docs/portfolio_case_study.md](docs/portfolio_case_study.md): Case study detailing design choices, engineering trade-offs, and lessons learned.
+- [docs/demo_script.md](docs/demo_script.md): Presenter-friendly walkthrough script.
+- [docs/release_checklist.md](docs/release_checklist.md): Comprehensive pre-release verification checklist.
+- [docs/interview_notes.md](docs/interview_notes.md): Technical prep Q&A for developer interviews.
 
 ---
 

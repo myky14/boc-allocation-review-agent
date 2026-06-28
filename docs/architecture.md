@@ -187,3 +187,13 @@ For detailed specifications, see:
 - [docs/deployment_cloud_run.md](deployment_cloud_run.md): Deployment walkthrough for Google Cloud Run.
 - [docs/cost_guardrails.md](cost_guardrails.md): Cost safety and budget setup guidelines.
 - [docs/adk_vertex_migration.md](adk_vertex_migration.md): Optional ADK / Vertex AI migration guide.
+
+---
+
+## 12. Portfolio & Repository Polish (Phase 11.1)
+
+Phase 11.1 adds structured repository case studies and interview preparation assets:
+* **Portfolio Case Study**: [docs/portfolio_case_study.md](portfolio_case_study.md) details the project problem, goals, and technical trade-offs.
+* **Demo Script**: [docs/demo_script.md](demo_script.md) provides a structured 5-7 minute presentation guide.
+* **Release Checklist**: [docs/release_checklist.md](release_checklist.md) provides the release checklist.
+* **Interview prep**: [docs/interview_notes.md](interview_notes.md) contains technical prep Q&A.

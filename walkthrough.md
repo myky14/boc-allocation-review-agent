@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **138 passed tests**
+* **Expected Final Test Count**: **145 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -35,6 +35,7 @@ uv run pytest
   - `tests/test_deployment_files.py` (6 deployment readiness validations)
   - `tests/test_cost_guardrails_docs.py` (1 cost safety validation)
   - `tests/test_adk_migration_docs.py` (1 migration guide validation)
+  - `tests/test_portfolio_docs.py` (7 portfolio readiness validations)
 
 ---
 
@@ -143,3 +144,14 @@ For details, see:
 - [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md): Guide for deploying Streamlit to Google Cloud Run.
 - [docs/cost_guardrails.md](docs/cost_guardrails.md): Cost safety and budget setup guidelines.
 - [docs/adk_vertex_migration.md](docs/adk_vertex_migration.md): Optional ADK / Vertex AI migration guide.
+
+---
+
+## 🎨 10. Portfolio & Repository Polish (Phase 11.1)
+
+Phase 11.1 adds professional presentation and polish assets for portfolio review:
+* **Portfolio Case Study**: [docs/portfolio_case_study.md](docs/portfolio_case_study.md) describes the problem statement, system architecture, decision justifications, and lessons learned.
+* **Demo Script**: [docs/demo_script.md](docs/demo_script.md) provides a presenter-ready 5-7 minute walkthrough script.
+* **Release Checklist**: [docs/release_checklist.md](docs/release_checklist.md) provides release tagging instructions.
+* **Interview notes**: [docs/interview_notes.md](docs/interview_notes.md) outlines technical Q&A preparation.
+* **Roadmap**: Next recommended phase is Phase 11.2 (Demo Assets / Screenshots / Video Guide).

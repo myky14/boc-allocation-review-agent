@@ -223,7 +223,7 @@ The runtime trace and observability layer has been fully implemented in Phase 9.
 - **Agent integration**:
   * `BOCReviewAgent.run` returns a `str` response and stores the trace in `agent.last_trace`.
   * `ReviewConversationAssistant.answer` remains backward-compatible (returns string response) and stores the trace in `assistant.last_trace`.
-- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 138).
+- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 145).
 
 ---
 
@@ -251,3 +251,14 @@ Phase 10.2 introduces cost-control procedures and billing guardrails for deployi
 Phase 10.3 provides a migration roadmap from the local-first execution environment to managed cloud options:
 - **Migration Guide**: [docs/adk_vertex_migration.md](adk_vertex_migration.md) details Google ADK mapping, Vertex AI mapping, migration strategies, and risks.
 - **Verification tests**: Added `tests/test_adk_migration_docs.py` to assert correct roadmapping vocabulary and prevent false deployment assertions.
+
+---
+
+## 14. Phase 11.1 Portfolio & Repository Polish
+
+Phase 11.1 adds professional presentation and polish assets for portfolio review:
+- **Case Study**: [docs/portfolio_case_study.md](portfolio_case_study.md) provides structured case study details.
+- **Demo Script**: [docs/demo_script.md](demo_script.md) provides a presenter-ready 5-7 minute walkthrough script.
+- **Release Checklist**: [docs/release_checklist.md](release_checklist.md) provides git tagging release procedures.
+- **Interview prep**: [docs/interview_notes.md](interview_notes.md) outlines technical Q&A preparation.
+- **Verification tests**: Added `tests/test_portfolio_docs.py` to assert presence of all files, links, and disclaimers.
