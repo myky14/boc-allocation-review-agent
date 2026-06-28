@@ -223,7 +223,7 @@ The runtime trace and observability layer has been fully implemented in Phase 9.
 - **Agent integration**:
   * `BOCReviewAgent.run` returns a `str` response and stores the trace in `agent.last_trace`.
   * `ReviewConversationAssistant.answer` remains backward-compatible (returns string response) and stores the trace in `assistant.last_trace`.
-- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 145).
+- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 183).
 
 ---
 
@@ -262,3 +262,14 @@ Phase 11.1 adds professional presentation and polish assets for portfolio review
 - **Release Checklist**: [docs/release_checklist.md](release_checklist.md) provides git tagging release procedures.
 - **Interview prep**: [docs/interview_notes.md](interview_notes.md) outlines technical Q&A preparation.
 - **Verification tests**: Added `tests/test_portfolio_docs.py` to assert presence of all files, links, and disclaimers.
+
+---
+
+## 15. Phase 11.2 Demo Assets / Screenshots / Video Guide
+
+Phase 11.2 adds placeholders and capture checklists to prepare for capstone presentation:
+- **Demo Assets structure**: Creates `assets/` subdirectory placeholders with `.gitkeep` anchors and safe capture rules in `assets/README.md`.
+- **Screenshot Checklist**: [docs/screenshot_checklist.md](screenshot_checklist.md) details Streamlit dashboard, conversational assistant, and runtime trace capture targets.
+- **Video Recording Guide**: [docs/video_recording_guide.md](video_recording_guide.md) outlines narration scripts and a 5-7 minute timeline structure.
+- **Presentation Flow**: [docs/presentation_flow.md](presentation_flow.md) maps timelines for pitches and technical interviews.
+- **Verification tests**: Added `tests/test_demo_assets_docs.py` to assert presence of all placeholders, links, and disclaimers.

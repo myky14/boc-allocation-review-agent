@@ -110,7 +110,7 @@ def test_validate_documented_test_count():
         "docs/evaluation_plan.md"
     ]
     
-    stale_patterns = ["138 tests", "138 passed", "138 passing", "143 tests", "143 passed", "143 passing", "144 tests", "144 passed", "144 passing"]
+    stale_patterns = ["138 tests", "138 passed", "138 passing", "143 tests", "143 passed", "143 passing", "144 tests", "144 passed", "144 passing", "145 tests", "145 passed", "145 passing", "152 tests", "152 passed", "152 passing", "153 tests", "153 passed", "153 passing", "176 tests", "176 passed", "176 passing"]
     
     for filepath in files_to_check:
         with open(filepath, "r", encoding="utf-8") as f:
@@ -120,7 +120,7 @@ def test_validate_documented_test_count():
         for pattern in stale_patterns:
             assert pattern not in normalized_content, f"Stale test count pattern '{pattern}' found in {filepath}"
             
-    # Verify the current count "145" exists in relevant docs where test count is mentioned
+    # Verify the current count "183" exists in relevant docs where test count is mentioned
     docs_mentioning_count = [
         "README.md",
         "docs/evaluation_plan.md",
@@ -132,11 +132,11 @@ def test_validate_documented_test_count():
         with open(filepath, "r", encoding="utf-8") as f:
             content = f.read().lower()
             normalized_content = re.sub(r'\s+', ' ', content)
-        assert ("145 tests" in normalized_content or 
-                "145 unit tests" in normalized_content or 
-                "145 unit and integration tests" in normalized_content or 
-                "145 passed" in normalized_content or 
-                "145-test" in normalized_content), f"Current test count 145 not mentioned in {filepath}"
+        assert ("183 tests" in normalized_content or
+                "183 unit tests" in normalized_content or
+                "183 unit and integration tests" in normalized_content or
+                "183 passed" in normalized_content or
+                "183-test" in normalized_content), f"Current test count 183 not mentioned in {filepath}"
 
 def test_safe_disclaimers_per_document():
     # Issue 6: Each main portfolio document must have at least one appropriate disclaimer

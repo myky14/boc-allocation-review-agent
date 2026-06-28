@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **145 passed tests**
+* **Expected Final Test Count**: **183 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -36,6 +36,7 @@ uv run pytest
   - `tests/test_cost_guardrails_docs.py` (1 cost safety validation)
   - `tests/test_adk_migration_docs.py` (1 migration guide validation)
   - `tests/test_portfolio_docs.py` (7 portfolio readiness validations)
+  - `tests/test_demo_assets_docs.py` (38 demo asset docs validations)
 
 ---
 
@@ -155,3 +156,14 @@ Phase 11.1 adds professional presentation and polish assets for portfolio review
 * **Release Checklist**: [docs/release_checklist.md](docs/release_checklist.md) provides release tagging instructions.
 * **Interview notes**: [docs/interview_notes.md](docs/interview_notes.md) outlines technical Q&A preparation.
 * **Roadmap**: Next recommended phase is Phase 11.2 (Demo Assets / Screenshots / Video Guide).
+
+---
+
+## 📸 11. Demo Assets / Screenshots / Video Guide (Phase 11.2)
+
+Phase 11.2 adds structured placeholder folders and capture checklists to prepare for capstone presentation:
+* **Demo Assets Structure**: Creates `assets/` subdirectory placeholders with `.gitkeep` anchors and safe, synthetic-only capture rules in `assets/README.md`.
+* **Screenshot Checklist**: [docs/screenshot_checklist.md](docs/screenshot_checklist.md) details Streamlit dashboard, conversational assistant, and runtime trace capture targets.
+* **Video Recording Guide**: [docs/video_recording_guide.md](docs/video_recording_guide.md) outlines narration scripts and a 5-7 minute timeline structure.
+* **Presentation Flow**: [docs/presentation_flow.md](docs/presentation_flow.md) maps timelines for pitches and technical interviews.
+* **Roadmap**: Next recommended phase is Phase 11.3 (Final Release / GitHub Release / Portfolio Publishing).

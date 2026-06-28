@@ -98,4 +98,4 @@
 - **Presenter Action**: Return to the repository homepage.
 - **Wording / Talking Points**:
   > "To summarize, the BOC Allocation Review Agent combines a deterministic rule engine, a local TF-IDF RAG, runtime tracing, and Cloud Run deployment readiness into an offline-first compliance support tool. 
-  > With 145 unit tests passing, the system is fully verified and ready. Thank you for your time!"
+  > With 183 unit tests passing, the system is fully verified and ready. Thank you for your time!"

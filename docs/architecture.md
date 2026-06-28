@@ -197,3 +197,13 @@ Phase 11.1 adds structured repository case studies and interview preparation ass
 * **Demo Script**: [docs/demo_script.md](demo_script.md) provides a structured 5-7 minute presentation guide.
 * **Release Checklist**: [docs/release_checklist.md](release_checklist.md) provides the release checklist.
 * **Interview prep**: [docs/interview_notes.md](interview_notes.md) contains technical prep Q&A.
+
+---
+
+## 13. Demo Assets / Screenshots / Video Guide (Phase 11.2)
+
+Phase 11.2 adds placeholders and capture checklists to prepare for capstone presentation:
+* **Demo Assets structure**: Creates `assets/` subdirectory placeholders with `.gitkeep` anchors and safe capture rules in `assets/README.md`.
+* **Screenshot Checklist**: [docs/screenshot_checklist.md](screenshot_checklist.md) details Streamlit dashboard, conversational assistant, and runtime trace capture targets.
+* **Video Recording Guide**: [docs/video_recording_guide.md](video_recording_guide.md) outlines narration scripts and a 5-7 minute timeline structure.
+* **Presentation Flow**: [docs/presentation_flow.md](presentation_flow.md) maps timelines for pitches and technical interviews.

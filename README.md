@@ -148,7 +148,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (145 tests total):
+Execute all unit, integration, and UI helper tests (183 tests total):
 ```bash
 uv run pytest
 ```
@@ -202,6 +202,21 @@ For details, see:
 - [docs/demo_script.md](docs/demo_script.md): Presenter-friendly walkthrough script.
 - [docs/release_checklist.md](docs/release_checklist.md): Comprehensive pre-release verification checklist.
 - [docs/interview_notes.md](docs/interview_notes.md): Technical prep Q&A for developer interviews.
+- [docs/screenshot_checklist.md](docs/screenshot_checklist.md): Screenshot capture checklist.
+- [docs/video_recording_guide.md](docs/video_recording_guide.md): Video recording guide.
+- [docs/demo_assets_guide.md](docs/demo_assets_guide.md): Demo assets overview guide.
+- [docs/presentation_flow.md](docs/presentation_flow.md): Timing flow guidelines.
+- [assets/README.md](assets/README.md): Asset repository placeholders README.
+
+---
+
+## 🎨 Demo Assets
+Visual demo assets are optional and should be captured from the local Streamlit app using synthetic data only.
+- [docs/screenshot_checklist.md](docs/screenshot_checklist.md): Capture checklist for Streamlit, assistant, and trace views.
+- [docs/video_recording_guide.md](docs/video_recording_guide.md): Guide detailing narration timelines and setups.
+- [docs/demo_assets_guide.md](docs/demo_assets_guide.md): Presentation guide for porting assets to portfolios.
+- [docs/presentation_flow.md](docs/presentation_flow.md): Timing timelines for pitch and technical walkthroughs.
+- [assets/README.md](assets/README.md): Suggested folder structures and placeholders.
 
 ---
 
