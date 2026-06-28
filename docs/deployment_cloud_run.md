@@ -160,5 +160,5 @@ To manage resource usage and scale down idle costs:
 ## 8. Limitations & Scope
 
 - **No Official Determinations**: The tool is an administrative aid. It does not issue official CRA/CAVCO rulings or output official CAVCO Form 6 PDF applications.
-- **No Vertex AI / Gemini Integration**: Vertex AI Agent Engine and Gemini API integration are not active in Phase 10.1.
+- **No Vertex AI / Gemini Integration**: Vertex AI Agent Engine and Gemini API integration are not active in this repository. For a conceptual mapping of optional future integration, see the [docs/adk_vertex_migration.md](adk_vertex_migration.md) guide.
 - **Demo Scope Only**: Do not upload actual sensitive production payroll ledgers or proprietary corporate spreadsheets during public demonstrations.

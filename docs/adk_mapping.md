@@ -65,3 +65,5 @@ Vertex AI Agent Engine / Vertex Search (future exploration)
 ```
 
 During this migration, the core rules engine (`allocation_tool.py`) remains unchanged, guaranteeing that production accounting rules are preserved identically across all hosting targets.
+
+For a detailed walkthrough of the migration steps, components, and risk mitigations, see the [docs/adk_vertex_migration.md](adk_vertex_migration.md) guide.

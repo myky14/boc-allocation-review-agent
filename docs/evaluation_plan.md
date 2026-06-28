@@ -77,7 +77,7 @@ To execute the test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Pass Count**: **137 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime agent tests, 24 runtime trace tests, 6 deployment files tests, 1 cost safety validation test).
+* **Expected Pass Count**: **138 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime agent tests, 24 runtime trace tests, 6 deployment files tests, 1 cost safety validation test, 1 ADK migration guide validation test).
 
 To execute the GL review CLI:
 ```bash

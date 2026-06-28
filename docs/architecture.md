@@ -162,7 +162,7 @@ The local ADK-inspired runtime and observability layers are structured under `bo
 Phase 10.1 adds Docker containerization configurations and deployment guides:
 * **Containerization**: A cached Dockerfile utilizing `uv` to build production-appropriate Streamlit images.
 * **Deployment Guide**: [docs/deployment_cloud_run.md](deployment_cloud_run.md) provides detailed step-by-step commands to deploy to Google Cloud Run under strict resource bounds.
-* **Roadmap**: Next recommended steps are Phase 10.2 (Cost Guardrails & Budget Docs) and Phase 10.3 (Optional ADK / Vertex AI migration).
+* **Roadmap**: Next recommended step is Phase 10.2 (Cost Guardrails & Budget Docs).
 
 ---
 
@@ -170,7 +170,15 @@ Phase 10.1 adds Docker containerization configurations and deployment guides:
 
 Phase 10.2 adds detailed cost-safety documentation for cloud deployments:
 * **Cost Guardrails**: [docs/cost_guardrails.md](cost_guardrails.md) provides detailed Google Cloud Console budget setups, alert thresholds (including forecasted warnings), instance constraints, and storage/artifact monitoring checklists.
-* **Roadmap**: Next recommended step is Phase 10.3 (Optional ADK / Vertex AI Migration Guide).
+* **Roadmap**: Phase 10.3 is completed as a conceptual migration guide.
+
+---
+
+## 11. Optional ADK / Vertex AI Migration Guide (Phase 10.3)
+
+Phase 10.3 has been completed as documentation detailing the optional conceptual transition roadmap:
+* **Migration Guide**: [docs/adk_vertex_migration.md](adk_vertex_migration.md) details Google ADK mapping, Vertex AI mapping, migration strategy steps, and risk controls.
+* **Status**: Note that actual native Google ADK, Vertex AI, Gemini, and Agent Engine migration remains optional future work, and no native cloud agent deployment has been implemented.
 
 For detailed specifications, see:
 - [docs/runtime_architecture.md](runtime_architecture.md): Specifications for the target runtime and trace modules.
@@ -178,3 +186,4 @@ For detailed specifications, see:
 - [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-008).
 - [docs/deployment_cloud_run.md](deployment_cloud_run.md): Deployment walkthrough for Google Cloud Run.
 - [docs/cost_guardrails.md](cost_guardrails.md): Cost safety and budget setup guidelines.
+- [docs/adk_vertex_migration.md](adk_vertex_migration.md): Optional ADK / Vertex AI migration guide.

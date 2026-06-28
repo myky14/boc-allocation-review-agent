@@ -223,7 +223,7 @@ The runtime trace and observability layer has been fully implemented in Phase 9.
 - **Agent integration**:
   * `BOCReviewAgent.run` returns a `str` response and stores the trace in `agent.last_trace`.
   * `ReviewConversationAssistant.answer` remains backward-compatible (returns string response) and stores the trace in `assistant.last_trace`.
-- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 137).
+- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 138).
 
 ---
 
@@ -243,3 +243,11 @@ The local-first runtime has been containerized and prepared for cloud hosting in
 Phase 10.2 introduces cost-control procedures and billing guardrails for deploying the agent:
 - **Cost Guardrails Guide**: [docs/cost_guardrails.md](cost_guardrails.md) provides Google Cloud Console budget setups, alert thresholds (including forecasted warnings), instance constraints, and storage/artifact monitoring checklists.
 - **Safety checks**: Unit tests in `tests/test_cost_guardrails_docs.py` verify that the cost guide uses cautious disclaimers and avoids unsafe zero-cost or hard-cap claims.
+
+---
+
+## 13. Phase 10.3 Optional ADK / Vertex AI Migration Guide
+
+Phase 10.3 provides a migration roadmap from the local-first execution environment to managed cloud options:
+- **Migration Guide**: [docs/adk_vertex_migration.md](adk_vertex_migration.md) details Google ADK mapping, Vertex AI mapping, migration strategies, and risks.
+- **Verification tests**: Added `tests/test_adk_migration_docs.py` to assert correct roadmapping vocabulary and prevent false deployment assertions.

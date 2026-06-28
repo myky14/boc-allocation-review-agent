@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **137 passed tests**
+* **Expected Final Test Count**: **138 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -34,6 +34,7 @@ uv run pytest
   - `tests/test_runtime_trace.py` (24 runtime trace validations)
   - `tests/test_deployment_files.py` (6 deployment readiness validations)
   - `tests/test_cost_guardrails_docs.py` (1 cost safety validation)
+  - `tests/test_adk_migration_docs.py` (1 migration guide validation)
 
 ---
 
@@ -126,7 +127,14 @@ Phase 10.1 adds deployment-readiness configurations so the Streamlit dashboard a
 Phase 10.2 adds detailed cost-safety guidelines and billing configurations for deploying the Streamlit application to Google Cloud Run:
 * **Cost Guardrails Guide**: [docs/cost_guardrails.md](docs/cost_guardrails.md) details Console budget setups, recommended starter thresholds (50%, 90%, 100%, and forecasted spend), instance scaling limits, cost monitoring, and cleanup procedures.
 * **Cost disclaimers**: Ensures no claims are made regarding guaranteed zero cost, free hosting, or budget alerts acting as automated spend caps.
-* **Roadmap**: Next recommended phase is Phase 10.3 (Optional ADK / Vertex AI Migration Guide).
+
+---
+
+## 🔮 9. Optional ADK / Vertex AI Migration Guide (Phase 10.3)
+
+Phase 10.3 adds an architectural migration guide detailing the optional transition path from local-first runtimes to Google Cloud's native AI Agent stack:
+* **Migration Guide**: [docs/adk_vertex_migration.md](docs/adk_vertex_migration.md) defines current to native Google ADK/Vertex component mappings, step-by-step migration strategy checklists, and risk mitigations.
+* **Wording & Boundary**: Explicitly documents that native ADK, Vertex AI Agent Engine, and Gemini are not implemented today, and that the deterministic accounting rules in `allocation_tool.py` must remain completely unchanged to preserve compliance.
 
 For details, see:
 - [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime package.
@@ -134,3 +142,4 @@ For details, see:
 - [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-008) governing the project design.
 - [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md): Guide for deploying Streamlit to Google Cloud Run.
 - [docs/cost_guardrails.md](docs/cost_guardrails.md): Cost safety and budget setup guidelines.
+- [docs/adk_vertex_migration.md](docs/adk_vertex_migration.md): Optional ADK / Vertex AI migration guide.
