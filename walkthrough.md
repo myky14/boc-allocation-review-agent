@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **136 passed tests**
+* **Expected Final Test Count**: **137 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -33,6 +33,7 @@ uv run pytest
   - `tests/test_runtime_agent.py` (19 runtime agent validations)
   - `tests/test_runtime_trace.py` (24 runtime trace validations)
   - `tests/test_deployment_files.py` (6 deployment readiness validations)
+  - `tests/test_cost_guardrails_docs.py` (1 cost safety validation)
 
 ---
 
@@ -117,10 +118,19 @@ Phase 10.1 adds deployment-readiness configurations so the Streamlit dashboard a
 
 * **Dockerfile & .dockerignore**: Configures optimized caches, non-root user execution, and headless server bindings to port `8080` (retaining RAG docs and demo data).
 * **Cloud Run Guide**: Exposes gcloud CLI source-to-service deployments and cost control setups (`--min-instances 0 --max-instances 1`).
-* **Roadmap**: Next recommended phase is Phase 10.2 (Cost Guardrails & Budget Docs) followed by Phase 10.3 (ADK / Vertex AI migration).
+
+---
+
+## 💰 8. Cost Guardrails + Budget Documentation (Phase 10.2)
+
+Phase 10.2 adds detailed cost-safety guidelines and billing configurations for deploying the Streamlit application to Google Cloud Run:
+* **Cost Guardrails Guide**: [docs/cost_guardrails.md](docs/cost_guardrails.md) details Console budget setups, recommended starter thresholds (50%, 90%, 100%, and forecasted spend), instance scaling limits, cost monitoring, and cleanup procedures.
+* **Cost disclaimers**: Ensures no claims are made regarding guaranteed zero cost, free hosting, or budget alerts acting as automated spend caps.
+* **Roadmap**: Next recommended phase is Phase 10.3 (Optional ADK / Vertex AI Migration Guide).
 
 For details, see:
 - [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime package.
 - [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to Google ADK and cloud concepts.
 - [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-008) governing the project design.
 - [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md): Guide for deploying Streamlit to Google Cloud Run.
+- [docs/cost_guardrails.md](docs/cost_guardrails.md): Cost safety and budget setup guidelines.

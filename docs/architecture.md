@@ -162,10 +162,19 @@ The local ADK-inspired runtime and observability layers are structured under `bo
 Phase 10.1 adds Docker containerization configurations and deployment guides:
 * **Containerization**: A cached Dockerfile utilizing `uv` to build production-appropriate Streamlit images.
 * **Deployment Guide**: [docs/deployment_cloud_run.md](deployment_cloud_run.md) provides detailed step-by-step commands to deploy to Google Cloud Run under strict resource bounds.
-* **Roadmap**: Next recommended steps are Phase 10.2 (Cost Guardrails & Budget Docs) and Phase 10.3 (ADK / Vertex AI migration).
+* **Roadmap**: Next recommended steps are Phase 10.2 (Cost Guardrails & Budget Docs) and Phase 10.3 (Optional ADK / Vertex AI migration).
+
+---
+
+## 10. Cost Guardrails & Budget Documentation (Phase 10.2)
+
+Phase 10.2 adds detailed cost-safety documentation for cloud deployments:
+* **Cost Guardrails**: [docs/cost_guardrails.md](cost_guardrails.md) provides detailed Google Cloud Console budget setups, alert thresholds (including forecasted warnings), instance constraints, and storage/artifact monitoring checklists.
+* **Roadmap**: Next recommended step is Phase 10.3 (Optional ADK / Vertex AI Migration Guide).
 
 For detailed specifications, see:
 - [docs/runtime_architecture.md](runtime_architecture.md): Specifications for the target runtime and trace modules.
 - [docs/adk_mapping.md](adk_mapping.md): Mapping of local agents to native Google ADK framework primitives.
 - [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-008).
 - [docs/deployment_cloud_run.md](deployment_cloud_run.md): Deployment walkthrough for Google Cloud Run.
+- [docs/cost_guardrails.md](cost_guardrails.md): Cost safety and budget setup guidelines.

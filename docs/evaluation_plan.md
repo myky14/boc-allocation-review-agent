@@ -77,7 +77,7 @@ To execute the test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Pass Count**: **136 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime agent tests, 24 runtime trace tests, 6 deployment files tests).
+* **Expected Pass Count**: **137 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime agent tests, 24 runtime trace tests, 6 deployment files tests, 1 cost safety validation test).
 
 To execute the GL review CLI:
 ```bash
@@ -126,3 +126,11 @@ To run the local deployment smoke check:
 uv run python scripts/smoke_deployment.py
 ```
 * **Result**: Validates skill loader initialization, agent run success, and trace capture.
+
+---
+
+## 7. Cost Guardrails & Budget Documentation (Phase 10.2)
+
+Phase 10.2 introduces cost-control guidelines and billing budget assertions:
+- [docs/cost_guardrails.md](cost_guardrails.md): GCP Cloud Run cost safety disclaimers, Console budget alerts flow, and cleanup steps.
+- `tests/test_cost_guardrails_docs.py`: Asserts that the cost guide includes low-cost settings, budget thresholds, storage charges disclaimers, and avoids unsafe claims.

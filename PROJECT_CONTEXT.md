@@ -285,11 +285,15 @@ The agent allocates costs into one of **20 distinct columns**:
 ### Phase 9.2: Runtime Trace & Observability
 * Implemented a structured execution trace layer under `boc_agent/runtime/trace/` (`trace_models.py`, `trace_builder.py`, `trace_exporter.py`, `trace_formatter.py`).
 * Captures monotonic latency times, intent capabilities, tool usage details, reasoning step sequences, and stage confidence timeline snapshots.
-* Added a comprehensive trace test suite under `tests/test_runtime_trace.py` (totaling 136 tests overall including Phase 10.1 tests).
+* Added a comprehensive trace test suite under `tests/test_runtime_trace.py` (totaling 137 tests overall including Phase 10.1 & 10.2 tests).
 
 ### Phase 10.1: Docker + Google Cloud Run Deployment Readiness
 * Created `Dockerfile`, `.dockerignore`, `.env.example`, and [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md) for containerizing the Streamlit agent.
 * Implemented container smoke checks in `scripts/smoke_deployment.py` and unit checks in `tests/test_deployment_files.py`.
+
+### Phase 10.2: Cost Guardrails & Budget Documentation
+* Created [docs/cost_guardrails.md](docs/cost_guardrails.md) detailing recommended low-cost settings, budget alert setups, and cleanup checklists.
+* Implemented doc assertions in `tests/test_cost_guardrails_docs.py` to verify disclaimers and settings.
 
 ---
 
@@ -335,8 +339,7 @@ The General Ledger processing produces the following exact metrics over the 201 
 ## 13. Next Recommended Phases
 
 Future development phases after capstone presentation:
-* **Phase 10.2: Cost Guardrails & Budget Docs**: Configure GCP billing budgets, cost alerts, and resource telemetry logging.
-* **Phase 10.3: Native ADK / Vertex AI Integration**: Migrate to native Google Cloud Agent Engine and Vertex AI Search wrappers.
+* **Phase 10.3: Optional ADK / Vertex AI Migration Guide**: Migrate to native Google Cloud Agent Engine and Vertex AI Search wrappers.
 
 ---
 
@@ -347,5 +350,5 @@ Future development phases after capstone presentation:
 * **Minimal Quebec Support**: Quebec Creates SODEC rules remain a minimal MVP skeleton containing 4 columns.
 * **Explanation-Only Assistant**: The chat layer should strictly explain and query existing reviewed data and must not attempt statutory tax rulings.
 * **No Native ADK or Cloud Deployment Yet**: Native Google ADK runtime, Vertex AI, Agent Engine, and Cloud Run deployment are not implemented.
-* **Phases 9.1, 9.2 & 10.1 Implemented**: Both the local runtime, execution trace observability, and Docker Cloud Run readiness layers have been fully implemented and tested.
+* **Phases 9.1, 9.2, 10.1 & 10.2 Implemented**: Both the local runtime, execution trace observability, Docker Cloud Run readiness, and Cost Guardrails layers have been fully implemented and tested.
 * **No Statutory Wording**: Avoid terms implying tax optimization or official rulings; use "review support", "suggested allocation", "deterministic allocation review", "synthetic workbook convention", and "human follow-up".

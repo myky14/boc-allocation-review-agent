@@ -53,7 +53,7 @@ Before deploying, ensure you have:
 
 To prevent runaway costs during demonstration and testing, configure the following values:
 - **Min Instances**: `0` (scales down to zero when idle to reduce idle costs).
-- **Max Instances**: `1` (prevents concurrent scaling surges).
+- **Max Instances**: `1` (limits normal autoscaling to one configured maximum instance to reduce the risk of runaway scaling. Note that Cloud Run may briefly exceed the configured maximum during traffic spikes, so this is a guardrail, not a hard guarantee).
 - **CPU**: `1` (modest compute allocation).
 - **Memory**: `1Gi` (sufficient for the local Python TF-IDF index and Streamlit sessions).
 - **Concurrency**: `80` (default Streamlit load sharing).
@@ -153,7 +153,7 @@ To manage resource usage and scale down idle costs:
      --region us-central1
    ```
    *Note: Deleting the service stops Cloud Run service request processing for this service. Other related resources such as build artifacts, logs, storage, or project-level services may still incur costs. Review and clean associated resources to reduce remaining costs.*
-3. **Budget Guardrails**: Configurable GCP budget alerts and billing caps are managed as part of Phase 10.2.
+3. **Budget Guardrails**: Configurable GCP budget alerts, cost safety disclaimers, and resource cleanup checklists are detailed in the [docs/cost_guardrails.md](cost_guardrails.md) guide.
 
 ---
 

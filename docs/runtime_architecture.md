@@ -223,7 +223,7 @@ The runtime trace and observability layer has been fully implemented in Phase 9.
 - **Agent integration**:
   * `BOCReviewAgent.run` returns a `str` response and stores the trace in `agent.last_trace`.
   * `ReviewConversationAssistant.answer` remains backward-compatible (returns string response) and stores the trace in `assistant.last_trace`.
-- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 136).
+- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 137).
 
 ---
 
@@ -235,3 +235,11 @@ The local-first runtime has been containerized and prepared for cloud hosting in
 - **Deployment Guide**: [docs/deployment_cloud_run.md](deployment_cloud_run.md) provides detailed step-by-step commands to deploy the agent with strict resource constraints (`--min-instances 0 --max-instances 1`).
 - **Observability Smoke Checks**: A container-ready [smoke_deployment.py](scripts/smoke_deployment.py) verifies the agent runtime and skill configuration are fully functional.
 - **Safety Tests**: Unit checks in `tests/test_deployment_files.py` verify that the port configurations are correct and no credentials are baked in.
+
+---
+
+## 12. Phase 10.2 Cost Guardrails & Budget Documentation
+
+Phase 10.2 introduces cost-control procedures and billing guardrails for deploying the agent:
+- **Cost Guardrails Guide**: [docs/cost_guardrails.md](cost_guardrails.md) provides Google Cloud Console budget setups, alert thresholds (including forecasted warnings), instance constraints, and storage/artifact monitoring checklists.
+- **Safety checks**: Unit tests in `tests/test_cost_guardrails_docs.py` verify that the cost guide uses cautious disclaimers and avoids unsafe zero-cost or hard-cap claims.

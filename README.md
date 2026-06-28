@@ -148,7 +148,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (136 tests total):
+Execute all unit, integration, and UI helper tests (137 tests total):
 ```bash
 uv run pytest
 ```
@@ -181,19 +181,21 @@ An interactive, local-first conversational review co-pilot is integrated directl
 
 ---
 
-## 🏗️ Runtime Architecture, Trace, & Cloud Run Preparedness (Phases 9.0, 9.1, 9.2, & 10.1)
+## 🏗️ Runtime Architecture, Trace, & Cloud Run Preparedness (Phases 9.0, 9.1, 9.2, 10.1, & 10.2)
 
-The local ADK-inspired runtime, trace layers, and container configurations are structured under `boc_agent/runtime/` and root configurations:
+The local ADK-inspired runtime, trace layers, container configurations, and cost safety documentation are structured under `boc_agent/runtime/` and root configurations:
 
 * **Local ADK-Inspired Runtime**: Modularized execution utilizing `BOCReviewAgent`, `RuntimeContext`, `Planner`, `ToolRegistry`, `Executor`, and `ResponseBuilder` (Phase 9.1).
 * **Deterministic Tracing & Observability**: Execution profiling under `boc_agent/runtime/trace/` tracking planning intents, specialist tool execution metrics, reasoning graph steps, and stage-by-stage confidence timeline snapshots (Phase 9.2).
-* **Cloud Run Readiness**: Configured Docker containerization (`Dockerfile`, `.dockerignore`, `.env.example`) and deployment instructions under [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md) to enable cost-controlled hosting on Google Cloud Run (Phase 10.1).
+* **Cloud Run Readiness**: Configured Docker containerization (`Dockerfile`, `.dockerignore`, `.env.example`) and deployment instructions under [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md) (Phase 10.1).
+* **Cost Guardrails & Budgets**: Cautious cost guardrail setup disclaimers, Google Cloud Console budget thresholds, and resource clean checklists in [docs/cost_guardrails.md](docs/cost_guardrails.md) (Phase 10.2).
 
 For details, see:
 - [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime and trace packages.
 - [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to Google ADK and cloud concepts.
 - [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-008) for the project.
 - [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md): Deployment walkthrough for Google Cloud Run.
+- [docs/cost_guardrails.md](docs/cost_guardrails.md): Cost safety and budget setup guidelines.
 
 ---
 
@@ -208,6 +210,5 @@ For details, see:
 
 ## 🔮 Future Improvements
 
-1. **Phase 10.2 Cost Guardrails & Budget Docs**: Configure GCP billing budgets, cost alerts, and resource telemetry logging.
-2. **Phase 10.3 Native ADK / Vertex AI Integration**: Transitioning the local agent context to native Google Cloud Agent Engine and Vertex AI Search.
-3. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.
+1. **Phase 10.3 Optional ADK / Vertex AI Migration Guide**: Transitioning the local agent context to native Google Cloud Agent Engine and Vertex AI Search.
+2. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.
