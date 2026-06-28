@@ -1,0 +1,44 @@
+# Exclude Version Control
+.git
+.gitignore
+
+# Exclude Environment Configuration files (prevent build-context secret exposure)
+.env
+.env.*
+!.env.example
+
+# Exclude Python Caches and Virtual Environments
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Exclude Test and Lint Caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Exclude Output Directory and Log files
+outputs/
+*.log
+
+# Exclude IDE and Editor Folders
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Exclude OS Junk Files
+.DS_Store
+Thumbs.db
+
+# Exclude temporary folders
+tmp/
+temp/
+scratch/
+
+# Note: Do NOT exclude README.md, PROJECT_CONTEXT.md, walkthrough.md, SKILL.md,
+# data/synthetic/ or docs/ because they are required by the RAG and demo flows.

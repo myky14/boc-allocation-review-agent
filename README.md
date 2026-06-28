@@ -148,7 +148,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (130 tests total):
+Execute all unit, integration, and UI helper tests (136 tests total):
 ```bash
 uv run pytest
 ```
@@ -181,18 +181,19 @@ An interactive, local-first conversational review co-pilot is integrated directl
 
 ---
 
-## 🏗️ Runtime Architecture, Trace, & ADK Mapping (Phases 9.0, 9.1, & 9.2)
+## 🏗️ Runtime Architecture, Trace, & Cloud Run Preparedness (Phases 9.0, 9.1, 9.2, & 10.1)
 
-The local ADK-inspired runtime and execution trace layers are implemented under `boc_agent/runtime/`:
+The local ADK-inspired runtime, trace layers, and container configurations are structured under `boc_agent/runtime/` and root configurations:
 
 * **Local ADK-Inspired Runtime**: Modularized execution utilizing `BOCReviewAgent`, `RuntimeContext`, `Planner`, `ToolRegistry`, `Executor`, and `ResponseBuilder` (Phase 9.1).
 * **Deterministic Tracing & Observability**: Execution profiling under `boc_agent/runtime/trace/` tracking planning intents, specialist tool execution metrics, reasoning graph steps, and stage-by-stage confidence timeline snapshots (Phase 9.2).
-* **Not Native Google ADK/Cloud Deployment Yet**: The system remains entirely local-first. Native Google ADK, Google Cloud Run, Vertex AI, Agent Engine, and Gemini API integrations are **not** implemented in this phase.
+* **Cloud Run Readiness**: Configured Docker containerization (`Dockerfile`, `.dockerignore`, `.env.example`) and deployment instructions under [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md) to enable cost-controlled hosting on Google Cloud Run (Phase 10.1).
 
 For details, see:
 - [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime and trace packages.
 - [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to Google ADK and cloud concepts.
 - [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-008) for the project.
+- [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md): Deployment walkthrough for Google Cloud Run.
 
 ---
 
@@ -201,11 +202,12 @@ For details, see:
 * **Minimal Quebec Context**: Includes minimal MVP SODEC Quebec buckets only. Advanced regional or special SODEC credits are out of scope.
 * **Hardcoded Multi-share Rules**: Multi-share creative labor uses fixed 65%/35% split caps based on internal synthetic workbook conventions and MVP assumptions, not universal statutory treatment.
 * **No Form 6 Compile**: Suggests workbook allocation columns; does not compile official CAVCO Form 6 PDF applications.
-* **No Cloud Deployment Yet**: Runs locally through CLI, tests, and Streamlit. Native Google ADK, Vertex AI, Agent Engine, and Cloud Run deployment are future work.
+* **No Active Cloud Deployment**: Runs locally through CLI, tests, and Streamlit. Active hosting on Google Cloud Run or native ADK SDK is future work.
 
 ---
 
 ## 🔮 Future Improvements
 
-1. **Phase 10 Google Cloud / ADK Deployment**: Transitioning the local agent context to native Google Cloud Run services and Vertex AI Agent Engine.
-2. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.
+1. **Phase 10.2 Cost Guardrails & Budget Docs**: Configure GCP billing budgets, cost alerts, and resource telemetry logging.
+2. **Phase 10.3 Native ADK / Vertex AI Integration**: Transitioning the local agent context to native Google Cloud Agent Engine and Vertex AI Search.
+3. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.

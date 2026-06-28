@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **130 passed tests**
+* **Expected Final Test Count**: **136 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -32,6 +32,7 @@ uv run pytest
   - `tests/test_skill_runtime.py` (9 skill runtime validations)
   - `tests/test_runtime_agent.py` (19 runtime agent validations)
   - `tests/test_runtime_trace.py` (24 runtime trace validations)
+  - `tests/test_deployment_files.py` (6 deployment readiness validations)
 
 ---
 
@@ -107,10 +108,19 @@ Once a ledger has been ingested and reviewed:
 The repository includes a root `SKILL.md` runtime contract for capabilities, refusals, grounding policies, and non-mutating tool permissions. Phases 9.1 and 9.2 implement the **ADK-inspired local runtime** and execution trace observability layers under `boc_agent/runtime/`.
 
 * **Status**: Local ADK-inspired runtime and tracing are fully implemented and tested.
-* **No Cloud / Native ADK Yet**: This implementation is completely local-first and does not deploy to Google Cloud Run or use native ADK SDK dependencies.
-* **Roadmap**: The next recommended step is Phase 10 — Google Cloud / ADK deployment.
+
+---
+
+## 📦 7. Docker + Google Cloud Run Deployment Readiness (Phase 10.1)
+
+Phase 10.1 adds deployment-readiness configurations so the Streamlit dashboard and conversational assistant can be built into a Docker image and deployed to Google Cloud Run.
+
+* **Dockerfile & .dockerignore**: Configures optimized caches, non-root user execution, and headless server bindings to port `8080` (retaining RAG docs and demo data).
+* **Cloud Run Guide**: Exposes gcloud CLI source-to-service deployments and cost control setups (`--min-instances 0 --max-instances 1`).
+* **Roadmap**: Next recommended phase is Phase 10.2 (Cost Guardrails & Budget Docs) followed by Phase 10.3 (ADK / Vertex AI migration).
 
 For details, see:
 - [docs/runtime_architecture.md](docs/runtime_architecture.md): Specifications for the implemented local runtime package.
 - [docs/adk_mapping.md](docs/adk_mapping.md): Mapping of local-first components to Google ADK and cloud concepts.
 - [docs/decision_log.md](docs/decision_log.md): Architecture Decision Records (ADR-001 to ADR-008) governing the project design.
+- [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md): Guide for deploying Streamlit to Google Cloud Run.

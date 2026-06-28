@@ -77,7 +77,7 @@ To execute the test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Pass Count**: **130 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime agent tests, 24 runtime trace tests).
+* **Expected Pass Count**: **136 tests** (23 rules tests, 8 orchestrator tests, 12 chat assistant tests, 13 RAG pipeline tests, 6 HITL/exporter tests, 12 loader tests, 2 dashboard helper tests, 2 scaffold tests, 9 skill runtime tests, 19 runtime agent tests, 24 runtime trace tests, 6 deployment files tests).
 
 To execute the GL review CLI:
 ```bash
@@ -111,3 +111,18 @@ Phases 9.1 and 9.2 implement the ADK-inspired local runtime and observability tr
 - [docs/runtime_architecture.md](runtime_architecture.md): Implemented local runtime modules, trace structures, and execution flow.
 - [docs/adk_mapping.md](adk_mapping.md): Mapping to future Google ADK/cloud concepts.
 - [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-008).
+
+---
+
+## 6. Docker + Google Cloud Run Deployment Readiness (Phase 10.1)
+
+Phase 10.1 introduces container configurations and deployment guides:
+- [docs/deployment_cloud_run.md](deployment_cloud_run.md): Cloud Run deployment steps.
+- `tests/test_deployment_files.py`: Validates file completeness and ensures no hardcoded secrets or wrong port bindings exist.
+- `scripts/smoke_deployment.py`: Container smoke validation check.
+
+To run the local deployment smoke check:
+```bash
+uv run python scripts/smoke_deployment.py
+```
+* **Result**: Validates skill loader initialization, agent run success, and trace capture.

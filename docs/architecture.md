@@ -154,10 +154,18 @@ The local ADK-inspired runtime and observability layers are structured under `bo
 
 * **Local Runtime (Phase 9.1)**: Decouples query routing, validation registry, execution context, and disclaimer formatting using pure Python components.
 * **Trace & Observability (Phase 9.2)**: Collects execution metrics under `boc_agent/runtime/trace/`. Tracks planner intent classifications, tool execution timers, row count accesses, PII/mutation block verification, reasoning step paths, and confidence timeline snapshots.
-* **No Cloud / Native ADK Yet**: This runtime remains local-first and offline, using no Google Cloud telemetry, PyTorch embeddings, or Gemini API network calls.
-* **Roadmap**: Next recommended steps are Phase 10 (Google Cloud Run / Vertex ADK deployment).
+
+---
+
+## 9. Cloud Run Deployment Readiness (Phase 10.1)
+
+Phase 10.1 adds Docker containerization configurations and deployment guides:
+* **Containerization**: A cached Dockerfile utilizing `uv` to build production-appropriate Streamlit images.
+* **Deployment Guide**: [docs/deployment_cloud_run.md](deployment_cloud_run.md) provides detailed step-by-step commands to deploy to Google Cloud Run under strict resource bounds.
+* **Roadmap**: Next recommended steps are Phase 10.2 (Cost Guardrails & Budget Docs) and Phase 10.3 (ADK / Vertex AI migration).
 
 For detailed specifications, see:
 - [docs/runtime_architecture.md](runtime_architecture.md): Specifications for the target runtime and trace modules.
 - [docs/adk_mapping.md](adk_mapping.md): Mapping of local agents to native Google ADK framework primitives.
-- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-007).
+- [docs/decision_log.md](decision_log.md): Architecture Decision Records (ADR-001 to ADR-008).
+- [docs/deployment_cloud_run.md](deployment_cloud_run.md): Deployment walkthrough for Google Cloud Run.

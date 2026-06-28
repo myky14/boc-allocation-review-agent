@@ -17,7 +17,7 @@ This document outlines how the architectural design of the **BOC Allocation Revi
 | **Session State** | Streamlit Session State / `RuntimeContext` | Implemented | RuntimeContext | In-memory container storing dialogue history and transaction records. |
 | **Retrieval Tool** | Local TF-IDF RAG | Implemented | Vertex AI Search Migration | Document search index built from local Markdown files. |
 | **Human-in-the-Loop** | `boc_agent/hitl` | Implemented | Runtime Tool Registration | Separate queue builder and override logging columns. |
-| **Deployment** | Local Streamlit / CLI | Implemented | Cloud Run / Vertex AI Agent Engine | Execution environment (currently local-first, offline). |
+| **Deployment** | Local Streamlit / CLI | Docker-ready | Cloud Run / Vertex AI Agent Engine | Execution environment (currently local-first, offline, prepared for Cloud Run). |
 | **Execution Trace / Telemetry** | `boc_agent/runtime/trace/` | Implemented | Cloud Trace / Cloud Logging Integration | Monotonic stage latencies, reasoning graphs, and confidence timelines. |
 
 ---
@@ -32,7 +32,7 @@ This document outlines how the architectural design of the **BOC Allocation Revi
 
 ### What Does Not Exist Yet
 - **Native Google ADK SDK Runtime Objects**: The current application does not instantiate native Google ADK agents, sessions, or cloud runtime objects.
-- **Google Cloud Run Host**: No remote endpoint container exists.
+- **Active Google Cloud Run Live Instance**: While the containerization files and Cloud Run deployment guide are implemented, a live active cloud service instance has not been provisioned.
 - **Gemini / LLM Orchestration**: The system runs entirely locally and deterministically, using no external Vertex AI Gemini LLM APIs.
 - **Vertex Vector Search / Vertex AI Search**: The RAG retriever uses a local TF-IDF model rather than a cloud vector database.
 

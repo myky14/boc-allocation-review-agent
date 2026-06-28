@@ -223,4 +223,15 @@ The runtime trace and observability layer has been fully implemented in Phase 9.
 - **Agent integration**:
   * `BOCReviewAgent.run` returns a `str` response and stores the trace in `agent.last_trace`.
   * `ReviewConversationAssistant.answer` remains backward-compatible (returns string response) and stores the trace in `assistant.last_trace`.
-- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 130).
+- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 136).
+
+---
+
+## 11. Phase 10.1 Docker + Google Cloud Run Deployment Readiness
+
+The local-first runtime has been containerized and prepared for cloud hosting in Phase 10.1:
+- **Dockerfile**: Production-ready image configuration utilizing `uv` for package management, running headlessly on port `8080`, executing as non-root user `appuser`.
+- **.dockerignore**: Excludes virtualenv and build caches while preserving synthetic ledger data and RAG repository documentation.
+- **Deployment Guide**: [docs/deployment_cloud_run.md](deployment_cloud_run.md) provides detailed step-by-step commands to deploy the agent with strict resource constraints (`--min-instances 0 --max-instances 1`).
+- **Observability Smoke Checks**: A container-ready [smoke_deployment.py](scripts/smoke_deployment.py) verifies the agent runtime and skill configuration are fully functional.
+- **Safety Tests**: Unit checks in `tests/test_deployment_files.py` verify that the port configurations are correct and no credentials are baked in.
