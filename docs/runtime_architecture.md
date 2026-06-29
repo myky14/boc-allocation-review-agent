@@ -223,7 +223,7 @@ The runtime trace and observability layer has been fully implemented in Phase 9.
 - **Agent integration**:
   * `BOCReviewAgent.run` returns a `str` response and stores the trace in `agent.last_trace`.
   * `ReviewConversationAssistant.answer` remains backward-compatible (returns string response) and stores the trace in `assistant.last_trace`.
-- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 183).
+- **Verification tests**: Added `tests/test_runtime_trace.py` (24 new tests, raising the total test count to 246).
 
 ---
 

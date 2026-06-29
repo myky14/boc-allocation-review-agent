@@ -60,7 +60,7 @@ The current repository layout:
   - `rag/`: Local TF-IDF documentation retrieval and template answerer.
   - `skill/`: `SKILL.md` parser, validator, and loader.
   - cli.py: CLI utility executing the agent pipeline.
-* `tests/`: Verification scripts (183 tests total):
+* `tests/`: Verification scripts (246 tests total):
   - test_allocation_rules.py (23 rule validations).
   - test_orchestrator.py (8 orchestration scenario validations).
   - test_chat_assistant.py (12 conversational assistant validations).
@@ -77,6 +77,7 @@ The current repository layout:
   - test_adk_migration_docs.py (1 migration guide validation).
   - test_portfolio_docs.py (7 portfolio docs validations).
   - test_demo_assets_docs.py (38 demo assets validations).
+  - test_release_docs.py (63 release docs validations).
 
 ---
 
@@ -291,7 +292,7 @@ The agent allocates costs into one of **20 distinct columns**:
 ### Phase 9.2: Runtime Trace & Observability
 * Implemented a structured execution trace layer under `boc_agent/runtime/trace/` (`trace_models.py`, `trace_builder.py`, `trace_exporter.py`, `trace_formatter.py`).
 * Captures monotonic latency times, intent capabilities, tool usage details, reasoning step sequences, and stage confidence timeline snapshots.
-* Added a comprehensive trace test suite under `tests/test_runtime_trace.py` (totaling 183 tests overall including Phase 10.1, 10.2, 10.3, 11.1 & 11.2 tests).
+* Added a comprehensive trace test suite under `tests/test_runtime_trace.py` (totaling 246 tests overall including Phase 10.1, 10.2, 10.3, 11.1, 11.2 & 11.3 tests).
 
 ### Phase 10.1: Docker + Google Cloud Run Deployment Readiness
 * Created `Dockerfile`, `.dockerignore`, `.env.example`, and [docs/deployment_cloud_run.md](docs/deployment_cloud_run.md) for containerizing the Streamlit agent.
@@ -361,7 +362,6 @@ The General Ledger processing produces the following exact metrics over the 201 
 ## 13. Next Recommended Phases
 
 Future development phases after capstone presentation:
-* **Phase 11.3: Final Release / GitHub Release / Portfolio Publishing**: Finalize git release tagging, build release branch configurations, and configure hosting documentation.
 * **Optional Cloud Agent Deployment**: Deploying the ADK agent natively onto Vertex AI Agent Engine and integrating Vertex AI Search (optional future work).
 * **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.
 
@@ -374,5 +374,5 @@ Future development phases after capstone presentation:
 * **Minimal Quebec Support**: Quebec Creates SODEC rules remain a minimal MVP skeleton containing 4 columns.
 * **Explanation-Only Assistant**: The chat layer should strictly explain and query existing reviewed data and must not attempt statutory tax rulings.
 * **No Native ADK or Cloud Deployment Yet**: Native Google ADK runtime, Vertex AI, Agent Engine, and Cloud Run deployment are not implemented.
-* **Phases 9.1, 9.2, 10.1, 10.2, 10.3, 11.1, 11.2 Implemented**: The local runtime, execution trace observability, Docker Cloud Run readiness, Cost Guardrails, Migration Guide, Portfolio Polish, and Demo Asset preparation layers have been fully implemented and tested. Note that actual native Google ADK, Vertex AI, Gemini, and Agent Engine migration remains future optional work, and no native cloud agent deployment has been implemented.
+* **Phases 9.1, 9.2, 10.1, 10.2, 10.3, 11.1, 11.2, 11.3 Implemented**: The local runtime, execution trace observability, Docker Cloud Run readiness, Cost Guardrails, Migration Guide, Portfolio Polish, Demo Asset preparation, and Final Release/Portfolio publishing layers have been fully implemented and tested. Note that actual native Google ADK, Vertex AI, Gemini, and Agent Engine migration remains future optional work, and no native cloud agent deployment has been implemented.
 * **No Statutory Wording**: Avoid terms implying tax optimization or official rulings; use "review support", "suggested allocation", "deterministic allocation review", "synthetic workbook convention", and "human follow-up".

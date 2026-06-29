@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **183 passed tests**
+* **Expected Final Test Count**: **246 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -37,6 +37,7 @@ uv run pytest
   - `tests/test_adk_migration_docs.py` (1 migration guide validation)
   - `tests/test_portfolio_docs.py` (7 portfolio readiness validations)
   - `tests/test_demo_assets_docs.py` (38 demo asset docs validations)
+  - `tests/test_release_docs.py` (63 release docs validations)
 
 ---
 

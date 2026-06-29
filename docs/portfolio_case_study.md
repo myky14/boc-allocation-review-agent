@@ -82,7 +82,7 @@ The Streamlit dashboard is prepared for Google Cloud Run container hosting:
 
 ## 11. Evaluation & Testing
 The repository enforces high code-quality standard through an extensive test harness:
-- **183 unit and integration tests** validating allocation logic, schema loading, parser safety, local trace accuracy, and deployment files.
+- **246 unit and integration tests** validating allocation logic, schema loading, parser safety, local trace accuracy, and deployment files.
 - **Regression suite**: Verifies that new conversational capabilities do not modify core deterministic rules in `allocation_tool.py`.
 - **Smoke checks**: A container-ready smoke test (`smoke_deployment.py`) verifies SKILL.md loading, BOCReviewAgent string response, and RuntimeTrace capture.
 

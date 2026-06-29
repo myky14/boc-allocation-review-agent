@@ -148,7 +148,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (183 tests total):
+Execute all unit, integration, and UI helper tests (246 tests total):
 ```bash
 uv run pytest
 ```
@@ -207,6 +207,16 @@ For details, see:
 - [docs/demo_assets_guide.md](docs/demo_assets_guide.md): Demo assets overview guide.
 - [docs/presentation_flow.md](docs/presentation_flow.md): Timing flow guidelines.
 - [assets/README.md](assets/README.md): Asset repository placeholders README.
+
+---
+
+## 💼 Portfolio & Release
+
+- Suggested release draft: [docs/github_release_draft.md](docs/github_release_draft.md)
+- Recruiter quickstart: [docs/recruiter_quickstart.md](docs/recruiter_quickstart.md)
+- Portfolio publishing checklist: [docs/portfolio_publishing_checklist.md](docs/portfolio_publishing_checklist.md)
+- Project pitch snippets: [docs/project_pitch.md](docs/project_pitch.md)
+- Final QA checklist: [docs/final_qa_checklist.md](docs/final_qa_checklist.md)
 
 ---
 

@@ -53,7 +53,7 @@ This checklist must be executed and verified before tagging and releasing versio
 ---
 
 ## 4. Documentation & Repository Polish
-- [ ] **README up-to-date**: Confirm that `README.md` correctly reflects the 183-test pass count and links to all new guides.
+- [ ] **README up-to-date**: Confirm that `README.md` correctly reflects the 246-test pass count and links to all new guides.
 - [ ] **Project Context up-to-date**: Confirm that `PROJECT_CONTEXT.md` lists Phase 11.1 as completed.
 - [ ] **Links validated**: Click and verify all markdown relative files and line anchors link to valid files.
 
