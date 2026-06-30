@@ -233,7 +233,7 @@ The local-first runtime has been containerized and prepared for cloud hosting in
 - **Dockerfile**: Production-ready image configuration utilizing `uv` for package management, running headlessly on port `8080`, executing as non-root user `appuser`.
 - **.dockerignore**: Excludes virtualenv and build caches while preserving synthetic ledger data and RAG repository documentation.
 - **Deployment Guide**: [docs/deployment_cloud_run.md](deployment_cloud_run.md) provides detailed step-by-step commands to deploy the agent with strict resource constraints (`--min-instances 0 --max-instances 1`).
-- **Observability Smoke Checks**: A container-ready [smoke_deployment.py](scripts/smoke_deployment.py) verifies the agent runtime and skill configuration are fully functional.
+- **Observability Smoke Checks**: A container-ready [smoke_deployment.py](../scripts/smoke_deployment.py) verifies the agent runtime and skill configuration are fully functional.
 - **Safety Tests**: Unit checks in `tests/test_deployment_files.py` verify that the port configurations are correct and no credentials are baked in.
 
 ---

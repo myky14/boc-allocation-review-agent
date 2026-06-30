@@ -128,9 +128,9 @@ An interactive, auditable Human-in-the-Loop (HITL) review workflow is implemente
 ## 6. Evaluation and Demo Framework (Phase 5)
 
 To prepare for capstone presentation and ensure quality control, Phase 5 introduces:
-- **Evaluation Plan** ([docs/evaluation_plan.md](docs/evaluation_plan.md)): Outlines ground-truth strategies, baseline accuracy metrics, test commands, and manual audit guides.
-- **Evaluation Summary Script** ([scripts/evaluate_outputs.py](scripts/evaluate_outputs.py)): Reads the reviewed output workbook and generates a distribution breakdown of review statuses, eligibility outcomes, and suggested allocation columns.
-- **Demo Cases Guide** ([docs/demo_cases.md](docs/demo_cases.md)): Details 10 representative scenarios (e.g. multi-share caps, inter-provincial fallbacks, payroll processors, prompt-injection guardrails) found in the dataset to walk through during presentations.
+- **Evaluation Plan** ([docs/evaluation_plan.md](evaluation_plan.md)): Outlines ground-truth strategies, baseline accuracy metrics, test commands, and manual audit guides.
+- **Evaluation Summary Script** ([scripts/evaluate_outputs.py](../scripts/evaluate_outputs.py)): Reads the reviewed output workbook and generates a distribution breakdown of review statuses, eligibility outcomes, and suggested allocation columns.
+- **Demo Cases Guide** ([docs/demo_cases.md](demo_cases.md)): Details 10 representative scenarios (e.g. multi-share caps, inter-provincial fallbacks, payroll processors, prompt-injection guardrails) found in the dataset to walk through during presentations.
 
 ---
 

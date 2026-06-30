@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - **Documentation Polish**: Standardized and refined README, case study, and architecture reviews for clear portfolio presentation.
-- **Verification Suite**: Expanded the automated test harness to 195 passing tests, adding robust claim detection, absolute path scanners, and local image link resolution checks.
+- **Verification Suite**: Expanded the automated test harness to 246 passing tests, adding robust claim detection, absolute path scanners, and local image link resolution checks.
 
 ---
 

@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 import pytest
 
-# Paths to scan
+# Paths to scan for claims and release validation
 RELEASE_DOCS = [
     "README.md",
     "CHANGELOG.md",
@@ -12,6 +12,22 @@ RELEASE_DOCS = [
     "docs/recruiter_quickstart.md",
     "docs/project_pitch.md",
     "docs/final_qa_checklist.md"
+]
+
+# Expanded list for markdown link and image validations
+ALL_DOCS_FOR_LINK_VALIDATION = [
+    "README.md",
+    "CHANGELOG.md",
+    "docs/github_release_draft.md",
+    "docs/portfolio_publishing_checklist.md",
+    "docs/recruiter_quickstart.md",
+    "docs/project_pitch.md",
+    "docs/final_qa_checklist.md",
+    "docs/runtime_architecture.md",
+    "docs/evaluation_plan.md",
+    "docs/architecture.md",
+    "walkthrough.md",
+    "PROJECT_CONTEXT.md"
 ]
 
 # Regex boundaries
@@ -46,6 +62,7 @@ UNSAFE_CLOUD_RUN = [
     re.compile(r'\b(?:running|runs|hosted|live)\s+on\s+cloud\s+run\b'),
 ]
 
+# Safe Cloud Run patterns
 SAFE_CLOUD_RUN = [
     re.compile(r'\bcloud\s+run\s+deployment\s+readiness\b'),
     re.compile(r'\bcloud\s+run\s+deployment\s+guide\b'),
@@ -62,6 +79,7 @@ UNSAFE_AI = [
     re.compile(r'\bgemini\s+(?:\w+\s+){0,3}(?:active|integrated|implemented|deployed|live)\b'),
 ]
 
+# Safe AI integration patterns
 SAFE_AI = [
     re.compile(r'\b(?:google\s+|native\s+)?adk\s+inspired\b'),
     re.compile(r'\b(?:google\s+|native\s+)?adk\s+(?:is\s+)?not\s+implemented\b'),
@@ -82,6 +100,7 @@ UNSAFE_COMPLIANCE = [
     re.compile(r'\bproduction\s+(?:\w+\s+){0,3}filing\s+system\b'),
 ]
 
+# Safe compliance patterns
 SAFE_COMPLIANCE = [
     re.compile(r'\breview\s+support\b'),
     re.compile(r'\bnot\s+(?:an\s+)?official\s+tax\s+or\s+legal\s+determination\b'),
@@ -103,6 +122,9 @@ def read_doc(path: str) -> str:
 
 def iter_release_docs() -> list[Path]:
     return [Path(p) for p in RELEASE_DOCS]
+
+def iter_all_link_docs() -> list[Path]:
+    return [Path(p) for p in ALL_DOCS_FOR_LINK_VALIDATION]
 
 def check_match_with_safety(norm_text: str, unsafe_list: list, safe_list: list) -> bool:
     unsafe_matches = []
@@ -193,16 +215,17 @@ def test_no_false_compliance_claims():
 
 def test_no_prohibited_paths():
     # 8. absolute path detection
-    for doc in iter_release_docs():
+    for doc in iter_all_link_docs():
         content = read_doc(doc)
         assert not WINDOWS_DRIVE_PATTERN.search(content), f"Windows drive path detected in {doc}"
         assert not UNC_PATH_PATTERN.search(content), f"UNC path detected in {doc}"
         assert not POSIX_PATH_PATTERN.search(content), f"POSIX absolute path detected in {doc}"
-        assert "file:///" not in content, f"prohibited file:/// link detected in {doc}"
+        # Only reject actual links or paths starting with file:/// followed by alphanumeric chars
+        assert not re.search(r'file:///[\w]', content), f"prohibited file:/// link/path detected in {doc}"
 
 def test_markdown_links_are_valid():
-    # 9. validate markdown links in release docs
-    for doc in iter_release_docs():
+    # 9. validate markdown links in expanded release/architecture docs
+    for doc in iter_all_link_docs():
         content = read_doc(doc)
         links = re.findall(r'\[.*?\]\((.*?)\)', content)
         for link in links:
@@ -216,8 +239,8 @@ def test_markdown_links_are_valid():
             assert resolved.exists(), f"Link '{link}' in {doc} resolves to missing file '{resolved}'"
 
 def test_markdown_images_are_valid():
-    # 10. validate markdown images in release docs
-    for doc in iter_release_docs():
+    # 10. validate markdown images in expanded release/architecture docs
+    for doc in iter_all_link_docs():
         content = read_doc(doc)
         images = re.findall(r'!\[.*?\]\((.*?)\)', content)
         for img in images:
@@ -233,18 +256,18 @@ def test_markdown_images_are_valid():
 def test_test_count_synchronization():
     # 11. test count validation
     stale_counts = ["106", "137", "138", "143", "144", "145", "152", "153", "176", "183", "195"]
-    for doc in iter_release_docs():
+    for doc in iter_all_link_docs():
         content = read_doc(doc).lower()
         
         # Verify no stale counts refer to the current suite total
         for count in stale_counts:
-            # Look for patterns like "183 tests" or "183-test" or "183 unit"
-            pattern = rf'\b{count}\s+(?:unit|passed|tests|unit and integration tests)\b'
+            # Match count followed by tests, unit, passed, passing, etc.
+            pattern = rf'\b{count}\s*(?:-|\s)(?:unit|passed|passing|test|tests|unit\s+and\s+integration\s+tests)\b'
             if re.search(pattern, content):
                 raise AssertionError(f"Stale test count {count} found in {doc}")
                 
         # If the file discusses the current suite count, verify it mentions 246
-        if doc.name in ["github_release_draft.md", "portfolio_publishing_checklist.md", "recruiter_quickstart.md", "project_pitch.md", "final_qa_checklist.md"]:
+        if doc.name in ["github_release_draft.md", "portfolio_publishing_checklist.md", "recruiter_quickstart.md", "project_pitch.md", "final_qa_checklist.md", "walkthrough.md"]:
             assert "246" in content, f"{doc} must mention 246 test suite count"
 
 def test_final_qa_checklist_realism_and_secret_scanning():
