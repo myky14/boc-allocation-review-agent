@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **287 passed tests**
+* **Expected Final Test Count**: **307 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -180,4 +180,4 @@ Phase 11.3 and Phase 12.0 add the final polished release artifacts, social asset
 * **Architecture Flowchart**: Added `docs/architecture_diagram_guide.md` specifying diagram outlines and Mermaid formats.
 * **Community Files**: Added `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `LICENSE`.
 * **GitHub Templates**: Added issue templates under `.github/ISSUE_TEMPLATE/` and a pull request template under `.github/pull_request_template.md`.
-* **Verification Tests**: Added `tests/test_repository_docs.py` containing 12 unit tests verifying that all files exist and no false cloud run, ADK, or tax filing platform claims are committed. All **287 tests pass successfully**.
+* **Verification Tests**: Added `tests/test_repository_docs.py` containing 12 unit tests verifying that all files exist and no false cloud run, ADK, or tax filing platform claims are committed. All **307 tests pass successfully**.

@@ -10,20 +10,20 @@ Use these prepared pitch and resume snippets to talk about the `boc-allocation-r
 ---
 
 ## ⏱️ 30-Second Pitch (The "Networking" Pitch)
-> "For my capstone project, I developed the BOC Allocation Review Agent, which automates pre-auditing of general ledger lines for Canadian tax-credit eligibility. Because financial data requires strict privacy and compliance, I built it to run completely offline. It wraps a deterministic rule engine with a local TF-IDF documentation RAG, an ADK-inspired agentic runtime, and structured observability tracing, all fully tested with 287 automated tests and ready to deploy via Docker to Cloud Run."
+> "For my capstone project, I developed the BOC Allocation Review Agent, which automates pre-auditing of general ledger lines for Canadian tax-credit eligibility. Because financial data requires strict privacy and compliance, I built it to run completely offline. It wraps a deterministic rule engine with a local TF-IDF documentation RAG, an ADK-inspired agentic runtime, and structured observability tracing, all fully tested with 307 tests and ready to deploy via Docker to Cloud Run."
 
 ---
 
 ## 📢 60-Second Pitch (The "Technical Interview" Pitch)
 > "I developed an offline-first AI accounting review agent designed to help production accountants categorize general ledger entries for Canadian film tax credits. 
 > To ensure reliability and compliance, I established a deterministic rule engine as the final source of truth. I then wrapped this engine in an ADK-inspired runtime layer—featuring decoupled Planner, Executor, and Tool Registry classes—alongside a local TF-IDF retrieval system for querying tax guidelines. 
-> To make it portfolio-ready, I added a structured execution tracing layer to log latency and reasoning steps, built a Streamlit human-in-the-loop dashboard, and containerized the entire system for Cloud Run. The project is verified by 287 unit and integration tests, ensuring regression-focused test coverage and predictability."
+> To make it portfolio-ready, I added a structured execution tracing layer to log latency and reasoning steps, built a Streamlit human-in-the-loop dashboard, and containerized the entire system for Cloud Run. The project is verified by 307 unit and integration tests, ensuring regression-focused test coverage and predictability."
 
 ---
 
 ## 📝 Resume Bullet Point Options
 * Built an offline-first AI accounting review agent using deterministic rules, human-in-the-loop (HITL) workflows, local TF-IDF document RAG, an ADK-inspired runtime, and structured execution tracing.
-* Enforced compliance safety by designing a deterministic rule engine as the final source of truth, backed by a 287-test automated regression harness.
+* Enforced compliance safety by designing a deterministic rule engine as the final source of truth, backed by a 307-test automated regression harness.
 * Engineered a decoupled, local agent runtime architecture with distinct Planner, Executor, and Tool Registry modules to map custom tasks cleanly.
 * Implemented local execution tracing to log latency, stages of confidence, and reasoning paths to local JSON trace files, improving system auditability.
 * Containerized the agent via Docker for GCP Cloud Run deployment readiness, establishing robust cost guardrails and cloud budget alert guidance.
@@ -41,7 +41,7 @@ Use these prepared pitch and resume snippets to talk about the `boc-allocation-r
 > ✔ **Local TF-IDF Document RAG**: An offline-first retrieval pipeline that respects data privacy and incurs zero API runtime costs.
 > ✔ **Structured Tracing**: Full execution trace logging for auditing and performance analysis.
 > ✔ **Docker & Cloud Run Ready**: Containerized and ready for GCP deployment with clear cost guardrails.
-> ✔ **Robust Quality**: 287 automated unit and integration tests passing successfully.
+> ✔ **Robust Quality**: 307 automated unit and integration tests passing successfully.
 > 
 > 🔗 Check out the codebase and case studies on GitHub: [Insert Link]
 > 

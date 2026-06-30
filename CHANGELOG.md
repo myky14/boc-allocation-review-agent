@@ -14,10 +14,11 @@ All notable changes to this project will be documented in this file.
 - **Demo Asset Guides**: Added guides for screenshot capture checklists, video recording scripts, and flow presentation guidance.
 - **Cost Guardrails**: Instructions for low-cost setups and Google Cloud budget safety.
 - **ADK / Vertex Migration Guide**: Conceptual blueprint mapping local patterns to native cloud services.
+- **Native ADK Migration Blueprint**: Added Phase 12.0 feasibility analysis, mapping tables, risk register, and implementation plans for native Google ADK.
 
 ### Changed
 - **Documentation Polish**: Standardized and refined README, case study, and architecture reviews for clear portfolio presentation.
-- **Verification Suite**: Expanded the automated test harness to 287 passing tests, adding robust claim detection, absolute path scanners, and local image link resolution checks.
+- **Verification Suite**: Expanded the automated test harness to 307 passing tests, adding robust claim detection, absolute path scanners, and local image link resolution checks.
 
 ---
 

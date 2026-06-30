@@ -8,7 +8,7 @@
 [![Google ADK Inspired](https://img.shields.io/badge/Google%20ADK-Inspired-blue.svg)](docs/adk_mapping.md)
 [![Offline First](https://img.shields.io/badge/Offline-First-blue.svg)](docs/runtime_architecture.md)
 [![Human in the Loop](https://img.shields.io/badge/Human%20in%20the%20Loop-Review%20Queue-blue.svg)](app.py)
-[![Tests Status](https://img.shields.io/badge/Pytest-287%20Passed-brightgreen.svg)](docs/evaluation_plan.md)
+[![Tests Status](https://img.shields.io/badge/Pytest-307%20Passed-brightgreen.svg)](docs/evaluation_plan.md)
 
 An offline-first AI accounting review agent inspired by Google ADK, combining deterministic business rules, local documentation RAG, Human-in-the-Loop review, runtime tracing, Streamlit UI, and Cloud Run deployment readiness.
 
@@ -158,7 +158,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (287 tests total):
+Execute all unit, integration, and UI helper tests (307 tests total):
 ```bash
 uv run pytest
 ```
@@ -253,6 +253,25 @@ Visual demo assets are optional and should be captured from the local Streamlit 
 
 1. **Native Cloud Agent Deployment**: Deploying the ADK agent natively onto Vertex AI Agent Engine and integrating Vertex AI Search (optional future work).
 2. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.
+
+---
+
+## 🔮 Phase 12: Native ADK Migration Blueprint
+
+Phase 12 documentation explores a future migration path from the local ADK-inspired runtime to native Google ADK / Agent Platform concepts.
+
+This is a blueprint only:
+- no native ADK implementation yet
+- no Vertex AI / Gemini deployment
+- no Cloud Agent Engine deployment
+- deterministic rules remain unchanged
+
+See:
+- [docs/phase12_adk_feasibility.md](docs/phase12_adk_feasibility.md)
+- [docs/phase12_runtime_mapping.md](docs/phase12_runtime_mapping.md)
+- [docs/phase12_migration_risks.md](docs/phase12_migration_risks.md)
+- [docs/phase12_implementation_plan.md](docs/phase12_implementation_plan.md)
+- [docs/phase12_poc_checklist.md](docs/phase12_poc_checklist.md)
 
 ---
 

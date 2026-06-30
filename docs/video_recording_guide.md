@@ -24,7 +24,7 @@ Prior to recording, run these setup commands in your terminal to ensure clean lo
 # 1. Synchronize package dependencies
 uv sync
 
-# 2. Run the test harness to verify the 287-test suite passes
+# 2. Run the test harness to verify the 307-test suite passes
 uv run pytest
 
 # 3. Process the synthetic General Ledger workbook via batch CLI
@@ -101,4 +101,4 @@ uv run streamlit run app.py
 - **Visual**: Return to Streamlit homepage dashboard.
 - **Suggested Narration**: 
   > "To conclude, the BOC Allocation Review Agent offers an ADK-inspired, offline-first co-pilot for production accounting reviews. 
-  > With our full 287-test suite passing successfully, the system is verified and ready. Thank you!"
+  > With our full 307-test suite passing successfully, the system is verified and ready. Thank you!"

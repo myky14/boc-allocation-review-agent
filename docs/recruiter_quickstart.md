@@ -22,7 +22,7 @@ The core architecture wraps a deterministic rule-based allocation engine with an
 ## ⏱️ 3-Minute Review Path
 1. **Project Hero (README)**: Skim the [README.md](../README.md) to understand the workflow and local setup.
 2. **Architecture Blueprint**: Review the diagram in [runtime_architecture.md](runtime_architecture.md).
-3. **Test Suite Execution**: Notice the 287 unit and integration tests covering allocation rules, loader schemas, and RAG pipelines.
+3. **Test Suite Execution**: Notice the 307 unit and integration tests covering allocation rules, loader schemas, and RAG pipelines.
 4. **Deployment Readiness**: Review the [Dockerfile](../Dockerfile) and [deployment_cloud_run.md](deployment_cloud_run.md) demonstrating container readiness.
 
 ---
