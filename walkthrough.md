@@ -19,7 +19,7 @@ Run the comprehensive unit and integration test suite:
 ```bash
 uv run pytest
 ```
-* **Expected Final Test Count**: **246 passed tests**
+* **Expected Final Test Count**: **287 passed tests**
 * **Verification Areas**:
   - `tests/test_allocation_rules.py` (23 rule validations)
   - `tests/test_orchestrator.py` (8 orchestrator step validations)
@@ -38,6 +38,7 @@ uv run pytest
   - `tests/test_portfolio_docs.py` (7 portfolio readiness validations)
   - `tests/test_demo_assets_docs.py` (38 demo asset docs validations)
   - `tests/test_release_docs.py` (63 release docs validations)
+  - `tests/test_repository_docs.py` (12 repository docs validations)
 
 ---
 
@@ -167,4 +168,16 @@ Phase 11.2 adds structured placeholder folders and capture checklists to prepare
 * **Screenshot Checklist**: [docs/screenshot_checklist.md](docs/screenshot_checklist.md) details Streamlit dashboard, conversational assistant, and runtime trace capture targets.
 * **Video Recording Guide**: [docs/video_recording_guide.md](docs/video_recording_guide.md) outlines narration scripts and a 5-7 minute timeline structure.
 * **Presentation Flow**: [docs/presentation_flow.md](docs/presentation_flow.md) maps timelines for pitches and technical interviews.
-* **Roadmap**: Next recommended phase is Phase 11.3 (Final Release / GitHub Release / Portfolio Publishing).
+* **Roadmap**: Next recommended phase is Phase 11.3 (Final Release / GitHub Release / Portfolio Publishing) and Phase 12.0 (Portfolio Polish).
+
+---
+
+## 🚀 12. Final Release & Portfolio Polish (Phase 11.3 & Phase 12.0)
+
+Phase 11.3 and Phase 12.0 add the final polished release artifacts, social assets, logo guidelines, security and contributor guidelines, issue templates, and a pull request template:
+* **Badges**: Truthful Shields.io badges in `README.md` showcasing Python compatibility, License, Streamlit, Docker, and Pytest coverage.
+* **Branding Guidelines**: Added `docs/social_preview.md` and `docs/logo_guidelines.md` detailing image specifications and favicon guidelines.
+* **Architecture Flowchart**: Added `docs/architecture_diagram_guide.md` specifying diagram outlines and Mermaid formats.
+* **Community Files**: Added `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `LICENSE`.
+* **GitHub Templates**: Added issue templates under `.github/ISSUE_TEMPLATE/` and a pull request template under `.github/pull_request_template.md`.
+* **Verification Tests**: Added `tests/test_repository_docs.py` containing 12 unit tests verifying that all files exist and no false cloud run, ADK, or tax filing platform claims are committed. All **287 tests pass successfully**.

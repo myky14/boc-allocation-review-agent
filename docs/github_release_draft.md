@@ -21,7 +21,7 @@ This release packages the `boc-allocation-review-agent` capstone project for pub
 * **ADK-Inspired Runtime Agent**: Modular local executor featuring decoupled Planner, Executor, and Tool Registry classes.
 * **RuntimeTrace Observability**: Latency tracking, confidence stages, and reasoning step logging exported to local JSON traces.
 * **Docker & Cloud Run Readiness**: Containerized using a multi-stage `Dockerfile` and configured with cloud cost safety guardrails.
-* **246 Automated Tests**: Broad automated test coverage ensuring regression-focused validation.
+* **287 Automated Tests**: Broad automated test coverage ensuring regression-focused validation.
 
 ---
 

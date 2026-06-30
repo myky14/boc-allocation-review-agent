@@ -35,7 +35,7 @@ git diff --check
 ---
 
 ## 📈 Expected Verification Results
-- [ ] **Test suite passes**: All 246 unit and integration tests must pass cleanly.
+- [ ] **Test suite passes**: All 287 unit and integration tests must pass cleanly.
 - [ ] **Smoke script passes**: Output must show `[SUCCESS] Smoke Deployment Checks Passed`.
 - [ ] **Streamlit app compiles**: Command must exit with code `0` and no compilation errors.
 - [ ] **CLI workbook processing**: Processes all **201 synthetic transaction rows** and writes a reviewed Excel sheet successfully.

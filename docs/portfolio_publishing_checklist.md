@@ -15,7 +15,7 @@ Use this checklist to ensure a professional, secure, and accurate public release
   - *"Offline-first review assistant"*, not official tax legal determination.
   - *"Deterministic rule engine and template-based local RAG"*, not live LLM prompts.
 - [ ] **Logic Integrity**: Verify that `boc_agent/tools/allocation_tool.py` has not been modified.
-- [ ] **Harness Passing**: Confirm all 246 unit and integration tests pass locally.
+- [ ] **Harness Passing**: Confirm all 287 unit and integration tests pass locally.
 
 ---
 

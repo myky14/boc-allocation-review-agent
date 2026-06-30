@@ -17,30 +17,43 @@ When capturing visual assets, adhere strictly to the following rules:
 ---
 
 ## 📁 Suggested Subfolder Structure
-If you decide to capture and store visual assets, place them in the following subfolders using the recommended example filenames:
-
+If you decide to capture and store visual assets, place them in the following subfolders:
 - **`screenshots/`**: Holds static interface captures.
-  - *Example filename*: `screenshots/01_dashboard_overview.png` (Suggested screenshot of the Streamlit Auditor Workspace page).
-  - *Example filename*: `screenshots/02_review_metrics.png` (Suggested screenshot of the workbook metrics cards).
-  - *Example filename*: `screenshots/03_human_review_queue.png` (Suggested screenshot of the Needs Human Review queue table).
-  - *Example filename*: `screenshots/04_conversational_assistant.png` (Suggested screenshot of the Review Assistant tab answering a question).
-  - *Example filename*: `screenshots/05_runtime_trace.png` (Suggested screenshot of the expanded Runtime Trace observability timeline).
-  - *Example filename*: `screenshots/06_cloud_run_ready_docs.png` (Suggested screenshot of the cost safety checklist documentation).
-
 - **`gifs/`**: Holds short animated recordings of interactions.
-  - *Example filename*: `gifs/streamlit_dashboard_demo.gif` (Placeholder GIF demonstrating filtering workbook rows).
-  - *Example filename*: `gifs/conversational_assistant_demo.gif` (Placeholder GIF demonstrating RAG document search).
-
 - **`videos/`**: Holds high-resolution video walkthroughs.
-  - *Example filename*: `videos/capstone_demo_walkthrough.mp4` (Placeholder for the 5-7 minute walkthrough recording).
-
 - **`diagrams/`**: Holds architecture flowcharts.
-  - *Example filename*: `diagrams/runtime_architecture.png` (Placeholder for the decoupled runtime pipeline flowchart).
-  - *Example filename*: `diagrams/cloud_run_deployment.png` (Placeholder for the Cloud Run container deployment structure).
 
 ---
 
-## 🔗 Related Guides
-- Review the [screenshot checklist](../docs/screenshot_checklist.md) to understand which screens to capture.
-- Review the [video recording guide](../docs/video_recording_guide.md) for recording step-by-step narration scripts.
-- Review the [demo assets guide](../docs/demo_assets_guide.md) to learn how to present these visuals on portfolios or GitHub.
+## ⏱️ Recording Order & GIF Lengths
+
+When capturing animated GIFs for GitHub presentation, follow this recommended recording flow to maximize recruiter engagement:
+
+1. **GIF 1: Workbook Upload & Audit Processing**
+   - *Presenter Action*: Open the Streamlit dashboard, drag and drop `data/synthetic/synthetic_boc_gl_dataset.xlsx`, click "Run Review Pipeline", and watch the metrics cards populate.
+   - *Target Length*: 8 - 12 seconds.
+   - *Recommended Filename*: `gifs/01_upload_and_review.gif`
+2. **GIF 2: Human-in-the-Loop Override Action**
+   - *Presenter Action*: Filter the review queue to rows with low confidence, select one row, override the suggested allocation category, type an override reason, and click "Submit Audit Decision".
+   - *Target Length*: 10 - 15 seconds.
+   - *Recommended Filename*: `gifs/02_human_override.gif`
+3. **GIF 3: Conversational Review Assistant & Local RAG**
+   - *Presenter Action*: Open the chat tab, type "What is Location 920?", watch the template-grounded RAG response display the relative markdown source file and parent heading instantly.
+   - *Target Length*: 6 - 10 seconds.
+   - *Recommended Filename*: `gifs/03_conversational_rag.gif`
+
+---
+
+## 📦 Compression & Naming Conventions
+
+To keep page load speeds fast on GitHub and portfolios, apply these compression guidelines:
+- **GIF Optimization**: Use tools like `gifsicle` or Ezgif with lossy compression level 30–50. Keep individual GIF file sizes under **3MB**.
+- **Alternative Video Formats**: For longer high-definition sequences, record in **WebM** or **MP4 (H.264)** formats and target under **10MB** total size.
+- **Image Resolution**: Save screenshots as PNG-8 or compressed WebP at a standard width of **1280px** or **1920px**.
+- **Naming Conventions**: Use lowercase alphanumeric characters with snake_case and step-number prefixes (e.g. `screenshots/01_streamlit_upload.png`, `gifs/02_override_flow.gif`).
+
+---
+
+## 🖼️ Thumbnail Suggestions
+- **Repository Social Image**: Create a primary preview thumbnail at 1280x640 containing a split screen layout: Streamlit metrics dashboard on the left and the decoupled Planner/Executor code layout on the right.
+- **Mermaid Flowchart Render**: Export the Mermaid diagram from `docs/architecture_diagram_guide.md` as a high-contrast PNG to use as the visual cover for technical architecture posts.

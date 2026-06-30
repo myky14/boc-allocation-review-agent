@@ -110,7 +110,7 @@ def test_validate_documented_test_count():
         "docs/evaluation_plan.md"
     ]
     
-    stale_patterns = ["138 tests", "138 passed", "138 passing", "143 tests", "143 passed", "143 passing", "144 tests", "144 passed", "144 passing", "145 tests", "145 passed", "145 passing", "152 tests", "152 passed", "152 passing", "153 tests", "153 passed", "153 passing", "176 tests", "176 passed", "176 passing", "183 tests", "183 passed", "183 passing", "195 tests", "195 passed", "195 passing"]
+    stale_patterns = ["138 tests", "138 passed", "138 passing", "143 tests", "143 passed", "143 passing", "144 tests", "144 passed", "144 passing", "145 tests", "145 passed", "145 passing", "152 tests", "152 passed", "152 passing", "153 tests", "153 passed", "153 passing", "176 tests", "176 passed", "176 passing", "183 tests", "183 passed", "183 passing", "195 tests", "195 passed", "195 passing", "246 tests", "246 passed", "246 passing", "258 tests", "258 passed", "258 passing"]
     
     for filepath in files_to_check:
         with open(filepath, "r", encoding="utf-8") as f:
@@ -120,7 +120,7 @@ def test_validate_documented_test_count():
         for pattern in stale_patterns:
             assert pattern not in normalized_content, f"Stale test count pattern '{pattern}' found in {filepath}"
             
-    # Verify the current count "246" exists in relevant docs where test count is mentioned
+    # Verify the current count "287" exists in relevant docs where test count is mentioned
     docs_mentioning_count = [
         "README.md",
         "docs/evaluation_plan.md",
@@ -132,11 +132,11 @@ def test_validate_documented_test_count():
         with open(filepath, "r", encoding="utf-8") as f:
             content = f.read().lower()
             normalized_content = re.sub(r'\s+', ' ', content)
-        assert ("246 tests" in normalized_content or
-                "246 unit tests" in normalized_content or
-                "246 unit and integration tests" in normalized_content or
-                "246 passed" in normalized_content or
-                "246-test" in normalized_content), f"Current test count 246 not mentioned in {filepath}"
+        assert ("287 tests" in normalized_content or
+                "287 unit tests" in normalized_content or
+                "287 unit and integration tests" in normalized_content or
+                "287 passed" in normalized_content or
+                "287-test" in normalized_content), f"Current test count 287 not mentioned in {filepath}"
 
 def test_safe_disclaimers_per_document():
     # Issue 6: Each main portfolio document must have at least one appropriate disclaimer

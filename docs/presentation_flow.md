@@ -40,7 +40,7 @@ This document maps out different presentation formats and focal points for demon
 - **Goal**: Code review, design trade-offs, and Q&A.
 - **Timeline**:
   - **0:00 - 2:00**: Full demo presentation.
-  - **2:00 - 5:00**: Codebase tour. Open `boc_agent/runtime/` and show the Planner, Executor, and Tool Registry classes. Open `tests/` and show the 246-test suite coverage.
+  - **2:00 - 5:00**: Codebase tour. Open `boc_agent/runtime/` and show the Planner, Executor, and Tool Registry classes. Open `tests/` and show the 287-test suite coverage.
   - **5:00 - 10:00**: Interactive Q&A. Prepare answers using the guide in [docs/interview_notes.md](interview_notes.md).
 
 ---

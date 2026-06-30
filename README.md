@@ -1,5 +1,15 @@
 # BOC Allocation Review Agent (Kaggle Capstone)
 
+[![Python Version](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](pyproject.toml)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Streamlit App](https://img.shields.io/badge/Streamlit-Auditor%20Workspace-FF4B4B.svg)](app.py)
+[![Docker Support](https://img.shields.io/badge/Docker-Ready-blue.svg)](Dockerfile)
+[![Cloud Run Ready](https://img.shields.io/badge/Cloud%20Run-Deployment%20Ready-blue.svg)](docs/deployment_cloud_run.md)
+[![Google ADK Inspired](https://img.shields.io/badge/Google%20ADK-Inspired-blue.svg)](docs/adk_mapping.md)
+[![Offline First](https://img.shields.io/badge/Offline-First-blue.svg)](docs/runtime_architecture.md)
+[![Human in the Loop](https://img.shields.io/badge/Human%20in%20the%20Loop-Review%20Queue-blue.svg)](app.py)
+[![Tests Status](https://img.shields.io/badge/Pytest-287%20Passed-brightgreen.svg)](docs/evaluation_plan.md)
+
 An offline-first AI accounting review agent inspired by Google ADK, combining deterministic business rules, local documentation RAG, Human-in-the-Loop review, runtime tracing, Streamlit UI, and Cloud Run deployment readiness.
 
 > [!IMPORTANT]
@@ -148,7 +158,7 @@ uv run streamlit run app.py
 ```
 
 ### 4. Run the Evaluation Harness
-Execute all unit, integration, and UI helper tests (246 tests total):
+Execute all unit, integration, and UI helper tests (287 tests total):
 ```bash
 uv run pytest
 ```
@@ -243,3 +253,11 @@ Visual demo assets are optional and should be captured from the local Streamlit 
 
 1. **Native Cloud Agent Deployment**: Deploying the ADK agent natively onto Vertex AI Agent Engine and integrating Vertex AI Search (optional future work).
 2. **Multi-Province Expansion**: Implement additional rule specialist modules for British Columbia (FIBC) and deeper Quebec (SODEC) scenarios.
+
+---
+
+## 💼 Portfolio & Repository Resources
+- [LICENSE](LICENSE): MIT License for open-source distribution.
+- [CONTRIBUTING.md](CONTRIBUTING.md): Setup, testing, and formatting guidelines.
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): Contributor Covenant code of conduct.
+- [SECURITY.md](SECURITY.md): Security policy, disclosure, and data privacy expectations.

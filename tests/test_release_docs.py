@@ -255,7 +255,7 @@ def test_markdown_images_are_valid():
 
 def test_test_count_synchronization():
     # 11. test count validation
-    stale_counts = ["106", "137", "138", "143", "144", "145", "152", "153", "176", "183", "195"]
+    stale_counts = ["106", "137", "138", "143", "144", "145", "152", "153", "176", "183", "195", "246", "258"]
     for doc in iter_all_link_docs():
         content = read_doc(doc).lower()
         
@@ -266,9 +266,9 @@ def test_test_count_synchronization():
             if re.search(pattern, content):
                 raise AssertionError(f"Stale test count {count} found in {doc}")
                 
-        # If the file discusses the current suite count, verify it mentions 246
+        # If the file discusses the current suite count, verify it mentions 287
         if doc.name in ["github_release_draft.md", "portfolio_publishing_checklist.md", "recruiter_quickstart.md", "project_pitch.md", "final_qa_checklist.md", "walkthrough.md"]:
-            assert "246" in content, f"{doc} must mention 246 test suite count"
+            assert "287" in content, f"{doc} must mention 287 test suite count"
 
 def test_final_qa_checklist_realism_and_secret_scanning():
     # 12. final QA checklist realism and secret scanning check
